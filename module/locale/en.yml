@@ -1,0 +1,130 @@
+doors_group: Doors and stuck workers
+doors_group_descr: |
+  Where people go in and out of buildings.
+dynamic: Doors move when they get blocked
+dynamic_tooltip: |
+  Houses, chapels, churches, cathedrals, stables, dog cages and the market keep checking
+  their door. If something is built in front of it or the spot can no longer be reached,
+  the door moves to a free side of the building. Before, only the spot chosen when you
+  placed the building was ever used.
+storage: Granary and armoury doors move too
+storage_tooltip: |
+  The granary and the armoury check their doors the same way, so goods can still be
+  delivered when a gate or a wall cuts the old door off from the workshops.
+unstuck: Stuck workers try another door
+unstuck_tooltip: |
+  When a worker steps out of his workplace and cannot find a way to the stockpile, granary,
+  armoury or keep, he goes back in and tries the next door round the building (clockwise)
+  until one works. If none works, the door stays where it was.
+
+repair_group: Repairing buildings
+repair_group_descr: |
+  The Repair button that towers and gates have, for every building.
+button: Repair button on every damaged building
+button_tooltip: |
+  A damaged building of yours shows the Repair button. Repairing costs the part of the
+  building's price that matches the damage: half destroyed costs half its price. Pointing at
+  the button shows what the repair costs and what you have, like on towers (needs the game's
+  help texts switched on).
+gold: Repairs cost gold too
+gold_tooltip: |
+  Buildings that cost gold (churches, for example) also cost that share of gold to repair.
+  Without this only wood and stone are charged, as for towers in the normal game.
+fire_blocks: No repairs while a building burns
+fire_blocks_tooltip: |
+  A burning building counts like an enemy nearby: the Repair button is greyed out until the
+  fire is out. Also for towers and gates.
+repair_x: Button position across
+repair_x_tooltip: |
+  Where the Repair button sits on the building panel, counted from the panel's left edge.
+  Towers use 340. Panels with their own buttons there move it: granary 130 to the left, inn 50
+  and the engineer's and tunneler's guilds 80 to the right; the barracks has it in the middle
+  just under the crenellations and the mercenary post in the middle at the bottom.
+repair_y: Button position down
+repair_y_tooltip: |
+  Where the Repair button sits on the building panel, counted from the top. Towers use 466.
+ai: AI lords repair their buildings
+ai_tooltip: |
+  Each time his repair interval has passed, an AI lord looks through his buildings (towers and
+  gates included) and repairs the most damaged one, as long as he has more gold than his
+  minimum, nothing burns there and no enemy is near. Wood and stone he lacks for it he buys at
+  the market. AI character files can set the interval and the minimum per lord with the AIC
+  fields BuildingRepairInterval and BuildingRepairMinimumGold (needs the aicloader module).
+ai_damage: AI repairs from this much damage (percent)
+ai_damage_tooltip: |
+  An AI lord only repairs a building that has lost at least this much of its health.
+ai_interval: AI repair interval (seconds)
+ai_interval_tooltip: |
+  How long an AI lord waits between two repairs, at normal game speed. The AIC field
+  BuildingRepairInterval overrides it for one lord.
+ai_minimum_gold: AI repairs only with more gold than
+ai_minimum_gold_tooltip: |
+  An AI lord only repairs while his treasury holds more than this. The AIC field
+  BuildingRepairMinimumGold overrides it for one lord.
+
+workers_group: Firemen, blacksmiths and stables
+workers_group_descr: |
+  Small changes to three kinds of buildings.
+firemen: Firemen spread over several fires
+firemen_tooltip: |
+  When there are several fires, a fireman picks one that no other fireman is already
+  running to, instead of all of them going to the same one.
+firemen_tiles: How hard firemen avoid a shared fire
+firemen_tiles_tooltip: |
+  Each fireman already on his way to a fire makes it count as this many tiles further away
+  for the next fireman.
+maces: New blacksmiths make maces
+maces_tooltip: |
+  A new blacksmith's workshop starts on maces instead of swords. You can still switch it.
+breed: Stables replace horses that knights take
+breed_tooltip: |
+  When a knight takes a horse, the stable starts breeding a new one right away. Before, the
+  stall stayed empty until that knight died, so a stable only ever served four knights.
+stable_panel: Stable panel shows horses alive and the next horse
+stable_panel_tooltip: |
+  The stable's "in use" number counts the knights alive that ride one of its horses, and a bar
+  like the towers' health bar shows how far the next horse has got. The bar is full while all
+  four stalls are taken.
+breed_seconds: Time to breed a horse (seconds)
+breed_seconds_tooltip: |
+  How long a stable takes to breed a new horse while few of its horses are alive, at normal
+  game speed. 0 keeps the game's own time (about 14 seconds).
+slowdown: Stables breed slower the more of their horses are alive
+slowdown_tooltip: |
+  A stable's horses that are alive are the ones in its stalls plus the knights riding one of
+  its horses. While there are fewer than the normal number, a new horse takes the normal
+  breeding time. Each horse beyond that takes longer than the one before, up to the slowest
+  time, which then stays - the stable never stops breeding. When knights die, it speeds up
+  again.
+normal_horses: Horses alive before breeding slows down
+normal_horses_tooltip: |
+  How many of a stable's horses can be alive before its breeding slows down. With 4, the
+  first four horses come at the normal speed and the fifth is the first slower one.
+slowdown_factor: How much slower each further horse comes
+slowdown_factor_tooltip: |
+  Each horse beyond the normal number takes this many times as long as the one before. With
+  3, the fifth horse takes three times the normal time, the sixth nine times, and so on.
+slowest_seconds: Slowest breeding time (seconds)
+slowest_seconds_tooltip: |
+  Breeding never gets slower than this, at normal game speed: a stable with many horses alive
+  keeps breeding one horse every so often.
+
+food_group: Dairy farms and hunters
+food_group_descr: |
+  More places for dairy farms, and meat for hunters once the deer are gone.
+dairy_scrub: Dairy farms can stand on thin scrub
+dairy_scrub_tooltip: |
+  A farm needs enough fertile ground under it, and normally only oasis grass and thick scrub
+  count. For dairy farms, thin scrub counts as well. Wheat, hop and apple farms are unchanged.
+hunters_tannery: Hunters fetch carcasses from tanneries when the deer are gone
+hunters_tannery_tooltip: |
+  Every cow a tanner skins leaves a carcass at his tannery. Once there are no deer left on the
+  map, an idle hunter walks to a tannery of his own lord that has carcasses, carries some back
+  to his hunting post, butchers them into meat (as much as a deer gives) and takes the meat to
+  the granary.
+hunters_carry: Carcasses a hunter takes at once
+hunters_carry_tooltip: |
+  How many carcasses a hunter takes from the tannery in one trip.
+hunters_stored: Carcasses a tannery keeps
+hunters_stored_tooltip: |
+  The most carcasses one tannery keeps waiting for hunters. Further cows leave nothing.
