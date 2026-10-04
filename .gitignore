@@ -5,3 +5,4 @@ __pycache__/
 failed_script.asm
 bench/fasm_cache/
 run_*.txt
+dist/
