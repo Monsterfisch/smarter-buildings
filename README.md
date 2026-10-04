@@ -4,7 +4,7 @@ A UCP3 module for Stronghold Crusader and Stronghold Crusader Extreme with fixes
 buildings and their workers: doors that move when blocked, stuck workers trying another door, a
 Repair button on every building (and AI lords that repair), firemen spreading over several fires,
 blacksmiths starting on maces, stables that keep breeding horses (slower the more are alive),
-dairy farms on thin scrub, and hunters fetching carcasses from tanneries once the deer are gone.
+dairy farms on thin scrub, bad farm ground shown red while placing, and hunters fetching carcasses from tanneries once the deer are gone.
 
 What the module does, in plain English, is in `module/locale/description-en.md`. Every part is a
 setting of its own.
@@ -33,7 +33,7 @@ UCP3 GUI. AI character files can set `BuildingRepairInterval` and `BuildingRepai
    * `python bench/test_tooltip.py` - Repair button places per panel, the repair cost text and its
      gold part, the cost line's layer
    * `python bench/test_stable_panel.py` - the stable panel's "in use" number and next-horse bar
-   * `python bench/test_food.py` - dairy farms on thin scrub, tannery carcasses, hunters
+   * `python bench/test_food.py` - dairy farms on thin scrub, farm tiles shown red, tannery carcasses, hunters
 3. `python tools/publish.py --bump` - raises the last version slot and copies the module to
    `ucp/modules/smarter-buildings-<version>`, leaving the build before it installed and clearing
    anything older. Do this with the game closed.

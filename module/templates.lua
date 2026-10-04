@@ -278,6 +278,27 @@ cmp dword [esp+0x20],FERTILE_TILES
 jmp GROUND_RESUME
 ]]
 
+-- isBuildingPlacementAllowedAtTile(tile, player, command, flag), thiscall on TileMapState, ret
+-- 0x10: its first 7 bytes jump here. For a farm (commands 0x46-0x49) a tile without any grass
+-- (thin or thick scrub, oasis grass) is refused, as the farm itself already is: the placement
+-- preview then shows that tile red, like a rock or another building.
+templates.farmTile = [[
+mov eax,[esp+0xC]
+cmp eax,FIRST_FARM
+jb t_game
+cmp eax,LAST_FARM
+ja t_game
+mov eax,[esp+4]
+test byte [ecx+eax+GROUND_LAYER],GRASS
+jne t_game
+mov eax,1
+ret 0x10
+t_game:
+sub esp,0xC
+mov edx,[esp+0x18]
+jmp TILE_RESUME
+]]
+
 -- UpdateTanner, when the tanner has finished skinning a cow at his tannery (imul edi,edi,0x490
 -- replaced; edi = the tanner): the tannery keeps the carcass, up to STORED_MAX. CARCASSES has
 -- a count and the tannery's uid per building.

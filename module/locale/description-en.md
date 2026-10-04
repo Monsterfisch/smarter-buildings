@@ -1,7 +1,7 @@
 # Smarter Buildings
 
 **Author**: Monsterfish
-**Version**: 1.0.7
+**Version**: 1.0.8
 
 Fixes and improvements for buildings. Every part can be switched on or off in the settings.
 
@@ -27,6 +27,8 @@ Fixes and improvements for buildings. Every part can be switched on or off in th
   the next horse is.
 - **Dairy farms on thin scrub:** dairy farms can also be built on thin scrub, not only on thick
   scrub and oasis grass.
+- **Bad farm ground in red:** while you place a farm, tiles under it that are not grass (earth,
+  sand, iron and so on) are shown red, like rocks and other buildings.
 - **Meat from tanneries:** every cow a tanner skins leaves a carcass at the tannery. Once all the
   deer are gone, hunters fetch up to 2 carcasses at a time, butcher them at their hunting post
   and take the meat to the granary.

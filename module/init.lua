@@ -38,7 +38,7 @@ local DEFAULTS = {
   blacksmith = { maces = true },
   repair = { button = true, gold = true, fire_blocks = true, x = 340, y = 466,
     ai = true, ai_interval = 60, ai_minimum_gold = 2000, ai_damage = 20 },
-  farms = { dairy_scrub = true },
+  farms = { dairy_scrub = true, ground_overlay = true },
   hunters = { tannery = true, carry = 2, stored = 4 },
   stables = { breed = true, panel = true, breed_seconds = 0, slowdown = true, normal_horses = 4,
     slowdown_factor = 3, slowest_seconds = 600 },
@@ -479,6 +479,30 @@ local function patchDairyGround()
   jumpTo(site, code, FARM_GROUND_SIZE)
 end
 
+-- isBuildingPlacementAllowedAtTile, the per-tile test of placing and of the placement preview
+-- (red where it answers non-zero).
+local AOB_PLACE_TILE = "83 EC 0C 8B 54 24 18 53 55 56 8B F1 57 8B 7C 24 20"
+local PLACE_TILE_SIZE = 7
+-- checkBuildingCanBePlacedHere, where it counts a farm's grass: the ground layer as an offset
+-- from TileMapState (mov cl, [eax + esi + layer]).
+local AOB_GROUND_LAYER = "F7 C1 00 00 10 00 75 ? 8A 8C 30 ? ? ? ? F6 C1 10"
+local GROUND_LAYER_OPERAND = 11
+local GRASS = 0x91                      -- thin scrub 0x01, oasis grass 0x10, thick scrub 0x80
+local FIRST_FARM, LAST_FARM = 0x46, 0x49
+
+local function patchFarmTiles()
+  local site = scan(AOB_PLACE_TILE, "the per-tile placement test")
+  local layer = core.readInteger(scan(AOB_GROUND_LAYER, "the ground layer") + GROUND_LAYER_OPERAND)
+  local code = assemble(templates.farmTile, {
+    FIRST_FARM = FIRST_FARM,
+    LAST_FARM = LAST_FARM,
+    GROUND_LAYER = layer,
+    GRASS = GRASS,
+    TILE_RESUME = site + PLACE_TILE_SIZE,
+  })
+  jumpTo(site, code, PLACE_TILE_SIZE)
+end
+
 local function patchHunters(v, config)
   local tanner = scan(AOB_TANNER_SKINNED, "where a tanner finishes a cow") + TANNER_HOOK
   local hunter = scan(AOB_HUNTER_DEER, "where a hunter looks for deer")
@@ -902,6 +926,9 @@ local function enable(self, config)
   patchHorseBreeding(v, config, setting(config, "stables", "panel"))
   if setting(config, "farms", "dairy_scrub") then
     patchDairyGround()
+  end
+  if setting(config, "farms", "ground_overlay") then
+    patchFarmTiles()
   end
   if setting(config, "hunters", "tannery") then
     patchHunters(v, config)

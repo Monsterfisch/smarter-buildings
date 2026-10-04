@@ -240,6 +240,14 @@ options:
     contents:
       type: boolean
       value: true
+  - url: smarter-buildings.farms.ground_overlay
+    name: smarter-buildings-farms-ground-overlay
+    text: '{{ground_overlay}}'
+    tooltip: '{{ground_overlay_tooltip}}'
+    display: Switch
+    contents:
+      type: boolean
+      value: true
   - url: smarter-buildings.hunters.tannery
     name: smarter-buildings-hunters-tannery
     text: '{{hunters_tannery}}'

@@ -120,6 +120,40 @@ def run(ext):
         del H.cpu.hooks[a]
 
 
+def run_tiles(ext):
+    print('== farm tiles ' + ('Extreme' if ext else 'Crusader'))
+    w = W(ext); H = w.H; E = w.E
+    site = E.find('83 EC 0C 8B 54 24 18 53 55 56 8B F1 57 8B 7C 24 20')[0]
+    tms = E.u32(E.find('F7 04 9D ? ? ? ? 00 01 00 00')[0] + 3) - 0x165160
+    layer = tms + 0x1B3FE0
+    code = w.jump_target(site)
+    seen = []
+    H.cpu.hooks[site + 7] = lambda cpu: (seen.append('game'), setattr(cpu, 'eip', SENTINEL))
+
+    def test(tile, command, ground):
+        seen.clear()
+        H.put8(layer + tile, ground)
+        cpu = H.run(code, regs={'ecx': tms}, stack=[tile, 1, command, 0])
+        return (cpu.r['eax'] if not seen else 'game'), cpu.r['esp']
+    tile = 100 * 400 + 100
+    for cmd in (0x46, 0x47, 0x48, 0x49):
+        check('farm %X on earth: red' % cmd, test(tile, cmd, 0x00), (1, 0x70100000))
+        check('farm %X on iron/stones: red' % cmd, test(tile, cmd, 0x40)[0], 1)
+        check('farm %X on thin scrub: the game decides' % cmd, test(tile, cmd, 0x01)[0], 'game')
+        check('farm %X on oasis grass: the game decides' % cmd, test(tile, cmd, 0x10)[0], 'game')
+        check('farm %X on thick scrub: the game decides' % cmd, test(tile, cmd, 0x80)[0], 'game')
+    check('a house on earth: the game decides', test(tile, 0x1E, 0x00)[0], 'game')
+    check('a mill on earth: the game decides', test(tile, 0x4A, 0x00)[0], 'game')
+    # the game's own test still sees its arguments
+    del H.cpu.hooks[site + 7]
+    seen.clear()
+    H.put8(layer + tile, 0x10)
+    cpu = H.run(code, regs={'ecx': tms, 'ebx': 0x11, 'esi': 0x22, 'edi': 0x33, 'ebp': 0x44}, stack=[tile, 1, 0x46, 0])
+    check('the game test runs through: stack and registers', (cpu.r['esp'], cpu.r['ebx'], cpu.r['esi'], cpu.r['edi'], cpu.r['ebp']),
+          (0x70100000, 0x11, 0x22, 0x33, 0x44))
+
+
 for ext in (False, True):
     run(ext)
+    run_tiles(ext)
 print('%d checks, %d failed' % (COUNT[0], len(FAILS)))

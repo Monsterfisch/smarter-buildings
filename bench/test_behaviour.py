@@ -527,7 +527,7 @@ def test_off(ext):
     config = {'doors': {'dynamic': False, 'storage': False, 'unstuck': False},
               'firemen': {'spread': False}, 'blacksmith': {'maces': False},
               'repair': {'button': False, 'gold': False, 'fire_blocks': False, 'ai': False},
-              'stables': {'breed': False, 'panel': False}, 'farms': {'dairy_scrub': False},
+              'stables': {'breed': False, 'panel': False}, 'farms': {'dairy_scrub': False, 'ground_overlay': False},
               'hunters': {'tannery': False}}
     H = Host(extreme=ext, config=config)
     br = H.E.find('66 01 9E ? ? ? ? 0F B7 86 ? ? ? ? 66 3D 26 02 7E ?')[0]

@@ -116,6 +116,11 @@ dairy_scrub: Dairy farms can stand on thin scrub
 dairy_scrub_tooltip: |
   A farm needs enough fertile ground under it, and normally only oasis grass and thick scrub
   count. For dairy farms, thin scrub counts as well. Wheat, hop and apple farms are unchanged.
+ground_overlay: Farms show bad ground in red
+ground_overlay_tooltip: |
+  While you place a farm, every tile under it that is not grass (earth, sand, stones, iron and
+  so on) is shown red, the way rocks and other buildings already are, so you can see what stops
+  the farm. Farms still need the same ground as before.
 hunters_tannery: Hunters fetch carcasses from tanneries when the deer are gone
 hunters_tannery_tooltip: |
   Every cow a tanner skins leaves a carcass at his tannery. Once there are no deer left on the
