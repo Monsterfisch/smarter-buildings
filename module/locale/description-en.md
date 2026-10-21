@@ -1,18 +1,19 @@
 # Smarter Buildings
 
 **Author**: Monsterfish
-**Version**: 1.0.8
+**Version**: 1.0.9
 
 Fixes and improvements for buildings. Every part can be switched on or off in the settings.
 
 ## Features
 
-- **Doors that move:** if you build something in front of a house, church, stables, market or
-  similar building, its door moves to a free side instead of staying blocked.
+- **Doors that move:** if you build something in front of a house, church, inn, well, stables,
+  market or similar building, its door moves to a free side instead of staying blocked.
 - **Granary and armoury doors move too:** goods still get delivered when a wall or gate cuts
   off the old door.
-- **Stuck workers find a way out:** a worker who can't reach the stockpile, granary, armoury or
-  keep tries the other sides of his building until one works.
+- **Stuck people find a way out:** a worker who can't reach the stockpile, granary, armoury or
+  keep, or a mother and her children who can't reach the campfire (and priests, innkeepers and
+  others like them), try the other sides of their building until one works.
 - **Firemen spread out:** with several fires, firemen go to different fires instead of all
   running to the same one.
 - **Blacksmiths start on maces** instead of swords.

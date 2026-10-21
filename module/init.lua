@@ -227,12 +227,16 @@ local TEXT_LINE = { 20, 415 }       -- the shared bottom text line (costs, help 
 
 -- Building types (OpenSHC's BuildingType).
 local TYPE_COUNT = 110
-local DOOR_TYPES = { 1, 2, 26, 35, 36, 37, 38, 99 }   -- hovel, house, market, stables, chapel,
-                                                      -- church, cathedral, dog cage
+local DOOR_TYPES = { 1, 2, 22, 23, 24, 25, 26, 27, 35, 36, 37, 38, 70, 99 }
+-- hovel, house, inn, apothecary, engineer's and tunneler's guilds, market, well, stables, chapel,
+-- church, cathedral, water pot, dog cage
 local STORAGE_TYPES = { 11, 19 }                      -- armoury, granary
--- Unit types that work in a building (OpenSHC's UnitType).
+-- Unit types tied to a building that come out of its door (OpenSHC's UnitType): the workers,
+-- and priests, healers, drunkards, innkeepers, traders, firefighters, jesters, mothers,
+-- children, jugglers and fire eaters.
 local UNIT_TYPE_COUNT = 80
-local WORKER_TYPES = { 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 31, 32, 36 }
+local WORKER_TYPES = { 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 31, 32,
+  33, 34, 35, 36, 42, 53, 57, 63, 64, 65, 66 }
 local RETRY_TICKS = 200             -- a building's door is walked round at most every 5 s
 local MAX_TRIES = 64
 

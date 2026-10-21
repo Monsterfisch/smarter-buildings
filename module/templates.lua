@@ -1138,8 +1138,10 @@ pop ebx
 ret
 ]]
 
--- unstuck(unit, x, y), stdcall: a worker standing on his workplace's door could not find a
--- way to (x, y). Walk the door clockwise round the building (the game's own door search,
+-- unstuck(unit, x, y), stdcall: a worker (or another person tied to a building: a mother or
+-- child to their house, a priest to his church...) standing on that building's door could not
+-- find a way to (x, y). The tie is unit +0x338; its uid (+0x368) is checked where the game sets
+-- one, the owner otherwise. Walk the door clockwise round the building (the game's own door search,
 -- started one step further each time), skipping doors in the same area as the last door
 -- that failed; put the worker on each new door and ask again. Keep the first door that works,
 -- or put door and worker back where they were.
@@ -1168,9 +1170,17 @@ imul edi,ebx,0x32C
 add edi,BUILDINGS
 cmp word [edi+0xD0],0
 je u_fail
-mov eax,[edi+0xD8]
-cmp eax,[esi+0x368]
+mov eax,[esi+0x368]
+test eax,eax
+je u_owner
+cmp eax,[edi+0xD8]
 jne u_fail
+jmp u_linked
+u_owner:
+mov ax,[esi+0x96]
+cmp ax,[edi+0xD6]
+jne u_fail
+u_linked:
 mov ax,[esi+0xC4]
 cmp ax,[edi+0xFE]
 jne u_fail

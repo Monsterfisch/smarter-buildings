@@ -3,19 +3,20 @@ doors_group_descr: |
   Where people go in and out of buildings.
 dynamic: Doors move when they get blocked
 dynamic_tooltip: |
-  Houses, chapels, churches, cathedrals, stables, dog cages and the market keep checking
-  their door. If something is built in front of it or the spot can no longer be reached,
-  the door moves to a free side of the building. Before, only the spot chosen when you
-  placed the building was ever used.
+  Houses, chapels, churches, cathedrals, the inn, apothecary, well, water pot, market, stables,
+  guilds and dog cages keep checking their door. If something is built in front of it or the
+  spot can no longer be reached, the door moves to a free side of the building. Before, only the
+  spot chosen when you placed the building was ever used.
 storage: Granary and armoury doors move too
 storage_tooltip: |
   The granary and the armoury check their doors the same way, so goods can still be
   delivered when a gate or a wall cuts the old door off from the workshops.
 unstuck: Stuck workers try another door
 unstuck_tooltip: |
-  When a worker steps out of his workplace and cannot find a way to the stockpile, granary,
-  armoury or keep, he goes back in and tries the next door round the building (clockwise)
-  until one works. If none works, the door stays where it was.
+  When someone steps out of their building and cannot find a way to where they are going - a
+  worker to the stockpile, granary, armoury or keep, a mother and her children to the campfire,
+  a priest, innkeeper or entertainer to their round - they go back in and try the next door round
+  the building (clockwise) until one works. If none works, the door stays where it was.
 
 repair_group: Repairing buildings
 repair_group_descr: |
