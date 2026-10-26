@@ -38,8 +38,8 @@ local DEFAULTS = {
   blacksmith = { maces = true },
   repair = { button = true, gold = true, fire_blocks = true, x = 340, y = 466,
     ai = true, ai_interval = 60, ai_minimum_gold = 2000, ai_damage = 20 },
-  farms = { dairy_scrub = true, ground_overlay = true },
-  hunters = { tannery = true, carry = 2, stored = 4 },
+  farms = { dairy_scrub = true, ground_overlay = true, keep_cows = true },
+  hunters = { tannery = true, carry = 2, stored = 4, chance = 50 },
   stables = { breed = true, panel = true, breed_seconds = 0, slowdown = true, normal_horses = 4,
     slowdown_factor = 3, slowest_seconds = 600 },
 }
@@ -507,6 +507,18 @@ local function patchFarmTiles()
   jumpTo(site, code, PLACE_TILE_SIZE)
 end
 
+-- UpdateCow: a cow goes when its dairy farm is gone, asleep or has no farmer (cmp word
+-- [farm+workerID],0 / jne keep / logicalState = 3). The last test is skipped: a farm whose
+-- farmer died keeps its cows for tanners.
+local AOB_COW_FARMER = "80 B9 ? ? ? ? 00 74 09 66 89 96 ? ? ? ? EB ? 66 83 B9 ? ? ? ? 00 75 09 66 89 96 ? ? ? ? EB ? 0F B7 96"
+local COW_FARMER_JUMP = 0x1A
+
+local function patchKeepCows()
+  local site = scan(AOB_COW_FARMER, "where a cow checks its farmer") + COW_FARMER_JUMP
+  expectBytes(site, { 0x75 }, "where a cow checks its farmer")
+  core.writeCode(site, { 0xEB })
+end
+
 local function patchHunters(v, config)
   local tanner = scan(AOB_TANNER_SKINNED, "where a tanner finishes a cow") + TANNER_HOOK
   local hunter = scan(AOB_HUNTER_DEER, "where a hunter looks for deer")
@@ -526,6 +538,8 @@ local function patchHunters(v, config)
     BUILDINGS = v.BUILDINGS,
     BUILDINGS_STATE = v.BUILDINGS_STATE,
     DEER = DEER,
+    TICKS = v.TICKS,
+    CHANCE = number(config, "hunters", "chance", 0, 100),
     TANNERY = TANNERY,
     SET_DESTINATION = scan(AOB_SET_DESTINATION, "the unit route search"),
     TANNER_RESUME = tanner + TANNER_HOOK_SIZE,
@@ -933,6 +947,9 @@ local function enable(self, config)
   end
   if setting(config, "farms", "ground_overlay") then
     patchFarmTiles()
+  end
+  if setting(config, "farms", "keep_cows") then
+    patchKeepCows()
   end
   if setting(config, "hunters", "tannery") then
     patchHunters(v, config)

@@ -122,12 +122,21 @@ ground_overlay_tooltip: |
   While you place a farm, every tile under it that is not grass (earth, sand, stones, iron and
   so on) is shown red, the way rocks and other buildings already are, so you can see what stops
   the farm. Farms still need the same ground as before.
+keep_cows: Cows stay when their dairy farmer dies
+keep_cows_tooltip: |
+  When a dairy farmer is killed, his cows stay at the farm instead of vanishing, so tanners can
+  still fetch them and a new farmer finds them there. Cows still vanish when the farm is pulled
+  down or put to sleep.
 hunters_tannery: Hunters fetch carcasses from tanneries when the deer are gone
 hunters_tannery_tooltip: |
   Every cow a tanner skins leaves a carcass at his tannery. Once there are no deer left on the
   map, an idle hunter walks to a tannery of his own lord that has carcasses, carries some back
   to his hunting post, butchers them into meat (as much as a deer gives) and takes the meat to
   the granary.
+hunters_chance: Chance hunters pick the tannery while deer are left (percent)
+hunters_chance_tooltip: |
+  While there are still deer, a hunter setting off goes to a tannery with carcasses instead of
+  hunting this often. With no deer left he always goes to the tannery.
 hunters_carry: Carcasses a hunter takes at once
 hunters_carry_tooltip: |
   How many carcasses a hunter takes from the tannery in one trip.

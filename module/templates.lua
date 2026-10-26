@@ -332,8 +332,8 @@ jmp TANNER_RESUME
 -- UpdateHunter, state 0 at his post with no meat stored, where he looks for deer (push edi /
 -- mov ecx,UnitsState replaced; edi = the hunter, esi = hunter * 0x490, ebp = post * 0x32C).
 -- A carcass he brought along beyond the first is butchered next, the way the game butchers the
--- one he carried in. With no deer left on the map he goes to a tannery of his lord that keeps
--- carcasses and takes up to CARRY of them: the game's own "walk to the shot deer, then carry it
+-- one he carried in. With no deer left on the map - or, while there are deer, in CHANCE percent of
+-- his choices - he goes to a tannery of his lord that keeps carcasses and takes up to CARRY of them: the game's own "walk to the shot deer, then carry it
 -- home" state (0xB) with the tannery's door as the deer and himself as the deer unit.
 templates.hunterTannery = [[
 pushad
@@ -362,11 +362,19 @@ jge h_no_deer
 cmp word [edx+0x8E],DEER
 jne h_next_deer
 cmp word [edx+0x8C],0
-jne h_game
+jne h_maybe
 h_next_deer:
 add edx,0x490
 inc eax
 jmp h_deer
+h_maybe:
+mov eax,[TICKS]
+add eax,edi
+xor edx,edx
+mov ecx,100
+div ecx
+cmp edx,CHANCE
+jae h_game
 h_no_deer:
 movsx edx,word [esi+UNITS+0x96]
 mov ebx,1

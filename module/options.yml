@@ -248,6 +248,14 @@ options:
     contents:
       type: boolean
       value: true
+  - url: smarter-buildings.farms.keep_cows
+    name: smarter-buildings-farms-keep-cows
+    text: '{{keep_cows}}'
+    tooltip: '{{keep_cows_tooltip}}'
+    display: Switch
+    contents:
+      type: boolean
+      value: true
   - url: smarter-buildings.hunters.tannery
     name: smarter-buildings-hunters-tannery
     text: '{{hunters_tannery}}'
@@ -256,6 +264,17 @@ options:
     contents:
       type: boolean
       value: true
+  - url: smarter-buildings.hunters.chance
+    name: smarter-buildings-hunters-chance
+    text: '{{hunters_chance}}'
+    tooltip: '{{hunters_chance_tooltip}}'
+    display: Number
+    contents:
+      type: integer
+      value: 50
+      min: 0
+      max: 100
+      step: 5
   - url: smarter-buildings.hunters.carry
     name: smarter-buildings-hunters-carry
     text: '{{hunters_carry}}'

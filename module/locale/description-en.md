@@ -1,7 +1,7 @@
 # Smarter Buildings
 
 **Author**: Monsterfish
-**Version**: 1.0.9
+**Version**: 1.0.10
 
 Fixes and improvements for buildings. Every part can be switched on or off in the settings.
 
@@ -30,9 +30,11 @@ Fixes and improvements for buildings. Every part can be switched on or off in th
   scrub and oasis grass.
 - **Bad farm ground in red:** while you place a farm, tiles under it that are not grass (earth,
   sand, iron and so on) are shown red, like rocks and other buildings.
-- **Meat from tanneries:** every cow a tanner skins leaves a carcass at the tannery. Once all the
-  deer are gone, hunters fetch up to 2 carcasses at a time, butcher them at their hunting post
-  and take the meat to the granary.
+- **Meat from tanneries:** every cow a tanner skins leaves a carcass at the tannery. Hunters
+  fetch up to 2 carcasses at a time - half of the time while there are still deer, always once
+  the deer are gone - butcher them at their hunting post and take the meat to the granary.
+- **Cows stay:** when a dairy farmer is killed, his cows stay at the farm for tanners and the
+  next farmer.
 
 ## AIC settings
 
