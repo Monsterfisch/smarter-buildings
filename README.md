@@ -1,5 +1,16 @@
 # Smarter Buildings
 
+## UCP package
+
+Give blocked workers another door to try and add repair controls for more buildings. Separate settings cover fire brigades, farms, hunting, AI repairs and how stables replace horses.
+
+- Package version: **1.0.12**
+- Module directory: `module/`
+- Targets: Stronghold Crusader 1.41 and Stronghold Crusader Extreme 1.41
+- Requires UCP framework 3.0.7 and frontend 1.0.2 or a compatible later version
+- Requires Map Extensions 1.x for map and save load callbacks
+
+
 A UCP3 module for Stronghold Crusader and Stronghold Crusader Extreme with fixes and features for
 buildings and their workers: doors that move when blocked, stuck workers trying another door, a
 Repair button on every building (and AI lords that repair), firemen spreading over several fires,
