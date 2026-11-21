@@ -1,0 +1,72 @@
+dynamic: Portes mobiles
+dynamic_tooltip: Une porte bloquée passe sur un côté libre.
+storage: Déplacer les portes de stockage
+storage_tooltip: Le grenier et l’armurerie vérifient aussi leur accès.
+unstuck: Essayer une autre porte
+unstuck_tooltip: Un ouvrier sans trajet essaie les autres portes dans l’ordre.
+button: Bouton de réparation
+button_tooltip: Réparez vos bâtiments à un coût proportionnel aux dégâts.
+gold: Or pour les réparations
+gold_tooltip: Un bâtiment qui coûte de l’or en consomme aussi pour sa réparation.
+fire_blocks: Réparation bloquée par le feu
+fire_blocks_tooltip: Le bouton reste indisponible jusqu’à extinction, même aux portes et tours.
+repair_x: Position horizontale
+repair_x_tooltip: Distance depuis le bord gauche du panneau.
+repair_y: Position verticale
+repair_y_tooltip: Distance depuis le bord supérieur du panneau.
+ai: IA
+ai_tooltip: Les seigneurs de l’IA évaluent les dégâts et achètent les matériaux manquants.
+ai_damage: Dégâts minimum de l’IA (%)
+ai_damage_tooltip: L’IA répare à partir de cette part de santé perdue.
+ai_interval: Intervalle de réparation IA (s)
+ai_interval_tooltip: Attente à vitesse normale. L’AIC peut la modifier par seigneur.
+ai_minimum_gold: Seuil d’or de l’IA
+ai_minimum_gold_tooltip: L’IA répare au-dessus de ce montant. L’AIC peut le modifier par seigneur.
+firemen: Répartir les pompiers
+firemen_tooltip: Ils privilégient les feux vers lesquels personne ne se dirige.
+firemen_tiles: Pénalité par pompier (cases)
+firemen_tiles_tooltip: Chaque pompier déjà en route augmente la distance estimée d’autant.
+maces: Masses en début de production
+maces_tooltip: Les nouvelles forges fabriquent des masses si activé. Désactivé par défaut.
+breed: Remplacer les chevaux pris
+breed_tooltip: Un cheval emmené libère sa place. Désactiver restaure le délai et le panneau d’origine.
+stable_panel: Panneau d’écurie étendu
+stable_panel_tooltip: Affiche les cavaliers vivants et l’avancement de l’élevage si le remplacement est
+  actif.
+breed_seconds: Durée de base (s)
+breed_seconds_tooltip: 0 reprend le délai d’origine d’environ 14 secondes.
+slowdown: Ralentir si beaucoup de chevaux vivent
+slowdown_tooltip: Les chevaux en stalle et montés allongent le délai à partir du seuil.
+normal_horses: Seuil de chevaux
+normal_horses_tooltip: Avec 4, le cinquième cheval vivant prend plus de temps.
+slowdown_factor: Facteur d’allongement
+slowdown_factor_tooltip: Au-delà du seuil, chaque cheval multiplie la durée précédente par ce facteur.
+slowest_seconds: Durée maximale (s)
+slowest_seconds_tooltip: L’élevage ne dépasse pas cette durée à vitesse normale.
+dairy_scrub: Fermes laitières en broussailles clairsemées
+dairy_scrub_tooltip: Ce sol compte comme terrain valable pour une ferme laitière.
+ground_overlay: Marquer les sols inadaptés
+ground_overlay_tooltip: À la pose d’une ferme, le sol inadapté apparaît en rouge.
+keep_cows: Garder les vaches
+keep_cows_tooltip: Elles restent après la mort du fermier, sauf démolition ou arrêt de la ferme.
+hunters_tannery: Les chasseurs récupèrent les carcasses
+hunters_tannery_tooltip: Sans cerfs, ils prennent des carcasses dans leurs tanneries et livrent la viande.
+hunters_chance: Chance de choisir la tannerie (%)
+hunters_chance_tooltip: Probabilité d’aller à la tannerie tant qu’il reste des cerfs.
+hunters_carry: Carcasses par trajet
+hunters_carry_tooltip: Nombre qu’un chasseur porte à la fois.
+hunters_stored: Carcasses par tannerie
+hunters_stored_tooltip: Nombre maximum gardé pour les chasseurs.
+ai_decorations: Éviter les décors IA empilés
+ai_decorations_tooltip: L’IA reconnaît ses drapeaux, braseros et piques et retire les doublons.
+balance_changes: Modifications de l'équilibrage
+bugfixes: Corrections de bugs
+fixes: Correctifs
+improvements: Améliorations
+qol: Qualité de vie
+tags.behavior: Comportement
+tags.ai: IA
+tags.economy: Économie
+tags.bugfixes: Corrections
+tags.interface: Interface
+ai_repair: Réparations de l’IA

@@ -1,0 +1,71 @@
+dynamic: Hareketli kapılar
+dynamic_tooltip: Tıkanan kapı boş bir yana taşınır.
+storage: Depo kapılarını taşı
+storage_tooltip: Ambar ve cephanelik de girişini kontrol eder.
+unstuck: Başka kapı dene
+unstuck_tooltip: Yol bulamayan işçi diğer kapıları sırayla dener.
+button: Onar düğmesi
+button_tooltip: Binanızı hasarla orantılı maliyetle onarın.
+gold: Onarımda altın
+gold_tooltip: Altınla yapılan binaların onarımı da altın harcar.
+fire_blocks: Yangında onarım yok
+fire_blocks_tooltip: Kule ve kapılar dahil, yangın sönmeden düğme kullanılamaz.
+repair_x: Yatay konum
+repair_x_tooltip: Panelin sol kenarından uzaklık.
+repair_y: Dikey konum
+repair_y_tooltip: Panelin üst kenarından uzaklık.
+ai: AI
+ai_tooltip: Yapay zekâ hasarı inceler ve eksik malzemeyi satın alabilir.
+ai_damage: Yapay zekâ hasar eşiği (%)
+ai_damage_tooltip: Yapay zekâ bu orandaki can kaybından sonra onarır.
+ai_interval: Yapay zekâ onarım aralığı (sn)
+ai_interval_tooltip: Normal hızdaki bekleme. AIC lord başına değiştirebilir.
+ai_minimum_gold: Yapay zekâ altın eşiği
+ai_minimum_gold_tooltip: Bu tutarın üstünde onarır. AIC lord başına değiştirebilir.
+firemen: İtfaiyecileri dağıt
+firemen_tooltip: İtfaiyeci henüz kimsenin gitmediği yangını tercih eder.
+firemen_tiles: İtfaiyeci başına ceza (kare)
+firemen_tiles_tooltip: Yoldaki her itfaiyeci hesabı bu kadar artırır.
+maces: Yeni demircide topuz
+maces_tooltip: Açılırsa yeni demirci topuzla başlar. Varsayılan olarak kapalıdır.
+breed: Alınan atı yenile
+breed_tooltip: Şövalye ahır yerini boşaltır. Kapalıyken özgün sayaç ve panel geri döner.
+stable_panel: Genişletilmiş ahır paneli
+stable_panel_tooltip: At yenileme açıksa binicileri ve ilerlemeyi gösterir.
+breed_seconds: Temel süre (sn)
+breed_seconds_tooltip: 0 yaklaşık 14 saniyelik özgün süreyi kullanır.
+slowdown: Çok at varsa yavaşlat
+slowdown_tooltip: Ahırdaki ve şövalye altındaki atlar eşikten sonra süreyi artırır.
+normal_horses: At eşiği
+normal_horses_tooltip: 4 seçildiğinde beşinci canlı at daha yavaş yetişir.
+slowdown_factor: Süre çarpanı
+slowdown_factor_tooltip: Eşiği aşan her at, öncekinin süresini bu katsayıyla çarpar.
+slowest_seconds: En uzun süre (sn)
+slowest_seconds_tooltip: Normal hızda yetiştirme bu süreyi aşmaz.
+dairy_scrub: Seyrek çalılıkta süt çiftliği
+dairy_scrub_tooltip: Seyrek bitki örtüsü de uygun sayılır.
+ground_overlay: Uygunsuz zemini işaretle
+ground_overlay_tooltip: Çiftlik yerleştirirken uygunsuz zemin kırmızı görünür.
+keep_cows: İnekler kalsın
+keep_cows_tooltip: Çiftçi ölünce kalır, çiftlik yıkılır veya durursa kaybolurlar.
+hunters_tannery: Avcı leş toplar
+hunters_tannery_tooltip: Geyik kalmayınca avcı tabakhaneden leş alıp et teslim eder.
+hunters_chance: Tabakhane olasılığı (%)
+hunters_chance_tooltip: Geyik varken tabakhaneye gitme olasılığı.
+hunters_carry: Sefer başına leş
+hunters_carry_tooltip: Avcının tek seferde taşıyacağı sayı.
+hunters_stored: Tabakhane başına leş
+hunters_stored_tooltip: Avcılar için saklanacak en yüksek sayı.
+ai_decorations: Yapay zekâ süs yığılmasını düzelt
+ai_decorations_tooltip: Mevcut bayrak, mangal ve kazıkları tanır ve tekrarları kaldırır.
+balance_changes: Balance Changes
+bugfixes: Bugfixes
+fixes: Fixes
+improvements: Improvements
+qol: Quality of Life
+tags.behavior: Davranış
+tags.ai: Yapay zekâ
+tags.economy: Ekonomi
+tags.bugfixes: Hata düzeltmeleri
+tags.interface: Arayüz
+ai_repair: Yapay zekâ onarımı

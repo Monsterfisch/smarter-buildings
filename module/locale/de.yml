@@ -1,0 +1,71 @@
+dynamic: Bewegliche Türen
+dynamic_tooltip: Blockierte Türen wechseln auf eine freie Seite.
+storage: Lagertüren verschieben
+storage_tooltip: Auch Kornspeicher und Waffenkammer prüfen ihre Erreichbarkeit.
+unstuck: Andere Tür versuchen
+unstuck_tooltip: Arbeiter ohne Weg testen weitere Türen der Reihe nach.
+button: Reparaturknopf
+button_tooltip: Repariere eigene Gebäude zum anteiligen Baupreis.
+gold: Gold für Reparatur
+gold_tooltip: Bauten mit Goldpreis kosten auch bei Reparatur anteilig Gold.
+fire_blocks: Reparatur bei Brand sperren
+fire_blocks_tooltip: Bis zum Löschen bleibt der Knopf auch bei Türmen und Toren gesperrt.
+repair_x: Knopf horizontal
+repair_x_tooltip: Abstand vom linken Rand der Tafel.
+repair_y: Knopf vertikal
+repair_y_tooltip: Abstand vom oberen Rand der Tafel.
+ai: AI
+ai_tooltip: KI-Lords prüfen Schäden und können fehlende Baustoffe kaufen.
+ai_damage: Mindestschaden für KI (%)
+ai_damage_tooltip: Die KI repariert ab diesem Anteil verlorener Gesundheit.
+ai_interval: KI-Reparaturintervall (Sek.)
+ai_interval_tooltip: Wartezeit bei Normaltempo. AIC kann sie je Lord ändern.
+ai_minimum_gold: Goldschwelle für KI
+ai_minimum_gold_tooltip: Die KI repariert nur über dieser Goldmenge. AIC kann sie je Lord ändern.
+firemen: Feuerwehr verteilen
+firemen_tooltip: Feuerwehrleute bevorzugen Brände, zu denen noch niemand unterwegs ist.
+firemen_tiles: Abzug pro Feuerwehrmann (Felder)
+firemen_tiles_tooltip: Jeder bereits anrückende Helfer erhöht die bewertete Entfernung.
+maces: Streitkolben als Startwaffe
+maces_tooltip: Neue Schmieden fertigen Streitkolben, wenn die Option aktiv ist. Standardmäßig aus.
+breed: Pferde nachziehen
+breed_tooltip: Ritter geben den Stallplatz frei. Aus stellt Zeit und Stalltafel des Spiels wieder her.
+stable_panel: Erweiterte Stalltafel
+stable_panel_tooltip: Zeigt lebende Reiter und Zuchtfortschritt, wenn Pferdenachzucht aktiv ist.
+breed_seconds: Grundzeit (Sek.)
+breed_seconds_tooltip: 0 verwendet die ursprüngliche Zuchtzeit von etwa 14 Sekunden.
+slowdown: Zucht bei vielen Pferden bremsen
+slowdown_tooltip: Stallpferde und Pferde lebender Ritter erhöhen die Zeit ab der Schwelle.
+normal_horses: Pferdeschwelle
+normal_horses_tooltip: Bei 4 braucht das fünfte lebende Pferd erstmals länger.
+slowdown_factor: Zeitfaktor
+slowdown_factor_tooltip: Jedes Pferd über der Schwelle braucht so oft die Zeit des vorherigen.
+slowest_seconds: Höchstzeit (Sek.)
+slowest_seconds_tooltip: Bei Normaltempo dauert die Zucht höchstens so lange.
+dairy_scrub: Milchfarmen auf dünnem Gestrüpp
+dairy_scrub_tooltip: Spärlicher Bewuchs zählt als geeignet für Milchfarmen.
+ground_overlay: Ungeeigneten Boden markieren
+ground_overlay_tooltip: In der Vorschau färben sich ungeeignete Felder rot.
+keep_cows: Kühe erhalten
+keep_cows_tooltip: Kühe bleiben nach dem Tod des Bauern, verschwinden aber bei Abriss oder Stilllegung.
+hunters_tannery: Jäger holen Kadaver
+hunters_tannery_tooltip: Ohne Hirsche holen Jäger Kadaver aus eigenen Gerbereien und liefern Fleisch ab.
+hunters_chance: Chance auf Gerberei (%)
+hunters_chance_tooltip: Solange Hirsche da sind, wählt der Jäger so oft eine Gerberei.
+hunters_carry: Kadaver pro Gang
+hunters_carry_tooltip: So viele trägt ein Jäger auf einmal.
+hunters_stored: Kadaver je Gerberei
+hunters_stored_tooltip: Maximaler Vorrat für Jäger je Gerberei.
+ai_decorations: Doppelte KI-Dekorationen entfernen
+ai_decorations_tooltip: Die KI erkennt vorhandene Flaggen, Feuerkörbe und Pfähle.
+balance_changes: Balance Changes
+bugfixes: Bugfixes
+fixes: Fixes
+improvements: Improvements
+qol: Quality of Life
+tags.behavior: Verhalten
+tags.ai: KI
+tags.economy: Wirtschaft
+tags.bugfixes: Fehlerkorrekturen
+tags.interface: Oberfläche
+ai_repair: KI-Gebäudereparatur

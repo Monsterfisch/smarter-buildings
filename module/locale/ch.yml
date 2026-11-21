@@ -1,0 +1,71 @@
+dynamic: 移动受阻的门
+dynamic_tooltip: 入口受阻时，门会移到建筑空闲的一侧。
+storage: 移动仓库入口
+storage_tooltip: 粮仓和军械库也检查入口是否可达。
+unstuck: 尝试其他出口
+unstuck_tooltip: 找不到路线的工人会依次尝试其他门。
+button: 修理按钮
+button_tooltip: 可按受损比例支付原造价的一部分来修理自有建筑。
+gold: 修理消耗金币
+gold_tooltip: 建造时花金币的建筑，修理也要按比例支付金币。
+fire_blocks: 着火时禁止修理
+fire_blocks_tooltip: 火扑灭前不可修理，塔楼和城门也适用。
+repair_x: 按钮横向位置
+repair_x_tooltip: 距建筑面板左边缘的距离。
+repair_y: 按钮纵向位置
+repair_y_tooltip: 距建筑面板上边缘的距离。
+ai: AI
+ai_tooltip: AI 领主检查损坏情况，并可购买缺少的建材。
+ai_damage: AI 修理的最低损伤（%）
+ai_damage_tooltip: 损失达到此生命值比例后，AI 才会修理。
+ai_interval: AI 修理间隔（秒）
+ai_interval_tooltip: 正常速度下的等待时间。AIC 可为各领主覆盖此值。
+ai_minimum_gold: AI 修理金币门槛
+ai_minimum_gold_tooltip: 金库超过此值才修理。AIC 可按领主覆盖。
+firemen: 分散消防员
+firemen_tooltip: 消防员优先前往尚无人处理的火点。
+firemen_tiles: 消防员距离惩罚（格）
+firemen_tiles_tooltip: 每名已在路上的消防员使估算距离增加此值。
+maces: 新铁匠优先造钉头锤
+maces_tooltip: 开启后新铁匠铺先造钉头锤。默认关闭。
+breed: 补充骑士带走的马
+breed_tooltip: 骑士带走马后腾出马位。关闭后恢复原版计时和面板。
+stable_panel: 扩展马厩面板
+stable_panel_tooltip: 补充马匹开启时，显示存活骑士和繁育进度。
+breed_seconds: 基础繁育时间（秒）
+breed_seconds_tooltip: 0 表示沿用原版约 14 秒的时间。
+slowdown: 马匹越多繁育越慢
+slowdown_tooltip: 马厩和存活骑士使用的马达到门槛后，繁育时间延长。
+normal_horses: 繁育减速门槛
+normal_horses_tooltip: 设为 4 时，第 5 匹存活的马开始需要更长时间。
+slowdown_factor: 繁育减速倍率
+slowdown_factor_tooltip: 超过门槛后，每多一匹马，繁育时间按此倍率递增。
+slowest_seconds: 最大繁育时间（秒）
+slowest_seconds_tooltip: 正常速度下，繁育时间不会超过此值。
+dairy_scrub: 奶牛场可建在稀疏灌木地
+dairy_scrub_tooltip: 稀疏灌木地也计为奶牛场可用地面。
+ground_overlay: 标出不适用的地面
+ground_overlay_tooltip: 放置农场时，不合要求的格子显示红色。
+keep_cows: 工人死亡后保留奶牛
+keep_cows_tooltip: 工人死亡后奶牛仍留下，农场拆除或停工时依然消失。
+hunters_tannery: 猎人搬运胴体
+hunters_tannery_tooltip: 鹿耗尽后，猎人到己方制革坊取胴体并交付肉类。
+hunters_chance: 有鹿时选择制革坊的概率（%）
+hunters_chance_tooltip: 地图还有鹿时，猎人按此概率选择制革坊。
+hunters_carry: 每趟携带的胴体数量
+hunters_carry_tooltip: 猎人一次可携带的胴体数。
+hunters_stored: 每间制革坊的胴体库存
+hunters_stored_tooltip: 制革坊可为猎人保留的最大胴体数。
+ai_decorations: 清理 AI 重复装饰
+ai_decorations_tooltip: AI 检查已有旗帜、火盆和插桩首级，并清除重复装饰。
+balance_changes: Balance Changes
+bugfixes: Bugfixes
+fixes: Fixes
+improvements: Improvements
+qol: Quality of Life
+tags.behavior: 行为
+tags.ai: 人工智能
+tags.economy: 经济
+tags.bugfixes: 错误修复
+tags.interface: 界面
+ai_repair: AI 修理建筑

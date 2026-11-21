@@ -1,0 +1,71 @@
+dynamic: درهای جابه‌جاشونده
+dynamic_tooltip: در مسدود به سوی آزاد ساختمان منتقل می‌شود.
+storage: جابه‌جایی در انبار
+storage_tooltip: انبار غله و اسلحه‌خانه هم دسترسی به ورودی را بررسی می‌کنند.
+unstuck: آزمودن در دیگر
+unstuck_tooltip: کارگر بدون مسیر درهای دیگر را به‌ترتیب امتحان می‌کند.
+button: دکمه تعمیر
+button_tooltip: ساختمان خود را با هزینه متناسب با آسیب تعمیر کنید.
+gold: طلا برای تعمیر
+gold_tooltip: ساختمانی که ساختش طلا خواسته، برای تعمیر هم طلا مصرف می‌کند.
+fire_blocks: منع تعمیر هنگام آتش
+fire_blocks_tooltip: دکمه حتی در برج و دروازه تا مهار آتش غیرفعال می‌ماند.
+repair_x: جای افقی دکمه
+repair_x_tooltip: فاصله از لبه چپ پنل.
+repair_y: جای عمودی دکمه
+repair_y_tooltip: فاصله از لبه بالای پنل.
+ai: AI
+ai_tooltip: اربابان هوش مصنوعی خسارت را بررسی می‌کنند و می‌توانند مصالح بخرند.
+ai_damage: حداقل آسیب برای هوش مصنوعی (٪)
+ai_damage_tooltip: از این سهمِ سلامت ازدست‌رفته به بالا تعمیر می‌کند.
+ai_interval: فاصله تعمیر هوش مصنوعی (ثانیه)
+ai_interval_tooltip: انتظار در سرعت عادی. AIC برای هر ارباب قابل تنظیم است.
+ai_minimum_gold: آستانه طلای هوش مصنوعی
+ai_minimum_gold_tooltip: تنها با طلای بیشتر از این مقدار تعمیر می‌کند. AIC برای هر ارباب قابل تنظیم است.
+firemen: تقسیم آتش‌نشان‌ها
+firemen_tooltip: آتشی را ترجیح می‌دهند که هنوز کسی به سویش نرفته است.
+firemen_tiles: جریمه هر آتش‌نشان (خانه)
+firemen_tiles_tooltip: هر آتش‌نشان در راه فاصله برآوردی را این‌قدر افزایش می‌دهد.
+maces: گرز در آهنگری تازه
+maces_tooltip: با فعال‌کردن، آهنگری با گرز آغاز می‌کند. پیش‌فرض خاموش است.
+breed: جایگزینی اسب برده‌شده
+breed_tooltip: شوالیه جای اصطبل را خالی می‌کند. خاموش‌کردن زمان و پنل اصلی را برمی‌گرداند.
+stable_panel: پنل گسترده اصطبل
+stable_panel_tooltip: با جایگزینی فعال، سواران زنده و پیشرفت پرورش را نشان می‌دهد.
+breed_seconds: زمان پایه (ثانیه)
+breed_seconds_tooltip: ۰ زمان اصلی حدود ۱۴ ثانیه را حفظ می‌کند.
+slowdown: کاهش سرعت با اسب‌های زیاد
+slowdown_tooltip: اسب‌های اصطبل و اسب شوالیه‌ها از آستانه به بعد زمان را زیاد می‌کنند.
+normal_horses: آستانه تعداد اسب
+normal_horses_tooltip: با مقدار ۴، پرورش پنجمین اسب زنده طولانی‌تر است.
+slowdown_factor: ضریب زمان
+slowdown_factor_tooltip: برای هر اسب بالای آستانه، زمان قبلی در این ضریب ضرب می‌شود.
+slowest_seconds: بیشترین زمان (ثانیه)
+slowest_seconds_tooltip: در سرعت عادی زمان پرورش از این مقدار بیشتر نمی‌شود.
+dairy_scrub: دامداری روی بوته‌زار کم‌پشت
+dairy_scrub_tooltip: این زمین هم برای مزرعه لبنی مناسب است.
+ground_overlay: نشانه‌گذاری زمین نامناسب
+ground_overlay_tooltip: در پیش‌نمایش مزرعه، زمین نامناسب قرمز می‌شود.
+keep_cows: حفظ گاوها
+keep_cows_tooltip: پس از مرگ کشاورز می‌مانند، ولی با تخریب یا تعطیلی مزرعه ناپدید می‌شوند.
+hunters_tannery: برداشتن لاشه توسط شکارچی
+hunters_tannery_tooltip: وقتی گوزنی نماند، شکارچی از دباغ‌خانه خودی لاشه می‌گیرد و گوشت تحویل می‌دهد.
+hunters_chance: احتمال رفتن به دباغ‌خانه (٪)
+hunters_chance_tooltip: تا زمانی که گوزن هست، شکارچی با این احتمال به دباغ‌خانه می‌رود.
+hunters_carry: لاشه در هر رفت‌وآمد
+hunters_carry_tooltip: تعداد لاشه‌ای که شکارچی یک‌باره حمل می‌کند.
+hunters_stored: لاشه در هر دباغ‌خانه
+hunters_stored_tooltip: بیشترین تعداد لاشه ذخیره برای شکارچیان.
+ai_decorations: رفع انباشت تزیینات هوش مصنوعی
+ai_decorations_tooltip: هوش مصنوعی پرچم، آتشدان و نیزه‌های تکراری خود را برمی‌دارد.
+balance_changes: Balance Changes
+bugfixes: Bugfixes
+fixes: Fixes
+improvements: Improvements
+qol: Quality of Life
+tags.behavior: رفتار
+tags.ai: هوش مصنوعی
+tags.economy: اقتصاد
+tags.bugfixes: رفع اشکال
+tags.interface: رابط کاربری
+ai_repair: تعمیر هوش مصنوعی

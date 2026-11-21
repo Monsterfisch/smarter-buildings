@@ -1,0 +1,71 @@
+dynamic: Puertas móviles
+dynamic_tooltip: Un acceso bloqueado pasa a un lado libre.
+storage: Mover puertas de almacén
+storage_tooltip: El granero y la armería también comprueban el acceso.
+unstuck: Probar otra puerta
+unstuck_tooltip: El trabajador sin ruta prueba las otras puertas en orden.
+button: Botón de reparación
+button_tooltip: Repara tus edificios con un coste proporcional al daño.
+gold: Oro para reparar
+gold_tooltip: Los edificios que cuestan oro también lo consumen al repararse.
+fire_blocks: Bloquear reparación con fuego
+fire_blocks_tooltip: El botón queda inactivo hasta apagar el fuego, incluso en torres y puertas.
+repair_x: Posición horizontal
+repair_x_tooltip: Distancia desde el borde izquierdo del panel.
+repair_y: Posición vertical
+repair_y_tooltip: Distancia desde el borde superior del panel.
+ai: AI
+ai_tooltip: Los señores de la IA revisan daños y pueden comprar materiales.
+ai_damage: Daño mínimo para la IA (%)
+ai_damage_tooltip: La IA repara al perder al menos este porcentaje de salud.
+ai_interval: Intervalo de reparación IA (s)
+ai_interval_tooltip: Espera a velocidad normal. El AIC puede cambiarla por señor.
+ai_minimum_gold: Umbral de oro de la IA
+ai_minimum_gold_tooltip: Repara por encima de esta cantidad. El AIC puede ajustarla por señor.
+firemen: Repartir bomberos
+firemen_tooltip: Prefieren fuegos a los que aún no va nadie.
+firemen_tiles: Penalización por bombero (casillas)
+firemen_tiles_tooltip: Cada bombero en camino aumenta así la distancia estimada.
+maces: Mazas en herrerías nuevas
+maces_tooltip: Si está activo, la herrería empieza con mazas. Desactivado por defecto.
+breed: Reponer caballos de caballeros
+breed_tooltip: El caballero libera la plaza. Al apagarlo vuelven el tiempo y panel originales.
+stable_panel: Panel de establo ampliado
+stable_panel_tooltip: Muestra jinetes vivos y progreso si la reposición está activa.
+breed_seconds: Tiempo base (s)
+breed_seconds_tooltip: 0 conserva el tiempo original de unos 14 segundos.
+slowdown: Ralentizar con muchos caballos
+slowdown_tooltip: Caballos en establos o montados alargan el tiempo a partir del umbral.
+normal_horses: Umbral de caballos
+normal_horses_tooltip: Con 4, el quinto caballo vivo es el primero en tardar más.
+slowdown_factor: Multiplicador de tiempo
+slowdown_factor_tooltip: Cada caballo por encima del umbral multiplica así el tiempo anterior.
+slowest_seconds: Tiempo máximo (s)
+slowest_seconds_tooltip: A velocidad normal el tiempo de cría no supera este valor.
+dairy_scrub: Lecherías en matorral disperso
+dairy_scrub_tooltip: Este terreno cuenta como apto para granjas lecheras.
+ground_overlay: Marcar suelo inadecuado
+ground_overlay_tooltip: Al colocar una granja, el suelo no apto se ve en rojo.
+keep_cows: Conservar vacas
+keep_cows_tooltip: Quedan si muere el granjero, pero desaparecen al derribar o desactivar la granja.
+hunters_tannery: Cazadores recogen carcasas
+hunters_tannery_tooltip: Sin ciervos, recogen carcasas de sus curtidurías y entregan carne.
+hunters_chance: Probabilidad de ir a la curtiduría (%)
+hunters_chance_tooltip: Probabilidad de elegirla mientras queden ciervos.
+hunters_carry: Carcasas por viaje
+hunters_carry_tooltip: Cantidad que el cazador lleva de una vez.
+hunters_stored: Carcasas por curtiduría
+hunters_stored_tooltip: Cantidad máxima reservada a los cazadores.
+ai_decorations: Evitar adornos de IA apilados
+ai_decorations_tooltip: La IA detecta banderas, braseros y picas y elimina duplicados.
+balance_changes: Balance Changes
+bugfixes: Bugfixes
+fixes: Fixes
+improvements: Improvements
+qol: Quality of Life
+tags.behavior: Comportamiento
+tags.ai: IA
+tags.economy: Economía
+tags.bugfixes: Correcciones
+tags.interface: Interfaz
+ai_repair: Reparaciones de la IA
