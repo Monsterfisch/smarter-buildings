@@ -1,3 +1,3 @@
-# Bessere Gebäude 1.0.12
+# Smarter Buildings 1.0.12
 
-Arbeiter finden neue Türen. Reparatur, Feuerwehr, Landwirtschaft, Jagd und Pferdezucht sind einstellbar.
+Lässt blockierte Arbeiter eine andere Tür ausprobieren und fügt Reparatur-Schaltflächen für mehr Gebäude hinzu. Getrennte Einstellungen steuern Löschtrupps, Farmen, Jäger, KI-Reparaturen und die Pferdezucht in Ställen.

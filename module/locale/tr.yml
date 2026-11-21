@@ -1,71 +1,75 @@
-dynamic: Hareketli kapılar
-dynamic_tooltip: Tıkanan kapı boş bir yana taşınır.
-storage: Depo kapılarını taşı
-storage_tooltip: Ambar ve cephanelik de girişini kontrol eder.
-unstuck: Başka kapı dene
-unstuck_tooltip: Yol bulamayan işçi diğer kapıları sırayla dener.
-button: Onar düğmesi
-button_tooltip: Binanızı hasarla orantılı maliyetle onarın.
-gold: Onarımda altın
-gold_tooltip: Altınla yapılan binaların onarımı da altın harcar.
-fire_blocks: Yangında onarım yok
-fire_blocks_tooltip: Kule ve kapılar dahil, yangın sönmeden düğme kullanılamaz.
-repair_x: Yatay konum
-repair_x_tooltip: Panelin sol kenarından uzaklık.
-repair_y: Dikey konum
-repair_y_tooltip: Panelin üst kenarından uzaklık.
-ai: AI
-ai_tooltip: Yapay zekâ hasarı inceler ve eksik malzemeyi satın alabilir.
-ai_damage: Yapay zekâ hasar eşiği (%)
-ai_damage_tooltip: Yapay zekâ bu orandaki can kaybından sonra onarır.
-ai_interval: Yapay zekâ onarım aralığı (sn)
-ai_interval_tooltip: Normal hızdaki bekleme. AIC lord başına değiştirebilir.
-ai_minimum_gold: Yapay zekâ altın eşiği
-ai_minimum_gold_tooltip: Bu tutarın üstünde onarır. AIC lord başına değiştirebilir.
-firemen: İtfaiyecileri dağıt
-firemen_tooltip: İtfaiyeci henüz kimsenin gitmediği yangını tercih eder.
-firemen_tiles: İtfaiyeci başına ceza (kare)
-firemen_tiles_tooltip: Yoldaki her itfaiyeci hesabı bu kadar artırır.
-maces: Yeni demircide topuz
-maces_tooltip: Açılırsa yeni demirci topuzla başlar. Varsayılan olarak kapalıdır.
-breed: Alınan atı yenile
-breed_tooltip: Şövalye ahır yerini boşaltır. Kapalıyken özgün sayaç ve panel geri döner.
-stable_panel: Genişletilmiş ahır paneli
-stable_panel_tooltip: At yenileme açıksa binicileri ve ilerlemeyi gösterir.
-breed_seconds: Temel süre (sn)
-breed_seconds_tooltip: 0 yaklaşık 14 saniyelik özgün süreyi kullanır.
-slowdown: Çok at varsa yavaşlat
-slowdown_tooltip: Ahırdaki ve şövalye altındaki atlar eşikten sonra süreyi artırır.
-normal_horses: At eşiği
-normal_horses_tooltip: 4 seçildiğinde beşinci canlı at daha yavaş yetişir.
-slowdown_factor: Süre çarpanı
-slowdown_factor_tooltip: Eşiği aşan her at, öncekinin süresini bu katsayıyla çarpar.
-slowest_seconds: En uzun süre (sn)
-slowest_seconds_tooltip: Normal hızda yetiştirme bu süreyi aşmaz.
-dairy_scrub: Seyrek çalılıkta süt çiftliği
-dairy_scrub_tooltip: Seyrek bitki örtüsü de uygun sayılır.
-ground_overlay: Uygunsuz zemini işaretle
-ground_overlay_tooltip: Çiftlik yerleştirirken uygunsuz zemin kırmızı görünür.
-keep_cows: İnekler kalsın
-keep_cows_tooltip: Çiftçi ölünce kalır, çiftlik yıkılır veya durursa kaybolurlar.
-hunters_tannery: Avcı leş toplar
-hunters_tannery_tooltip: Geyik kalmayınca avcı tabakhaneden leş alıp et teslim eder.
-hunters_chance: Tabakhane olasılığı (%)
-hunters_chance_tooltip: Geyik varken tabakhaneye gitme olasılığı.
-hunters_carry: Sefer başına leş
-hunters_carry_tooltip: Avcının tek seferde taşıyacağı sayı.
-hunters_stored: Tabakhane başına leş
-hunters_stored_tooltip: Avcılar için saklanacak en yüksek sayı.
-ai_decorations: Yapay zekâ süs yığılmasını düzelt
-ai_decorations_tooltip: Mevcut bayrak, mangal ve kazıkları tanır ve tekrarları kaldırır.
-balance_changes: Balance Changes
-bugfixes: Bugfixes
-fixes: Fixes
-improvements: Improvements
-qol: Quality of Life
+dynamic: Kapılar tıkandığında otomatik yer değiştirir
+dynamic_tooltip: Kulübeler, şapeller, kiliseler, katedraller, han, eczane, kuyu, su deposu, pazar, ahırlar, loncalar ve köpek kafesleri kapılarını sürekli kontrol eder. Önüne bir şey inşa edilir veya nokta ulaşılmaz olursa kapı binanın boş bir kenarına taşınır. Eskiden yalnızca binayı koyarken seçilen kenar kullanılırdı.
+storage: Ambar ve cephanelik kapıları da yer değiştirir
+storage_tooltip: Ambar ve cephanelik kapılarını aynı şekilde kontrol eder; böylece bir kapı veya sur eski girişi atölyelerden kesse bile mallar teslim edilmeye devam eder.
+unstuck: Takılan işçiler başka bir kapı dener
+unstuck_tooltip: Birisi binasından çıkıp gideceği yere yol bulamadığında — depoya, ambara, cephaneliğe veya iç kaleye giden işçi, kamp ateşine giden anne ve çocukları, turuna çıkan rahip, hancı veya soytarı — içeri dönüp bir yol bulunana kadar saat yönünde binanın diğer kapılarını dener. Hiçbiri çalışmazsa kapı yerinde kalır.
+button: Her hasarlı binada Onar düğmesi
+button_tooltip: |-
+  Hasar görmüş her binanda Onar düğmesi görünür. Onarım, binanın hasar oranına denk düşen maliyetine mal olur: yarı yıkılmış bina yarı fiyatına onarılır. Düğmenin üzerine gelmek kulelerdeki gibi onarım maliyetini ve elindekileri gösterir (oyunun yardım metinlerinin açık olmasını gerektirir).
+gold: Onarımlar altın da gerektirir
+gold_tooltip: Altın isteyen binalar (örneğin kiliseler) onarılırken de o oranda altın ister. Bu kapalıysa normal oyundaki kuleler gibi yalnızca odun ve taş alınır.
+fire_blocks: Bina yanarken onarım yapılamaz
+fire_blocks_tooltip: |-
+  Yanan bir bina yakında düşman varmış gibi sayılır: yangın sönene kadar Onar düğmesi devre dışı kalır. Kuleler ve kapılar için de geçerlidir.
+repair_x: Düğmenin yatay konumu
+repair_x_tooltip: |-
+  Onar düğmesinin bina panelinin sol kenarından uzaklığı. Kuleler 340 kullanır. Orada kendi düğmesi olan paneller bunu kaydırır: ambar 130 sola, han 50, mühendis ve tünelci loncaları 80 sağa; kışlada mazgalların hemen altında ortada, paralı asker kampında altta ortadadır.
+repair_y: Düğmenin dikey konumu
+repair_y_tooltip: Onar düğmesinin bina panelinin üst kenarından uzaklığı. Kuleler 466 kullanır.
+ai: Yapay zekâ
+ai_tooltip: Her onarım aralığı dolduğunda yapay zekâ lordu binalarını (kuleler ve kapılar dâhil) gözden geçirir; altını alt sınırının üzerindeyse, orada yangın yoksa ve yakında düşman yoksa en hasarlı binayı onarır. Eksik odun ve taşı pazardan alır. Yapay zekâ karakter dosyaları BuildingRepairInterval ve BuildingRepairMinimumGold AIC alanlarıyla lord başına aralık ve alt sınır belirleyebilir (aicloader modülü gerekir).
+ai_damage: Yapay zekânın onarıma başlama hasarı (yüzde)
+ai_damage_tooltip: Yapay zekâ lordu yalnızca canının en az bu kadarını kaybetmiş binaları onarır.
+ai_interval: Yapay zekâ onarım aralığı (saniye)
+ai_interval_tooltip: Normal oyun hızında yapay zekâ lordunun iki onarım arasında beklediği süre. BuildingRepairInterval AIC alanı tek bir lord için bunu geçersiz kılar.
+ai_minimum_gold: Yapay zekâ yalnızca bu altından fazlası varken onarır
+ai_minimum_gold_tooltip: Yapay zekâ lordu yalnızca hazinesinde bundan fazla altın varken onarım yapar. BuildingRepairMinimumGold AIC alanı tek bir lord için bunu geçersiz kılar.
+firemen: İtfaiyeciler birden fazla yangına dağılır
+firemen_tooltip: Birden çok yangın çıktığında bir itfaiyeci, hepsi aynı yangına koşmak yerine başka bir itfaiyecinin henüz gitmediği yangını seçer.
+firemen_tiles: İtfaiyecilerin paylaşılan yangından kaçınma gücü
+firemen_tiles_tooltip: Bir yangına hâlihazırda koşan her itfaiyeci, sonraki itfaiyeci için o yangını bu kadar kare daha uzak gösterir.
+maces: Yeni demirciler gürz üretir
+maces_tooltip: Yeni kurulan demirci atölyesi kılıç yerine gürz ile başlar. Yine de değiştirebilirsin. Varsayılan olarak kapalı.
+breed: Ahırlar şövalyelerin aldığı atların yenisini yetiştirir
+breed_tooltip: Bir şövalye at aldığında ahır hemen yeni bir at yetiştirmeye başlar. Eskiden o şövalye ölene kadar bölme boş kalırdı ve bir ahır yalnızca dört şövalyeye yeterdi. Kapatıldığında özgün yetiştirme süresi ve ahır paneli geri döner.
+stable_panel: Ahır paneli yaşayan atları ve sonraki atı gösterir
+stable_panel_tooltip: Ahırın «kullanımda» sayısı bu ahırın atlarından birine binen yaşayan şövalyeleri sayar; kulelerin can çubuğuna benzer bir çubuk ise sonraki atın ilerlemesini gösterir. Dört bölme de doluyken çubuk doludur.
+breed_seconds: Bir at yetiştirme süresi (saniye)
+breed_seconds_tooltip: Normal oyun hızında, az sayıda atı hayattayken ahırın yeni bir at yetiştirme süresi. 0 oyunun kendi süresini korur (yaklaşık 14 saniye).
+slowdown: Yaşayan at arttıkça ahırlar daha yavaş yetiştirir
+slowdown_tooltip: Bir ahırın yaşayan atları bölmelerindeki atlar ile atlarına binen şövalyelerin toplamıdır. Normal sayının altındayken normal sürede yetişir; bundan sonraki her at bir öncekinden daha uzun sürer ve en yavaş sürede sabitlenir — ahır yetiştirmeyi asla bırakmaz. Şövalyeler ölünce yeniden hızlanır.
+normal_horses: Yavaşlamadan önceki yaşayan at sayısı
+normal_horses_tooltip: Yetiştirme yavaşlamadan önce bir ahırın kaç atının hayatta olabileceği. 4 ile ilk dört at normal hızda, beşinci ilk kez daha yavaş gelir.
+slowdown_factor: Her ek at için yavaşlama çarpanı
+slowdown_factor_tooltip: Normal sayının üzerindeki her at bir öncekinin bu kadar katı sürer. 3 ile beşinci at üç kat, altıncı dokuz kat uzun sürer.
+slowest_seconds: En yavaş yetiştirme süresi (saniye)
+slowest_seconds_tooltip: |-
+  Normal oyun hızında yetiştirme bundan daha yavaş olmaz: çok sayıda yaşayan atı olan bir ahır yine de ara sıra yeni at yetiştirir.
+dairy_scrub: Süt çiftlikleri seyrek çalılığa kurulabilir
+dairy_scrub_tooltip: Bir çiftlik yeterince verimli zemin gerektirir ve normalde yalnızca vaha otu ile sık çalılık sayılır. Süt çiftlikleri için seyrek çalılık da sayılır. Buğday, şerbetçiotu ve elma çiftlikleri değişmez.
+ground_overlay: Çiftlikler uygunsuz zemini kırmızı gösterir
+ground_overlay_tooltip: Çiftlik yerleştirirken altındaki çim olmayan her kare (toprak, kum, taş, demir vb.) kayalar ve diğer binalar gibi kırmızı görünür; böylece çiftliği neyin engellediğini görürsün. Çiftliklerin zemin gereksinimi değişmez.
+keep_cows: Sütçü öldüğünde inekler kalır
+keep_cows_tooltip: Bir sütçü öldürüldüğünde inekleri kaybolmak yerine çiftlikte kalır; böylece tabaklar onları almaya devam eder ve yeni çiftçi onları orada bulur. Çiftlik yıkıldığında veya uyutulduğunda inekler yine kaybolur.
+hunters_tannery: Geyikler bitince avcılar tabakhanelerden leş alır
+hunters_tannery_tooltip: Tabakçının yüzdüğü her inek tabakhanede bir leş bırakır. Haritada geyik kalmadığında boşta bir avcı kendi lordunun leş bulunan tabakhanesine gider, kulübesine taşır, ete işler (bir geyik kadar) ve ambara götürür.
+hunters_chance: Geyik varken avcıların tabakhaneyi seçme olasılığı (yüzde)
+hunters_chance_tooltip: Hâlâ geyik varken yola çıkan bir avcı avlanmak yerine bu olasılıkla leşli bir tabakhaneye gider. Geyik kalmadığında her zaman tabakhaneye gider.
+hunters_carry: Bir avcının tek seferde aldığı leş sayısı
+hunters_carry_tooltip: Bir avcının tek gidişte tabakhaneden kaç leş aldığı.
+hunters_stored: Bir tabakhanenin sakladığı leş sayısı
+hunters_stored_tooltip: Bir tabakhanenin avcılar için beklettiği en fazla leş sayısı. Fazla inekler leş bırakmaz.
+ai_decorations: Yapay zekâ bayrak, mangal ve kazıkta kafa yığınlarını önle
+ai_decorations_tooltip: Yapay zekâ kalesindeki sabit noktalara bayrak (veya kazıkta kafa) ile mangal koyar ve eksik gördükçe yenisini ekler. Eskiden yalnızca en üstteki nesneye baktığı için iç kale bayrağı, toz veya karga yüzünden aynı yere sonsuza dek yığın oluşturuyordu. Artık o noktadaki her şeyi görür ve üst üste binen veya boşlukta kalan kendi süslemelerini temizler.
+balance_changes: Denge değişiklikleri
+bugfixes: Hata düzeltmeleri
+fixes: Düzeltmeler
+improvements: İyileştirmeler
+qol: Yaşam kalitesi
 tags.behavior: Davranış
 tags.ai: Yapay zekâ
 tags.economy: Ekonomi
 tags.bugfixes: Hata düzeltmeleri
 tags.interface: Arayüz
-ai_repair: Yapay zekâ onarımı
+ai_repair: Yapay zekâ lordları binalarını onarır

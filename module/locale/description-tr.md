@@ -1,3 +1,3 @@
-# Daha iyi binalar 1.0.12
+# Smarter Buildings 1.0.12
 
-İşçiler başka kapıyı dener. Onarım, itfaiye, çiftlik, avcılık ve at yetiştirme ayarlanabilir.
+Yolu tıkanan işçilerin başka bir kapı denemesini sağlar ve daha fazla binaya onarım düğmesi ekler. Ayrı ayarlar itfaiyecileri, çiftlikleri, avcılığı, yapay zekâ onarımlarını ve ahırların at yetiştirmesini kontrol eder.

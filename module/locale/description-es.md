@@ -1,3 +1,3 @@
-# Edificios mejorados 1.0.12
+# Smarter Buildings 1.0.12
 
-Los trabajadores prueban otras puertas. Ajusta también reparaciones, bomberos, granjas, caza y cría.
+Permite a los trabajadores bloqueados probar otra puerta y añade controles de reparación a más edificios. Ajustes separados cubren bomberos, granjas, caza, reparaciones de la IA y cría de caballos en establos.

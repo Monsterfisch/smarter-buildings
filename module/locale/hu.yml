@@ -1,71 +1,75 @@
-dynamic: Mozgatható ajtók
-dynamic_tooltip: Az elzárt ajtó szabad oldalra kerül.
-storage: Raktárajtók áthelyezése
-storage_tooltip: A magtár és a fegyvertár is ellenőrzi a bejáratot.
-unstuck: Másik ajtó próbája
-unstuck_tooltip: Útvonal híján a munkás sorra próbálja a többi ajtót.
-button: Javítás gomb
-button_tooltip: Saját épület a kárral arányos áron javítható.
-gold: Arany a javításhoz
-gold_tooltip: Az aranyba kerülő épület javítása is aranyba kerül.
-fire_blocks: Tűzben nincs javítás
-fire_blocks_tooltip: A gomb oltásig nem használható, tornyoknál és kapuknál sem.
-repair_x: Vízszintes gombhely
-repair_x_tooltip: Távolság a panel bal szélétől.
-repair_y: Függőleges gombhely
-repair_y_tooltip: Távolság a panel felső szélétől.
-ai: AI
-ai_tooltip: Az MI felméri a kárt, és vehet hiányzó anyagot.
-ai_damage: MI javítási küszöb (%)
-ai_damage_tooltip: Az MI ekkora életerőveszteségtől javít.
-ai_interval: MI javítási időköz (mp)
-ai_interval_tooltip: Várakozás normál sebességen. Az AIC uranként felülírhatja.
-ai_minimum_gold: MI aranyküszöbe
-ai_minimum_gold_tooltip: Az MI csak ennél több arannyal javít. Az AIC uranként felülírhatja.
-firemen: Tűzoltók elosztása
-firemen_tooltip: A tűzoltó olyan tüzet keres, ahová más még nem indult.
-firemen_tiles: Hátrány tűzoltónként (mező)
-firemen_tiles_tooltip: Minden úton lévő tűzoltó ennyivel növeli a becsült távolságot.
-maces: Buzogány az új kovácsnál
-maces_tooltip: Bekapcsolva az új kovács buzogánnyal kezd. Alapból ki van kapcsolva.
-breed: Elvitt lovak pótlása
-breed_tooltip: A lovag felszabadítja a helyet. Kikapcsolva az eredeti időzítő és panel él.
-stable_panel: Bővített istállópanel
-stable_panel_tooltip: Mutatja a lovasokat és az új ló készültségét, ha a pótlás aktív.
-breed_seconds: Alapidő (mp)
-breed_seconds_tooltip: A 0 az eredeti, körülbelül 14 másodpercet használja.
-slowdown: Lassítás sok lónál
-slowdown_tooltip: A küszöbtől az istállóban és lovagok alatt lévő lovak növelik az időt.
-normal_horses: Lóküszöb
-normal_horses_tooltip: 4-nél az ötödik élő ló készül először lassabban.
-slowdown_factor: Időszorzó
-slowdown_factor_tooltip: A küszöb fölött minden ló ennyiszer annyi ideig készül, mint az előző.
-slowest_seconds: Leghosszabb idő (mp)
-slowest_seconds_tooltip: Normál sebességen a tenyésztés nem tart ennél tovább.
-dairy_scrub: Tejgazdaság ritka bozótban
-dairy_scrub_tooltip: A gyér bozót alkalmas tejgazdasághoz.
-ground_overlay: Rossz talaj jelölése
-ground_overlay_tooltip: Elhelyezéskor a nem megfelelő talaj piros.
-keep_cows: Tehenek megtartása
-keep_cows_tooltip: A gazda halála után maradnak, bontáskor vagy leállításkor eltűnnek.
-hunters_tannery: Vadászok tetemet hoznak
-hunters_tannery_tooltip: Szarvas nélkül a saját tímárműhelyből hoznak tetemet és leadják a húst.
-hunters_chance: Tímárműhely esélye (%)
-hunters_chance_tooltip: A tímárműhely választásának esélye, amíg van szarvas.
-hunters_carry: Tetemek fordulónként
-hunters_carry_tooltip: A vadász egyszerre ennyit vihet.
-hunters_stored: Tetemek műhelyenként
-hunters_stored_tooltip: Ennyi tetemet tart a tímár a vadászoknak.
-ai_decorations: MI-díszek halmozásának javítása
-ai_decorations_tooltip: Az MI felismeri zászlóit, tűzkosarait és karóit, és eltávolítja a másolatokat.
-balance_changes: Balance Changes
-bugfixes: Bugfixes
-fixes: Fixes
-improvements: Improvements
-qol: Quality of Life
+dynamic: Az ajtók elköltöznek, ha elzáródnak
+dynamic_tooltip: A házak, kápolnák, templomok, katedrálisok, kocsma, gyógyszertár, kút, víztartály, piac, istállók, céhek és kutyaketrecek folyamatosan ellenőrzik a bejáratukat. Ha valami eléjük épül vagy a mező elérhetetlenné válik, az ajtó az épület egy szabad oldalára kerül. Korábban csak a lerakáskor választott oldal működött.
+storage: A magtár és a fegyvertár ajtaja is áthelyeződik
+storage_tooltip: A magtár és a fegyvertár ugyanígy ellenőrzi a bejáratát, így az áruk akkor is leszállíthatók, ha egy kapu vagy fal elvágja a régi ajtót a műhelyektől.
+unstuck: Az elakadt munkások másik ajtót próbálnak
+unstuck_tooltip: Ha valaki kilép az épületéből és nem talál utat a céljához — munkás a raktárba, magtárba, fegyvertárba vagy vártoronyhoz, anya gyermekeivel a tábortűzhöz, pap, kocsmáros vagy udvari bolond a körútjára —, visszamegy, és az óramutató járása szerint kipróbálja a következő ajtót, amíg egy nem működik. Ha egyik sem jó, az ajtó a helyén marad.
+button: Javítás gomb minden sérült épületen
+button_tooltip: |-
+  Minden sérült saját épületeden megjelenik a Javítás gomb. A javítás a sérüléssel arányos részébe kerül az épület árának: félig sérült épület féláron javítható. A gombra mutatva látszik a költség és a készleted, mint a tornyoknál (bekapcsolt játéksúgót igényel).
+gold: A javítás aranyba is kerül
+gold_tooltip: Az aranyba kerülő épületek (pl. templomok) javítása az aranyköltség arányos részébe is kerül. Enélkül csak fát és követ von le, mint az alapjáték tornyainál.
+fire_blocks: Égő épület nem javítható
+fire_blocks_tooltip: |-
+  Az égő épület olyan, mintha ellenség lenne a közelben: a Javítás gomb szürke marad, amíg el nem alszik a tűz. Tornyokra és kapukra is érvényes.
+repair_x: Gomb vízszintes pozíciója
+repair_x_tooltip: |-
+  Hol helyezkedik el a Javítás gomb az épület paneljén, a bal széltől mérve. A tornyoknál 340. A saját gombokkal rendelkező panelek eltolják: magtár 130-cal balra, kocsma 50-nel, mérnök- és alagútásócéh 80-nal jobbra; a kaszárnyán középen a lőrések alatt, a zsoldostáboron középen alul van.
+repair_y: Gomb függőleges pozíciója
+repair_y_tooltip: Hol helyezkedik el a Javítás gomb az épület paneljén, felülről mérve. A tornyoknál 466.
+ai: MI
+ai_tooltip: Minden javítási időköz lejártakor egy MI-lord átnézi az épületeit (tornyokat és kapukat is), és megjavítja a legsérültebbet, ha a minimumánál több aranya van, ott semmi nem ég és nincs közelben ellenség. A hiányzó fát és követ megveszi a piacon. Az AIC-fájlok lordonként megadhatják az időközt és a minimumot a BuildingRepairInterval és BuildingRepairMinimumGold mezőkkel (az aicloader modul szükséges).
+ai_damage: MI javítási küszöb sérülés alapján (százalék)
+ai_damage_tooltip: Egy MI-lord csak olyan épületet javít meg, amely legalább ekkora részét elvesztette az életerejének.
+ai_interval: MI javítási időköz (másodperc)
+ai_interval_tooltip: Mennyit vár egy MI-lord két javítás között normál sebességen. A BuildingRepairInterval AIC-mező lordonként felülírja.
+ai_minimum_gold: MI csak ennyi arany felett javít
+ai_minimum_gold_tooltip: Egy MI-lord csak akkor javít, ha kincstárában ennél több arany van. A BuildingRepairMinimumGold AIC-mező lordonként felülírja.
+firemen: A tűzoltók megoszlanak több tűz között
+firemen_tooltip: Több tűz esetén a tűzoltó olyan tüzet választ, amelyhez még nem fut másik tűzoltó, ahelyett hogy mind ugyanoda rohannának.
+firemen_tiles: Mennyire kerülik a tűzoltók a már oltott tüzet
+firemen_tiles_tooltip: Minden olyan tűzoltó, aki már úton van egy tűzhöz, ennyi mezővel távolabbinak mutatja azt a következő tűzoltó számára.
+maces: Az új kovácsműhelyek buzogányt gyártanak
+maces_tooltip: Az újonnan épített kovácsműhely kard helyett buzogánnyal kezd. Továbbra is átválthatod. Alapértelmezés szerint kikapcsolva.
+breed: Az istállók pótolják a lovagok által elvitt lovakat
+breed_tooltip: Amikor egy lovag elvisz egy lovat, az istálló rögtön újat kezd tenyészteni. Korábban a hely üres maradt a lovag haláláig, így egy istálló csak négy lovagot szolgált ki. Kikapcsolása visszaállítja az eredeti időzítőt és istállópanelt.
+stable_panel: Az istállópanel mutatja az élő lovakat és a következőt
+stable_panel_tooltip: A „használatban” szám az istálló lovain lovagló élő lovagokat számlálja, a tornyok életerő-csíkjához hasonló sáv pedig a következő ló készültségét mutatja. Ha mind a négy hely foglalt, a sáv tele van.
+breed_seconds: Egy ló tenyésztési ideje (másodperc)
+breed_seconds_tooltip: Mennyi ideig tart egy új ló tenyésztése normál sebességen, amíg kevés lova él. A 0 megtartja a játék saját idejét (kb. 14 másodperc).
+slowdown: Az istállók lassabban tenyésztenek, minél több lovuk él
+slowdown_tooltip: Az istálló élő lovai a boxokban álló lovak plusz a lovain ülő lovagok. A normál szám alatt rendes ütemben tenyészt; minden további ló tovább tart az előzőnél egészen a leglassabb időig — a tenyésztés sosem áll le. Lovagok halálával újra felgyorsul.
+normal_horses: Élő lovak száma a lassulás előtt
+normal_horses_tooltip: Hány élő lova lehet egy istállónak, mielőtt a tenyésztés lelassul. 4 esetén az első négy normál sebességgel jön, az ötödik lesz az első lassabb.
+slowdown_factor: Lassulási szorzó minden további lónál
+slowdown_factor_tooltip: Minden a normál szám feletti ló ennyiszer tovább tart az előzőnél. 3 esetén az ötödik háromszor, a hatodik kilencszer annyi ideig tart stb.
+slowest_seconds: Leglassabb tenyésztési idő (másodperc)
+slowest_seconds_tooltip: |-
+  A tenyésztés normál sebességen sosem lesz lassabb ennél: sok élő lóval is időről időre tenyészt egy újat.
+dairy_scrub: A sajtüzemek ritkás bozótoson is állhatnak
+dairy_scrub_tooltip: Egy farmnak elegendő termékeny talaj kell, amihez általában csak az oázisfű és a sűrű bozótos számít. A sajtüzemeknél a ritkás bozótos is számít. A búza-, komló- és almafarmok változatlanok.
+ground_overlay: A farmok pirossal jelzik a rossz talajt
+ground_overlay_tooltip: Farm elhelyezésekor minden alatta lévő, nem füves mező (föld, homok, kő, vas stb.) pirosan látszik, mint a sziklák és épületek, így látható, mi akadályozza az építést. A talajigény változatlan marad.
+keep_cows: A tehenek megmaradnak a sajtmester halála után
+keep_cows_tooltip: Ha a sajtmestert megölik, a tehenei a farmon maradnak ahelyett, hogy eltűnnének, így a tímárok továbbra is elvihetik őket, és az új gazda is ott találja őket. A farm lebontásakor vagy leállításakor továbbra is eltűnnek.
+hunters_tannery: A vadászok tetemeket hoznak a tímárműhelyekből, ha elfogy a vad
+hunters_tannery_tooltip: Minden megnyúzott tehén tetemet hagy a tímárműhelynél. Ha nincs több szarvas a térképen, a tétlen vadász elmegy ura egy tetemekkel teli tímárműhelyéhez, elvisz párat a kunyhójába, hússá dolgozza (egy szarvasnyit ad), és elviszi a magtárba.
+hunters_chance: Esély a tímárműhely választására, amíg van szarvas (százalék)
+hunters_chance_tooltip: Amíg még vannak szarvasok, az elinduló vadász ilyen eséllyel megy vadászat helyett a tetemekkel teli tímárműhelyhez. Szarvasok nélkül mindig oda megy.
+hunters_carry: Egy vadász által egyszerre vitt tetemek
+hunters_carry_tooltip: Hány tetemet hoz el egy vadász egy fordulóval a tímárműhelyből.
+hunters_stored: Egy tímárműhelyben tárolt tetemek
+hunters_stored_tooltip: Legfeljebb hány tetemet őriz meg egy tímárműhely a vadászoknak. A további tehenek nem hagynak tetemet.
+ai_decorations: Nincs több MI-zászló-, parázstartó- vagy karóra tűzött fej halmozás
+ai_decorations_tooltip: Az MI fix helyekre teszi lordja zászlóit (vagy karóra tűzött fejeit) és parázstartóit, és pótolja a hiányzókat. Mivel csak a legfelső objektumot nézte, bármi más — vártorony zászlaja, porfelhő, varjú — végtelen halmozást okozott. Most mindent lát a mezőn, és eltakarítja a felhalmozódott vagy levegőben maradt díszítéseket.
+balance_changes: Egyensúly-módosítások
+bugfixes: Hibajavítások
+fixes: Javítások
+improvements: Fejlesztések
+qol: Kényelmi funkciók
 tags.behavior: Viselkedés
 tags.ai: MI
 tags.economy: Gazdaság
 tags.bugfixes: Hibajavítások
-tags.interface: Kezelőfelület
-ai_repair: MI épületjavítása
+tags.interface: Felület
+ai_repair: Az MI-lordok megjavítják az épületeiket

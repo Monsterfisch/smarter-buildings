@@ -1,3 +1,3 @@
-# Jobb épületek 1.0.12
+# Smarter Buildings 1.0.12
 
-A munkás másik ajtót próbálhat. Állítható a javítás, tűzoltás, gazdálkodás, vadászat és lótenyésztés.
+Lehetővé teszi az elakadt munkásoknak, hogy másik ajtót próbáljanak, és több épülethez ad javítás gombot. Külön beállítások szabályozzák a tűzoltókat, farmokat, vadászatot, MI-javításokat és az istállók lópótlását.

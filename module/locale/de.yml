@@ -1,71 +1,75 @@
-dynamic: Bewegliche Türen
-dynamic_tooltip: Blockierte Türen wechseln auf eine freie Seite.
-storage: Lagertüren verschieben
-storage_tooltip: Auch Kornspeicher und Waffenkammer prüfen ihre Erreichbarkeit.
-unstuck: Andere Tür versuchen
-unstuck_tooltip: Arbeiter ohne Weg testen weitere Türen der Reihe nach.
-button: Reparaturknopf
-button_tooltip: Repariere eigene Gebäude zum anteiligen Baupreis.
-gold: Gold für Reparatur
-gold_tooltip: Bauten mit Goldpreis kosten auch bei Reparatur anteilig Gold.
-fire_blocks: Reparatur bei Brand sperren
-fire_blocks_tooltip: Bis zum Löschen bleibt der Knopf auch bei Türmen und Toren gesperrt.
-repair_x: Knopf horizontal
-repair_x_tooltip: Abstand vom linken Rand der Tafel.
-repair_y: Knopf vertikal
-repair_y_tooltip: Abstand vom oberen Rand der Tafel.
-ai: AI
-ai_tooltip: KI-Lords prüfen Schäden und können fehlende Baustoffe kaufen.
-ai_damage: Mindestschaden für KI (%)
-ai_damage_tooltip: Die KI repariert ab diesem Anteil verlorener Gesundheit.
-ai_interval: KI-Reparaturintervall (Sek.)
-ai_interval_tooltip: Wartezeit bei Normaltempo. AIC kann sie je Lord ändern.
-ai_minimum_gold: Goldschwelle für KI
-ai_minimum_gold_tooltip: Die KI repariert nur über dieser Goldmenge. AIC kann sie je Lord ändern.
-firemen: Feuerwehr verteilen
-firemen_tooltip: Feuerwehrleute bevorzugen Brände, zu denen noch niemand unterwegs ist.
-firemen_tiles: Abzug pro Feuerwehrmann (Felder)
-firemen_tiles_tooltip: Jeder bereits anrückende Helfer erhöht die bewertete Entfernung.
-maces: Streitkolben als Startwaffe
-maces_tooltip: Neue Schmieden fertigen Streitkolben, wenn die Option aktiv ist. Standardmäßig aus.
-breed: Pferde nachziehen
-breed_tooltip: Ritter geben den Stallplatz frei. Aus stellt Zeit und Stalltafel des Spiels wieder her.
-stable_panel: Erweiterte Stalltafel
-stable_panel_tooltip: Zeigt lebende Reiter und Zuchtfortschritt, wenn Pferdenachzucht aktiv ist.
-breed_seconds: Grundzeit (Sek.)
-breed_seconds_tooltip: 0 verwendet die ursprüngliche Zuchtzeit von etwa 14 Sekunden.
-slowdown: Zucht bei vielen Pferden bremsen
-slowdown_tooltip: Stallpferde und Pferde lebender Ritter erhöhen die Zeit ab der Schwelle.
-normal_horses: Pferdeschwelle
-normal_horses_tooltip: Bei 4 braucht das fünfte lebende Pferd erstmals länger.
-slowdown_factor: Zeitfaktor
-slowdown_factor_tooltip: Jedes Pferd über der Schwelle braucht so oft die Zeit des vorherigen.
-slowest_seconds: Höchstzeit (Sek.)
-slowest_seconds_tooltip: Bei Normaltempo dauert die Zucht höchstens so lange.
-dairy_scrub: Milchfarmen auf dünnem Gestrüpp
-dairy_scrub_tooltip: Spärlicher Bewuchs zählt als geeignet für Milchfarmen.
-ground_overlay: Ungeeigneten Boden markieren
-ground_overlay_tooltip: In der Vorschau färben sich ungeeignete Felder rot.
-keep_cows: Kühe erhalten
-keep_cows_tooltip: Kühe bleiben nach dem Tod des Bauern, verschwinden aber bei Abriss oder Stilllegung.
-hunters_tannery: Jäger holen Kadaver
-hunters_tannery_tooltip: Ohne Hirsche holen Jäger Kadaver aus eigenen Gerbereien und liefern Fleisch ab.
-hunters_chance: Chance auf Gerberei (%)
-hunters_chance_tooltip: Solange Hirsche da sind, wählt der Jäger so oft eine Gerberei.
-hunters_carry: Kadaver pro Gang
-hunters_carry_tooltip: So viele trägt ein Jäger auf einmal.
-hunters_stored: Kadaver je Gerberei
-hunters_stored_tooltip: Maximaler Vorrat für Jäger je Gerberei.
-ai_decorations: Doppelte KI-Dekorationen entfernen
-ai_decorations_tooltip: Die KI erkennt vorhandene Flaggen, Feuerkörbe und Pfähle.
-balance_changes: Balance Changes
-bugfixes: Bugfixes
-fixes: Fixes
-improvements: Improvements
-qol: Quality of Life
+dynamic: Türen versetzen sich bei Blockade automatisch
+dynamic_tooltip: Hütten, Kapellen, Kirchen, Kathedralen, Schenke, Apotheke, Brunnen, Löschwasserstelle, Marktplatz, Ställe, Gilden und Hundezwinger prüfen laufend ihren Eingang. Wird etwas davor gebaut oder ist die Stelle nicht mehr erreichbar, wechselt die Tür auf eine freie Seite des Gebäudes. Zuvor wurde immer nur die beim Bau gewählte Seite genutzt.
+storage: Auch Kornspeicher- und Waffenkammer-Türen versetzen sich
+storage_tooltip: Kornspeicher und Waffenkammer prüfen ihre Eingänge ebenso, damit Waren weiterhin geliefert werden können, wenn ein Torhaus oder eine Mauer die alte Tür von den Werkstätten abtrennt.
+unstuck: Steckengebliebene Arbeiter probieren eine andere Tür
+unstuck_tooltip: Kommt jemand aus seinem Gebäude heraus und findet keinen Weg zum Ziel – ein Arbeiter zum Vorratslager, Kornspeicher, zur Waffenkammer oder zum Bergfried, eine Mutter mit Kindern zum Lagerfeuer, ein Priester, Wirt oder Gaukler auf seiner Runde –, geht die Person wieder hinein und probiert reihum (im Uhrzeigersinn) die nächste Tür des Gebäudes, bis eine funktioniert. Klappt keine, bleibt die Tür wie zuvor.
+button: Reparieren-Knopf bei jedem beschädigten Gebäude
+button_tooltip: |-
+  Jedes beschädigte eigene Gebäude zeigt den Reparieren-Knopf. Die Reparatur kostet anteilig den Gebäudepreis entsprechend dem Schaden: halb zerstört kostet den halben Preis. Beim Zeigen auf den Knopf werden Reparaturkosten und Bestand angezeigt wie bei Türmen (erfordert aktivierte Spiel-Hilfetexte).
+gold: Reparaturen kosten auch Gold
+gold_tooltip: Gebäude, die Gold kosten (z. B. Kirchen), kosten anteilig auch Gold bei der Reparatur. Ohne diese Option werden nur Holz und Stein berechnet, wie bei Türmen im Originalspiel.
+fire_blocks: Keine Reparatur während ein Gebäude brennt
+fire_blocks_tooltip: |-
+  Ein brennendes Gebäude zählt wie ein Feind in der Nähe: Der Reparieren-Knopf bleibt ausgegraut, bis das Feuer gelöscht ist. Gilt auch für Türme und Torhäuser.
+repair_x: Knopfposition horizontal
+repair_x_tooltip: |-
+  Wo der Reparieren-Knopf im Gebäudefenster liegt, gemessen vom linken Rand. Türme verwenden 340. Fenster mit eigenen Knöpfen dort verschieben ihn: Kornspeicher 130 nach links, Schenke 50 und Baumeister- sowie Tunnelgräbergilde 80 nach rechts; Kaserne mittig direkt unter den Zinnen und Söldnerlager mittig unten.
+repair_y: Knopfposition vertikal
+repair_y_tooltip: Wo der Reparieren-Knopf im Gebäudefenster liegt, gemessen vom oberen Rand. Türme verwenden 466.
+ai: KI
+ai_tooltip: Nach jedem Ablauf seines Reparaturintervalls prüft ein KI-Lord seine Gebäude (Türme und Torhäuser eingeschlossen) und repariert das am stärksten beschädigte, sofern er mehr Gold als sein Minimum besitzt, dort nichts brennt und kein Feind in der Nähe ist. Fehlendes Holz und Stein kauft er am Marktplatz. KI-Charakterdateien können Intervall und Minimum je Lord über die AIC-Felder BuildingRepairInterval und BuildingRepairMinimumGold festlegen (erfordert das Modul aicloader).
+ai_damage: KI repariert ab diesem Schaden (Prozent)
+ai_damage_tooltip: Ein KI-Lord repariert nur Gebäude, die mindestens so viel ihrer Lebenspunkte verloren haben.
+ai_interval: KI-Reparaturintervall (Sekunden)
+ai_interval_tooltip: Wie lange ein KI-Lord bei normaler Spielgeschwindigkeit zwischen zwei Reparaturen wartet. Das AIC-Feld BuildingRepairInterval überschreibt diesen Wert für einzelne Lords.
+ai_minimum_gold: KI repariert nur ab mehr Gold als
+ai_minimum_gold_tooltip: Ein KI-Lord repariert nur, solange seine Schatzkammer mehr als diesen Betrag enthält. Das AIC-Feld BuildingRepairMinimumGold überschreibt diesen Wert für einzelne Lords.
+firemen: Löschtrupps verteilen sich auf mehrere Brände
+firemen_tooltip: Gibt es mehrere Brände gleichzeitig, wählt ein Feuerlöscher einen Brand, zu dem noch kein anderer unterwegs ist, statt dass alle zum selben rennen.
+firemen_tiles: Wie stark Löschtrupps geteilte Brände meiden
+firemen_tiles_tooltip: Jeder bereits zu einem Brand unterwegs befindliche Feuerlöscher lässt diesen für den nächsten Feuerlöscher um so viele Felder weiter entfernt wirken.
+maces: Neue Schmieden stellen Streitkolben her
+maces_tooltip: Eine neu gebaute Schmiede startet mit Streitkolben statt Schwertern. Du kannst weiterhin umschalten. Standardmäßig deaktiviert.
+breed: Ställe züchten entnommene Ritterpferde sofort nach
+breed_tooltip: Nimmt ein Ritter ein Pferd, beginnt der Stall sofort mit der Zucht eines neuen. Zuvor blieb der Platz leer, bis dieser Ritter starb, sodass ein Stall immer nur vier Ritter versorgte. Deaktivieren stellt den ursprünglichen Zuchttimer und das originale Stallfenster wieder her.
+stable_panel: Stallfenster zeigt lebende Pferde und nächstes Pferd
+stable_panel_tooltip: Die Anzeige „im Einsatz“ zählt die lebenden Ritter auf Pferden dieses Stalls, und ein Balken wie bei Türmen zeigt den Fortschritt des nächsten Pferdes. Sind alle vier Plätze voll, ist der Balken voll.
+breed_seconds: Zuchtzeit pro Pferd (Sekunden)
+breed_seconds_tooltip: Wie lange ein Stall bei normaler Spielgeschwindigkeit für ein neues Pferd braucht, solange erst wenige seiner Pferde leben. 0 belässt die Zeit des Originalspiels (etwa 14 Sekunden).
+slowdown: Ställe züchten langsamer, je mehr ihrer Pferde leben
+slowdown_tooltip: Zu den lebenden Pferden eines Stalls zählen die Pferde in seinen Boxen plus die lebenden Ritter auf seinen Pferden. Unterhalb der Normalanzahl gilt die normale Zuchtzeit; jedes weitere Pferd dauert länger als das vorherige bis zur langsamsten Zeit, die dann bleibt – der Stall hört nie auf zu züchten. Sterben Ritter, beschleunigt es sich wieder.
+normal_horses: Lebende Pferde vor Verlangsamung der Zucht
+normal_horses_tooltip: Wie viele Pferde eines Stalls leben dürfen, bevor sich die Zucht verlangsamt. Bei 4 entstehen die ersten vier Pferde normal schnell und das fünfte erstmals langsamer.
+slowdown_factor: Verlangsamungsfaktor je weiterem Pferd
+slowdown_factor_tooltip: Jedes Pferd über der Normalanzahl dauert um diesen Faktor länger als das vorherige. Bei 3 dauert das fünfte dreimal so lange, das sechste neunmal so lange usw.
+slowest_seconds: Langsamste Zuchtzeit (Sekunden)
+slowest_seconds_tooltip: |-
+  Die Zucht wird bei normaler Spielgeschwindigkeit nie langsamer als dieser Wert: Ein Stall mit vielen lebenden Pferden züchtet regelmäßig weiter.
+dairy_scrub: Käsereien können auf kargem Grasland stehen
+dairy_scrub_tooltip: Eine Farm braucht genug fruchtbaren Boden, wofür sonst nur Oasengras und dichtes Buschland zählen. Für Käsereien zählt nun auch karges Buschland. Weizen-, Hopfen- und Apfelfarmen bleiben unverändert.
+ground_overlay: Farmen markieren ungeeigneten Boden rot
+ground_overlay_tooltip: Beim Platzieren einer Farm wird jedes Feld darunter, das kein Gras ist (Erde, Sand, Steine, Eisen usw.), rot markiert – wie bereits bei Felsen und anderen Gebäuden –, sodass du siehst, was den Bau blockiert. Die Bodenanforderungen selbst bleiben unverändert.
+keep_cows: Kühe bleiben, wenn der Käser stirbt
+keep_cows_tooltip: Wird ein Käser getötet, bleiben seine Kühe an der Farm, statt zu verschwinden, sodass Gerber sie weiter holen können und ein neuer Käser sie dort vorfindet. Beim Abreißen oder Schlafenlegen der Farm verschwinden Kühe weiterhin.
+hunters_tannery: Jäger holen Tierkörper aus Gerbereien, wenn kein Wild mehr da ist
+hunters_tannery_tooltip: Jede Kuh, die ein Gerber häutet, hinterlässt einen Tierkörper an der Gerberei. Gibt es kein Wild mehr auf der Karte, geht ein untätiger Jäger zu einer Gerberei desselben Lords mit Tierkörpern, trägt sie zu seiner Jagdhütte, verarbeitet sie zu Fleisch (wie ein Hirsch) und liefert es zum Kornspeicher.
+hunters_chance: Chance, dass Jäger trotz Wild die Gerberei wählen (Prozent)
+hunters_chance_tooltip: Solange noch Hirsche vorhanden sind, geht ein ausrückender Jäger mit dieser Wahrscheinlichkeit statt zur Jagd zu einer Gerberei mit Tierkörpern. Ohne Hirsche geht er immer zur Gerberei.
+hunters_carry: Tierkörper, die ein Jäger auf einmal trägt
+hunters_carry_tooltip: Wie viele Tierkörper ein Jäger pro Gang aus der Gerberei mitnimmt.
+hunters_stored: Tierkörper, die eine Gerberei lagert
+hunters_stored_tooltip: Höchstzahl an Tierkörpern, die eine Gerberei für Jäger aufbewahrt. Weitere Kühe hinterlassen nichts.
+ai_decorations: Keine Stapel aus KI-Flaggen, Kohlebecken oder Köpfen auf Pfählen
+ai_decorations_tooltip: Eine KI setzt die Flaggen (oder Köpfe auf Pfählen) und Kohlebecken ihres Lords an feste Stellen ihrer Burg und ergänzt fehlende. Da sie nur das oberste Objekt prüfte, sorgte alles andere dort – Bergfriedflagge, Staubwolke, Krähe – für endlose Stapel (Köpfe auf Pfählen locken Krähen an und uferten aus). Nun erkennt sie alles an der Stelle und räumt gestapelte oder freischwebende eigene Dekorationen auf.
+balance_changes: Balance-Änderungen
+bugfixes: Fehlerkorrekturen
+fixes: Fehlerbehebungen
+improvements: Verbesserungen
+qol: Komfortfunktionen
 tags.behavior: Verhalten
 tags.ai: KI
 tags.economy: Wirtschaft
 tags.bugfixes: Fehlerkorrekturen
 tags.interface: Oberfläche
-ai_repair: KI-Gebäudereparatur
+ai_repair: KI-Lords reparieren ihre Gebäude
