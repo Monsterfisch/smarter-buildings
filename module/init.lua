@@ -35,7 +35,7 @@ local MODULE_NAME = "smarter-buildings"
 local DEFAULTS = {
   doors = { dynamic = true, storage = true, unstuck = true },
   firemen = { spread = true, tiles = 20 },
-  blacksmith = { maces = true },
+  blacksmith = { maces = false },
   repair = { button = true, gold = true, fire_blocks = true, x = 340, y = 466,
     ai = true, ai_interval = 60, ai_minimum_gold = 2000, ai_damage = 20 },
   farms = { dairy_scrub = true, ground_overlay = true, keep_cows = true },
@@ -382,6 +382,7 @@ local function patchHorseBreeding(v, config, panel)
   end
   local slowdown = setting(config, "stables", "slowdown")
   local data = core.allocate(16 + 2000 * 8, true)
+  v.worldScratch[#v.worldScratch + 1] = { data + 16, 2000 * 8 }
   local h = {
     BASE = data,
     NORMAL = data + 4,
@@ -399,7 +400,7 @@ local function patchHorseBreeding(v, config, panel)
     BREED_LATER = site + HORSE_BREEDING_SIZE + (core.readByte(jump + 1) & 0xFF),
   }
   core.writeInteger(h.BASE, base)
-  core.writeInteger(h.NORMAL, slowdown and number(config, "stables", "normal_horses", 1, 100) or 1000000)
+  core.writeInteger(h.NORMAL, slowdown and number(config, "stables", "normal_horses", 1, 100) or 0)
   core.writeInteger(h.FACTOR, number(config, "stables", "slowdown_factor", 1, 10))
   core.writeInteger(h.SLOWEST, math.max(base, number(config, "stables", "slowest_seconds", 1, 7200)
     * TICKS_PER_SECOND))
@@ -632,6 +633,8 @@ local function patchHunters(v, config)
     HUNTER_TAIL = hunter + HUNTER_TAIL,
     HUNTER_RESUME = hunter + HUNTER_HOOK_SIZE,
   }
+  v.worldScratch[#v.worldScratch + 1] = { h.CARCASSES, 2000 * 8 }
+  v.worldScratch[#v.worldScratch + 1] = { h.EXTRA, HUNTER_SLOTS * 8 }
   local carcass = assemble(templates.tannerCarcass, h)
   local hunt = assemble(templates.hunterTannery, h)
   jumpTo(tanner, carcass, TANNER_HOOK_SIZE)
@@ -660,6 +663,7 @@ local function patchUnstuck(v)
   local destination = scan(AOB_SET_DESTINATION, "the unit route search")
   expectBytes(destination, { 0x83, 0xEC, 0x08, 0x8B, 0x44, 0x24, 0x0C }, "the unit route search")
   local data = core.allocate(16 + 2000 * 4, true)
+  v.worldScratch[#v.worldScratch + 1] = { data, 16 + 2000 * 4 }
   local w = {
     BUSY = data,
     UNITS_THIS = data + 4,
@@ -1023,11 +1027,13 @@ local function enable(self, config)
   if maces then
     patchBlacksmith()
   end
-  v.ORIGINS = core.allocate(ORIGIN_SLOTS * 12, true)
+  v.worldScratch = {}
   if stables then
+    v.ORIGINS = core.allocate(ORIGIN_SLOTS * 12, true)
+    v.worldScratch[#v.worldScratch + 1] = { v.ORIGINS, ORIGIN_SLOTS * 12 }
     patchStables(v)
+    patchHorseBreeding(v, config, setting(config, "stables", "panel"))
   end
-  patchHorseBreeding(v, config, setting(config, "stables", "panel"))
   if setting(config, "farms", "dairy_scrub") then
     patchDairyGround()
   end
@@ -1105,6 +1111,8 @@ local function enable(self, config)
       local minimumGold = number(config, "repair", "ai_minimum_gold", 0, 1000000)
       local buy = scan(AOB_BUY_GOODS, "the market")
       local scratch = core.allocate(16, true)
+      v.worldScratch[#v.worldScratch + 1] = { data + 4, 4 * 9 }
+      v.worldScratch[#v.worldScratch + 1] = { scratch, 16 }
       local r = {
         LAST_REPAIR = data + 4,
         INTERVALS = data + 4 + 4 * 9,
@@ -1154,6 +1162,18 @@ local function enable(self, config)
     end
     local code = assemble(templates.buildings, b)
     jumpTo(site + BUILDING_UPDATE_HOOK, code, BUILDING_UPDATE_SIZE)
+  end
+  if #v.worldScratch > 0 then
+    local function resetWorldState()
+      for _, region in ipairs(v.worldScratch) do
+        core.setMemory(region[1], 0, region[2])
+      end
+    end
+    modules["map-extensions"]:registerSection(MODULE_NAME, {
+      initialize = resetWorldState,
+      deserialize = resetWorldState,
+      serialize = function() end,
+    })
   end
 end
 

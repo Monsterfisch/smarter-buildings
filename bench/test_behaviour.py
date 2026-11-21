@@ -95,9 +95,11 @@ class W:
         return self.call_target(site)
 
 
-def test_blacksmith(w):
+def test_blacksmith(w, ext):
     print(' blacksmith')
-    check('new blacksmith makes maces', w.blacksmith, (0x15, 0x15))
+    check('default blacksmith makes swords', w.blacksmith, (0x16, 0x16))
+    opted_in = W(ext, config={'blacksmith': {'maces': True}})
+    check('new blacksmith makes maces when enabled', opted_in.blacksmith, (0x15, 0x15))
 
 
 def test_stables(w):
@@ -527,11 +529,13 @@ def test_off(ext):
     config = {'doors': {'dynamic': False, 'storage': False, 'unstuck': False},
               'firemen': {'spread': False}, 'blacksmith': {'maces': False},
               'repair': {'button': False, 'gold': False, 'fire_blocks': False, 'ai': False},
-              'stables': {'breed': False, 'panel': False}, 'farms': {'dairy_scrub': False, 'ground_overlay': False},
+              'stables': {'breed': False, 'panel': False}, 'farms': {'dairy_scrub': False, 'ground_overlay': False, 'keep_cows': False}, 'ai': {'decorations': False},
               'hunters': {'tannery': False}}
     H = Host(extreme=ext, config=config)
-    br = H.E.find('66 01 9E ? ? ? ? 0F B7 86 ? ? ? ? 66 3D 26 02 7E ?')[0]
-    check('only the breeding hook', [a for a, _ in H.patched], [br])
+    check('no breeding or panel hook', [a for a, _ in H.patched], [])
+    mixed = Host(extreme=ext, config={**config, 'stables': {
+        'breed': False, 'panel': True, 'slowdown': True, 'breed_seconds': 5}})
+    check('breed off also ignores dependent settings', mixed.patched, [])
 
 
 def test_breeding(ext):
@@ -617,7 +621,7 @@ if __name__ == '__main__':
   for ext in (False, True):
     print('== ' + ('Extreme' if ext else 'Crusader'))
     w = W(ext)
-    test_blacksmith(w)
+    test_blacksmith(w, ext)
     test_stables(w)
     test_firemen(w)
     test_unstuck(w)

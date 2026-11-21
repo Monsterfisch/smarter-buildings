@@ -157,7 +157,7 @@ options:
   display: UCP2Switch
   contents:
     type: boolean
-    value: true
+    value: false
   header: '{{maces}}'
   text: '{{maces_tooltip}}'
   category:

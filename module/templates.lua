@@ -106,11 +106,13 @@ ret 4
 -- those in its stalls plus its knights (KNIGHTS, recounted every 64 ticks). Up to NORMAL of them
 -- breed in BASE ticks, each further one takes FACTOR times as long, up to SLOWEST.
 templates.breedLimit = [[
-mov edx,[esp+4]
-imul ecx,edx,0x32C
-movzx eax,byte [ecx+BUILDINGS+0x297]
-add eax,[KNIGHTS+edx*4]
 mov ecx,[BASE]
+cmp dword [NORMAL],0
+je l_done
+mov edx,[esp+4]
+imul eax,edx,0x32C
+movzx eax,byte [eax+BUILDINGS+0x297]
+add eax,[KNIGHTS+edx*4]
 sub eax,[NORMAL]
 jl l_done
 inc eax
@@ -137,6 +139,8 @@ templates.breeding = [[
 pushad
 cmp edi,2000
 jae h_later
+cmp dword [NORMAL],0
+je h_known
 mov eax,[TICKS]
 add eax,edi
 and eax,63
