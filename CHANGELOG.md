@@ -10,8 +10,9 @@ Earlier versions are described in the commit messages (`<version> - <what change
   slowdown count those knights again after a save is loaded or the game is restarted. Before,
   the count lived only in memory, so after a reload a stable showed 0 in use while its knights
   were still alive.
-- **One-time gap for older saves:** knights hired with 1.0.11 or earlier were not tied to their
-  stable, so they stay uncounted for as long as they live. Their stable shows them neither as
+- **One-time gap for older saves:** knights hired with 1.0.11 or earlier, or with a preview
+  build of 1.0.12 from before this fix, were not tied to their stable, so they stay uncounted
+  for as long as they live. Their stable shows them neither as
   "in use" nor in its breeding slowdown. Knights hired from now on are counted, also after
   reloading.
 - New blacksmiths keep the game's sword default; maces are an opt-in setting.
