@@ -35,13 +35,11 @@ def run(ext):
     bid = 5
     b = w.building(bid, 35, 1, 60, 60, 1234)
     H.put8(b + 0x297, 4)
-    knight_horse = w.call_target(w.recruit + 0xE)
     for k, unit in enumerate((20, 21, 22)):
-        w.make_unit(unit, 1, 1, 61, 61, 5000 + k)
+        w.make_unit(unit, w.KNIGHT, 1, 61, 61, 5000 + k)
         H.put8(b + 0x297, 4)
-        H.run(knight_horse, regs={'ecx': w.GAMESTATE}, stack=[1, unit])
+        w.recruit_horse(unit)
     H.put32(w.SELECTED, bid)
-    H.put16(w.unit(22) + 0x8C, 0)            # one of the three knights died
 
     def draw():
         calls.clear()
@@ -50,6 +48,12 @@ def run(ext):
         check('stack balanced', cpu.r['esp'], 0x70100000)
         return calls
 
+    c = draw()
+    check('three knights out: available and in use', [x[1][0] for x in c if x[0] == 'number'], [3, 3])
+    H.callbacks[b'smarter-buildings'][b'deserialize']()   # a save loaded: the module's memory is new
+    c = draw()
+    check('after loading the save: still three in use', [x[1][0] for x in c if x[0] == 'number'], [3, 3])
+    H.put16(w.unit(22) + 0x8C, 3)            # one of the three knights dies
     c = draw()
     nums = [x[1][0] for x in c if x[0] == 'number']
     check('available and in use', nums, [3, 2])

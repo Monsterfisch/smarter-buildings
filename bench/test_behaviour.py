@@ -59,12 +59,35 @@ class W:
         mi = E.find('8B 56 10 8B 46 4C 8B 4E 0C 52 8B 50 08 03 56 08 8B 40 04 03 46 04 51 52 50 B9 ? ? ? ? E8')[0]
         self.MOUSE = u(mi + 0x1A)
         self.BX = u(self.rren + 0xE1)
+        # euroRecruit round the horse call: push unit / push player / call / the answer is stored
+        # as the knight's stable (unit +0x3D6) and that stable's uid as +0x3E0
+        r = self.recruit
+        assert E.bytes_(r + 7, 2) == b'\x55\x57', E.bytes_(r + 7, 2).hex()
+        assert E.bytes_(r + 0x13, 7) == b'\x66\x89\x86' + struct.pack('<I', 0x614 + 0x3D6)
+        assert E.bytes_(r + 0x1A, 8) == b'\x69\xC0\x2C\x03\x00\x00\x8B\x90'
+        assert E.u32(r + 0x22) == self.B + 0xD8
+        assert E.bytes_(r + 0x26, 6) == b'\x89\x96' + struct.pack('<I', 0x614 + 0x3E0)
+        self.KNIGHT = 0x1C
         # a small map: rows of 400 tiles
         for y in range(400):
             H.put32(self.ROWS + y * 12, y * 400)
         H.put32(self.BS + 8, 40)          # building slots in use
         H.put32(self.US, 60)              # unit slots in use
         H.put32(self.TICKS, 1000)
+
+    def recruit_horse(self, unit, player=1):
+        """Runs the game's own euroRecruit lines round the (redirected) horse call for a new
+        knight, so the game itself ties him to the stable the call answers."""
+        return self.H.run(self.recruit + 7, until=self.recruit + 0x2C,
+                          regs={'ebp': unit, 'edi': player, 'esi': self.US + unit * 0x490})
+
+    def count_knights(self):
+        """The module's countKnights, from the call in its breeding code (push edi / call)."""
+        site = self.E.find('66 01 9E ? ? ? ? 0F B7 86 ? ? ? ? 66 3D 26 02 7E ?')[0]
+        code = self.jump_target(site)
+        i = self.H.m.read(code, 64).find(b'\x57\xE8')
+        assert i >= 0
+        return self.call_target(code + i + 1)
 
     def bld(self, i):
         return self.B + i * 0x32C
@@ -114,12 +137,19 @@ def test_stables(w):
     H.put16(horses, 4)
     wrapper = w.call_target(w.recruit + 0xE)
     cpu = H.run(wrapper, regs={'ecx': w.GAMESTATE}, stack=[1, 7])
-    check('the knight is not tied to the stable', cpu.r['eax'], 0)
+    check('the call answers the stable', cpu.r['eax'], 5)
     check('the stall is free (horses in the stable)', H.m.read(b + 0x297, 1)[0], 3)
     check('no stall kept for the knight', H.m.read(b + 0x2A7, 1)[0], 0)
     check('the knight is not listed in the stable', [H.u16(b + 0x2E0 + 2 * k) for k in range(4)], [0, 0, 0, 0])
     check('one horse fewer to recruit with', H.u16(horses), 3)
     check('stack balanced', cpu.r['esp'], 0x70100000)
+    # the game's own recruit lines round the call tie the next knight to the stable
+    k = w.make_unit(9, w.KNIGHT, 1, 61, 61, 1009)
+    H.put8(b + 0x297, 4)
+    cpu = w.recruit_horse(9)
+    check('the game ties the knight to the stable', (H.u16(k + 0x3D6), H.u32(k + 0x3E0)), (5, 1234))
+    check('his stall is free too', [H.u16(b + 0x2E0 + 2 * s) for s in range(4)], [0, 0, 0, 0])
+    check('stack balanced (recruit)', cpu.r['esp'], 0x70100000 - 4)
     # a stable without free horses: nothing to take
     H.put8(b + 0x297, 0)
     cpu = H.run(wrapper, regs={'ecx': w.GAMESTATE}, stack=[1, 8])
@@ -546,7 +576,6 @@ def test_breeding(ext):
     breed, wait = site + 20, site + 20 + E.data[E.va2off(site + 19)]
     bid = 5
     b = w.building(bid, 35, 1, 60, 60, 1234)
-    knight_horse = w.call_target(w.recruit + 0xE)
     where = []
 
     def stopper(name):
@@ -575,16 +604,19 @@ def test_breeding(ext):
     H.put8(b + 0x297, 3)
     check('three horses: normal time', ticks_to_breed(t), 551)
     for k, unit in enumerate((20, 21, 22, 23)):
-        w.make_unit(unit, 1, 1, 61, 61, 5000 + k)
+        w.make_unit(unit, w.KNIGHT, 1, 61, 61, 5000 + k)
         H.put8(b + 0x297, 4)
-        H.run(knight_horse, regs={'ecx': w.GAMESTATE}, stack=[1, unit])
+        w.recruit_horse(unit)
     check('stall freed for every knight', H.m.read(b + 0x297, 1)[0], 3)
     H.put8(b + 0x297, 1)
     check('5 alive: 9x the time', ticks_to_breed(t), 4951)
     H.put8(b + 0x297, 0)
     check('4 alive (all knights): 3x', ticks_to_breed(t), 1651)
-    H.put16(w.unit(20) + 0x8C, 0)            # a knight died
-    H.put32(w.unit(21) + 0x98, 99999)        # a knight's slot reused by another unit
+    H.callbacks[b'smarter-buildings'][b'deserialize']()   # a save loaded: the module's memory is new
+    check('4 alive after loading the save: 3x', ticks_to_breed(t), 1651)
+    H.put16(w.unit(20) + 0x8C, 3)            # a knight dies (the game marks him dying)
+    H.m.write(w.unit(21), b'\0' * 0x490)     # a knight's slot reused: the game clears it, then
+    w.make_unit(21, 0x4A, 1, 61, 61, 99999)  # a horse archer gets it
     check('2 alive after deaths: normal again', ticks_to_breed(t), 551)
     H.put8(b + 0x297, 3)
     check('5 alive again: 9x', ticks_to_breed(t), 4951)
@@ -617,6 +649,119 @@ def test_breeding(ext):
         check('config %r' % cfg, n, want)
 
 
+def test_knight_count(ext):
+    print(" knights counted from the game's own tie")
+    w = W(ext); H = w.H
+    count = w.count_knights()
+    S, S2 = 5, 6
+    b = w.building(S, 35, 1, 60, 60, 1234)
+    w.building(S2, 35, 1, 70, 60, 2345)
+
+    def knights(stable):
+        cpu = H.run(count, stack=[stable])
+        check('stack balanced (count %d)' % stable, cpu.r['esp'], 0x70100000)
+        return cpu.r['eax']
+
+    def tied(unit, utype, uid, state=2, stable=S, stable_uid=1234):
+        u = w.make_unit(unit, utype, 1, 61, 61, uid)
+        H.put16(u + 0x8C, state)
+        H.put16(u + 0x3D6, stable)
+        H.put32(u + 0x3E0, stable_uid)
+        return u
+
+    check('no knights yet', knights(S), 0)
+    for k, unit in enumerate((20, 21, 22)):
+        w.make_unit(unit, w.KNIGHT, 1, 61, 61, 5000 + k)
+        H.put8(b + 0x297, 4)
+        w.recruit_horse(unit)
+    check('three knights hired', knights(S), 3)
+    H.callbacks[b'smarter-buildings'][b'deserialize']()
+    check('three knights after loading the save', knights(S), 3)
+    tied(30, 0x4A, 6000)                         # a horse archer: same two fields, his own use
+    tied(31, 0x1E, 6001)                         # unit type 0x1E stores a building there too
+    tied(32, w.KNIGHT, 6002, state=3)            # a knight dying
+    tied(33, w.KNIGHT, 6003, stable_uid=999)     # tied to the stable that stood here before
+    tied(34, w.KNIGHT, 6004, stable=S2, stable_uid=2345)
+    tied(70, w.KNIGHT, 6070)                     # beyond the unit slots in use (60)
+    check('other units, the dying and old ties not counted', knights(S), 3)
+    check("the other stable's knight", knights(S2), 1)
+    tied(35, w.KNIGHT, 6005)
+    H.put16(b + 0x2E2, 35); H.put32(b + 0x2EC, 6005)
+    check('a knight in a stall is left to the game (stalls kept)', knights(S), 3)
+    H.put32(b + 0x2EC, 1)
+    check('a stall of an earlier unit in his slot does not hide him', knights(S), 4)
+
+
+def test_knight_death(ext):
+    print(' a knight dies: the game frees no wrong stall')
+    w = W(ext); H = w.H; E = w.E
+    # the unit removal (thiscall UnitsState, unit): a knight with a stable tie calls the stall
+    # release for it; the knight's own update calls the same release when he dies
+    kill = E.find('8B 54 24 04 8B C2 69 C0 90 04 00 00 53 56 8D 34 08 33 DB 66 83 BE A2 06 00 00 1C 75 33 '
+                  '0F B7 86 EA 09 00 00')
+    die = E.find('0F B7 86 ? ? ? ? 66 85 C0 74 25 8B 8E ? ? ? ? 0F BF C0 8B D0 69 D2 2C 03 00 00 3B 8A ? ? ? ? '
+                 '75 0C 53 50 B9 ? ? ? ? E8')
+    check('one removal path, one death path', (len(kill), len(die)), (1, 1))
+    kill, die = kill[0], die[0]
+    release = w.call_target(kill + 0x4B)
+    check('both call the same stall release', w.call_target(die + 0x2C), release)
+    count = w.count_knights()
+    S, S2 = 5, 6
+    b = w.building(S, 35, 1, 60, 60, 1234)
+    b2 = w.building(S2, 35, 1, 70, 60, 2345)
+
+    def holder(stable, bld, stall, unit, uid, stable_uid):
+        u = w.make_unit(unit, w.KNIGHT, 1, 61, 61, uid)
+        H.put16(u + 0x3D6, stable); H.put32(u + 0x3E0, stable_uid)
+        H.put16(bld + 0x2E0 + 2 * stall, unit); H.put32(bld + 0x2E8 + 4 * stall, uid)
+        H.put8(bld + 0x2A7, H.m.read(bld + 0x2A7, 1)[0] + 1)
+        return u
+
+    # knights hired without the module hold a stall: two at S, one at S2
+    holder(S, b, 0, 30, 3000, 1234)
+    holder(S, b, 1, 31, 3100, 1234)
+    holder(S2, b2, 0, 32, 3200, 2345)
+    H.put8(b2 + 0x297, 2)
+    for k, unit in enumerate((20, 21, 22)):
+        w.make_unit(unit, w.KNIGHT, 1, 61, 61, 5000 + k)
+        H.put8(b + 0x297, 4)
+        w.recruit_horse(unit)
+
+    def state():
+        return ([(H.u16(b + 0x2E0 + 2 * s), H.u32(b + 0x2E8 + 4 * s)) for s in range(4)],
+                H.m.read(b + 0x2A7, 1)[0], H.m.read(b + 0x297, 1)[0],
+                [(H.u16(b2 + 0x2E0 + 2 * s), H.u32(b2 + 0x2E8 + 4 * s)) for s in range(4)],
+                H.m.read(b2 + 0x2A7, 1)[0], H.m.read(b2 + 0x297, 1)[0])
+
+    def knights(stable):
+        return H.run(count, stack=[stable]).r['eax']
+
+    s_stalls = [(30, 3000), (31, 3100), (0, 0), (0, 0)]
+    s2 = ([(32, 3200), (0, 0), (0, 0), (0, 0)], 1, 2)
+    check('hired: the stalls of the earlier knights kept', state(), (s_stalls, 2, 3) + s2)
+    check('hired: three of ours', knights(S), 3)
+    # ours dies through the removal path: nothing to free, S and S2 untouched
+    H.run(kill, until=kill + 0x50, regs={'ecx': w.US}, stack=[21])
+    H.put16(w.unit(21) + 0x8C, 3)            # the game marks him dying next
+    check('removal: no stall freed', state(), (s_stalls, 2, 3) + s2)
+    check('removal: two of ours left', knights(S), 2)
+    # ours dies in his own update: nothing freed either
+    H.run(die, until=die + 0x31, regs={'esi': 22 * 0x490, 'ebx': 22})
+    H.put16(w.unit(22) + 0x8C, 3)
+    check('death: no stall freed', state(), (s_stalls, 2, 3) + s2)
+    check('death: one of ours left', knights(S), 1)
+    # an earlier knight dies: the game frees his own stall, and only his
+    H.run(die, until=die + 0x31, regs={'esi': 30 * 0x490, 'ebx': 30})
+    H.put16(w.unit(30) + 0x8C, 3)
+    check('earlier knight: only his stall freed', state(),
+          ([(0, 0), (31, 3100), (0, 0), (0, 0)], 1, 3) + s2)
+    check('earlier knight: ours still one', knights(S), 1)
+    # a knight saved by 1.0.12 has no tie: nothing happens
+    w.make_unit(23, w.KNIGHT, 1, 61, 61, 5003)
+    H.run(kill, until=kill + 0x50, regs={'ecx': w.US}, stack=[23])
+    check('untied knight: nothing freed', state(), ([(0, 0), (31, 3100), (0, 0), (0, 0)], 1, 3) + s2)
+
+
 if __name__ == '__main__':
   for ext in (False, True):
     print('== ' + ('Extreme' if ext else 'Crusader'))
@@ -631,4 +776,6 @@ if __name__ == '__main__':
     test_buildings(w)
     test_off(ext)
     test_breeding(ext)
+    test_knight_count(ext)
+    test_knight_death(ext)
   print('%d checks, %d failed' % (COUNT[0], len(FAILS)))
