@@ -22,7 +22,9 @@
      repair too, once per interval (AIC field BuildingRepairInterval) while they have more
      gold than BuildingRepairMinimumGold.
   7. A knight takes his horse away with him: the stall is free at once and the stable breeds
-     a new horse, instead of keeping the stall for as long as the knight lives.
+     a new horse, instead of keeping the stall for as long as the knight lives. The knight
+     stays tied to his stable the game's own way, so the stable still counts him after a
+     reload.
 
   Every address is found by pattern scan or read out of the instruction that uses it, so the
   module runs on Stronghold Crusader.exe and Stronghold_Crusader_Extreme.exe alike.
@@ -67,7 +69,8 @@ local BUILDING_INSIDE_UNITS = 0x2E0
 local AOB_HORSE_BREEDING = "66 01 9E ? ? ? ? 0F B7 86 ? ? ? ? 66 3D 26 02 7E ?"
 local HORSE_BREEDING_SIZE = 20
 local HORSE_BREEDING_TIME = 16                -- the immediate of cmp ax, 0x226
-local ORIGIN_SLOTS = 10000               -- unit slots remembered (12 bytes each)
+local KNIGHT = 0x1C                           -- unit type (+0x8E) of a knight
+local UNIT_ALIVE = 2                          -- unit +0x8C of a living unit (the game's own test)
 -- RenderBuildingMenu_Stables: "n horses available" / "n in use".
 local AOB_STABLE_PANEL = "A1 ? ? ? ? 8B 0D ? ? ? ? 56 8B 35 ? ? ? ? 6A 00 6A 00 6A 10 6A 00 6A 00 05 D3 01 "
   .. "00 00 50 83 C1 19 51 6A 00 6A 35"
@@ -363,8 +366,7 @@ local function patchStables(v)
   if slots - BUILDING_INSIDE_UNITS ~= v.BUILDINGS then
     error(MODULE_NAME .. ": the building layout is not the one this module knows")
   end
-  local wrapper = assemble(templates.stables, { LINKAGE = linkage, BUILDINGS = v.BUILDINGS,
-    UNITS = v.UNITS, ORIGINS = v.ORIGINS, ORIGIN_SLOTS = ORIGIN_SLOTS })
+  local wrapper = assemble(templates.stables, { LINKAGE = linkage, BUILDINGS = v.BUILDINGS })
   redirectCall(site, KNIGHT_HORSE_CALL, wrapper, "where a knight takes a horse")
 end
 
@@ -390,8 +392,8 @@ local function patchHorseBreeding(v, config, panel)
     SLOWEST = data + 12,
     KNIGHTS = data + 16,
     COUNTERS = data + 16 + 2000 * 4,
-    ORIGINS = v.ORIGINS,
-    ORIGIN_SLOTS = ORIGIN_SLOTS,
+    KNIGHT = KNIGHT,
+    ALIVE = UNIT_ALIVE,
     UNITS = v.UNITS,
     UNITS_STATE = v.UNITS - 0x614,
     BUILDINGS = v.BUILDINGS,
@@ -1029,8 +1031,6 @@ local function enable(self, config)
   end
   v.worldScratch = {}
   if stables then
-    v.ORIGINS = core.allocate(ORIGIN_SLOTS * 12, true)
-    v.worldScratch[#v.worldScratch + 1] = { v.ORIGINS, ORIGIN_SLOTS * 12 }
     patchStables(v)
     patchHorseBreeding(v, config, setting(config, "stables", "panel"))
   end

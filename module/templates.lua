@@ -4,9 +4,10 @@ local templates = {}
 
 -- Stables: wraps the call in euroRecruit that ties a new knight to a stable's horse
 -- (thiscall on GameState, args player, unit, ret 8). The horse leaves the stable with the
--- knight: its stall is emptied, so the stable breeds a new one, and the knight is not tied
--- to the stable any more (the call answers 0). ORIGINS keeps, per unit slot, which stable
--- (id, unit uid, stable uid) the knight's horse came from, for the breeding time.
+-- knight: its stall is emptied, so the stable breeds a new one. The call still answers the
+-- stable, so the game ties the knight to it as before (unit +0x3D6 = stable, +0x3E0 = its uid,
+-- kept in the save); countKnights reads that tie. When a knight dies the game only frees a
+-- stall that holds him, so freeing his stall here leaves nothing for it to free.
 templates.stables = [[
 push dword [esp+8]
 push dword [esp+8]
@@ -21,18 +22,11 @@ mov ecx,[esp+0x10]
 xor esi,esi
 s_loop:
 cmp word [ebx+esi*2+0x2E0],cx
-jne s_next
-cmp ecx,ORIGIN_SLOTS
-jae s_free
-lea edx,[ecx+ecx*2]
-mov [ORIGINS+edx*4],eax
-push eax
-imul eax,ecx,0x490
-mov eax,[eax+UNITS+0x98]
-mov [ORIGINS+edx*4+4],eax
-pop eax
-push dword [ebx+0xD8]
-pop dword [ORIGINS+edx*4+8]
+je s_free
+inc esi
+cmp esi,4
+jb s_loop
+jmp s_tied
 s_free:
 mov word [ebx+esi*2+0x2E0],0
 mov dword [ebx+esi*4+0x2E8],0
@@ -41,25 +35,21 @@ jle s_animals
 dec byte [ebx+0x2A7]
 s_animals:
 cmp byte [ebx+0x297],0
-jle s_unlinked
+jle s_tied
 dec byte [ebx+0x297]
-s_unlinked:
-pop esi
-pop ebx
-xor eax,eax
-ret 8
-s_next:
-inc esi
-cmp esi,4
-jb s_loop
+s_tied:
 pop esi
 pop ebx
 s_done:
 ret 8
 ]]
 
--- countKnights(stable), stdcall: the knights alive that took a horse from this stable (ORIGINS
--- per unit slot: stable, unit uid, stable uid).
+-- countKnights(stable), stdcall: the stable's knights alive that rode its horse out - read from
+-- the game's own tie, so it holds after a reload: units alive (+0x8C = ALIVE, the game's own
+-- test) of type KNIGHT whose +0x3D6 is this stable and +0x3E0 its uid. A knight still in one of
+-- its four stalls (+0x2E0 unit, +0x2E8 unit uid) is left out: the game counts him already (the
+-- stalls kept). Other units (horse archers, engineers) use the same two fields for their own
+-- buildings, hence the type.
 templates.countKnights = [[
 push ebx
 push esi
@@ -67,30 +57,36 @@ push edi
 push ebp
 mov edi,[esp+0x14]
 imul ebp,edi,0x32C
-mov ebp,[ebp+BUILDINGS+0xD8]
+add ebp,BUILDINGS
 xor ebx,ebx
-mov ecx,[UNITS_STATE]
-cmp ecx,ORIGIN_SLOTS
-jbe k_slots
-mov ecx,ORIGIN_SLOTS
-k_slots:
+mov esi,UNITS+0x490
 mov edx,1
 k_loop:
-cmp edx,ecx
+cmp edx,[UNITS_STATE]
 jge k_done
-lea eax,[edx+edx*2]
-cmp [ORIGINS+eax*4],edi
+cmp word [esi+0x8C],ALIVE
 jne k_next
-cmp [ORIGINS+eax*4+8],ebp
+cmp word [esi+0x8E],KNIGHT
 jne k_next
-imul esi,edx,0x490
-cmp word [esi+UNITS+0x8C],0
+cmp word [esi+0x3D6],di
+jne k_next
+mov eax,[esi+0x3E0]
+cmp eax,[ebp+0xD8]
+jne k_next
+xor eax,eax
+k_stall:
+cmp word [ebp+eax*2+0x2E0],dx
+jne k_other
+mov ecx,[ebp+eax*4+0x2E8]
+cmp ecx,[esi+0x98]
 je k_next
-mov esi,[esi+UNITS+0x98]
-cmp esi,[ORIGINS+eax*4+4]
-jne k_next
+k_other:
+inc eax
+cmp eax,4
+jb k_stall
 inc ebx
 k_next:
+add esi,0x490
 inc edx
 jmp k_loop
 k_done:
