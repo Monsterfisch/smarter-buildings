@@ -750,22 +750,22 @@ def test_knight_death(ext):
     H.put16(w.unit(22) + 0x8C, 3)
     check('death: no stall freed', state(), (s_stalls, 2, 3) + s2)
     check('death: one of ours left', knights(S), 1)
-    # an earlier knight dies: the game frees his own stall, and only his
+    # an earlier knight dies: the game frees his own stall, and only his, and his horse is gone
     H.run(die, until=die + 0x31, regs={'esi': 30 * 0x490, 'ebx': 30})
     H.put16(w.unit(30) + 0x8C, 3)
-    check('earlier knight: only his stall freed', state(),
-          ([(0, 0), (31, 3100), (0, 0), (0, 0)], 1, 3) + s2)
+    check('earlier knight: only his stall and horse freed', state(),
+          ([(0, 0), (31, 3100), (0, 0), (0, 0)], 1, 2) + s2)
     check('earlier knight: ours still one', knights(S), 1)
     # a knight hired with 1.0.11 or earlier has no tie: nothing happens
     w.make_unit(23, w.KNIGHT, 1, 61, 61, 5003)
     H.run(kill, until=kill + 0x50, regs={'ecx': w.US}, stack=[23])
-    check('untied knight: nothing freed', state(), ([(0, 0), (31, 3100), (0, 0), (0, 0)], 1, 3) + s2)
+    check('untied knight: nothing freed', state(), ([(0, 0), (31, 3100), (0, 0), (0, 0)], 1, 2) + s2)
 
 
 def test_tie_check(ext):
     print(" the knight's tie is checked at load")
-    import lupa
-    off = {'doors': {'dynamic': False, 'storage': False, 'unstuck': False}, 'firemen': {'spread': False},
+    import lupa.lua54 as lupa
+    off ={'doors': {'dynamic': False, 'storage': False, 'unstuck': False}, 'firemen': {'spread': False},
            'repair': {'button': False, 'gold': False, 'fire_blocks': False, 'ai': False},
            'farms': {'dairy_scrub': False, 'ground_overlay': False, 'keep_cows': False},
            'ai': {'decorations': False}, 'hunters': {'tannery': False}}
