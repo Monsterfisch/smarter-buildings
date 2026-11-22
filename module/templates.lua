@@ -46,7 +46,8 @@ ret 8
 
 -- countKnights(stable), stdcall: the stable's knights alive that rode its horse out - read from
 -- the game's own tie, so it holds after a reload: units alive (+0x8C = ALIVE, the game's own
--- test) of type KNIGHT whose +0x3D6 is this stable and +0x3E0 its uid. A knight still in one of
+-- test) of type KNIGHT whose STABLE (+0x3D6) is this stable and STABLE_UID (+0x3E0) its uid,
+-- both checked against euroRecruit's stores at load. A knight still in one of
 -- its four stalls (+0x2E0 unit, +0x2E8 unit uid) is left out: the game counts him already (the
 -- stalls kept). Other units (horse archers, engineers) use the same two fields for their own
 -- buildings, hence the type.
@@ -68,9 +69,9 @@ cmp word [esi+0x8C],ALIVE
 jne k_next
 cmp word [esi+0x8E],KNIGHT
 jne k_next
-cmp word [esi+0x3D6],di
+cmp word [esi+STABLE],di
 jne k_next
-mov eax,[esi+0x3E0]
+mov eax,[esi+STABLE_UID]
 cmp eax,[ebp+0xD8]
 jne k_next
 xor eax,eax

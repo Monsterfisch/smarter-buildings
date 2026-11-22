@@ -60,6 +60,16 @@ local BLACKSMITH_SWORDS = { 0x1A, 0x1F }
 -- euroRecruit, where a new knight is tied to a stable: call linkageBetweenHorseUnitAndStable.
 local AOB_KNIGHT_HORSE = "83 7C 24 18 FF 75 25 55 57 B9 ? ? ? ? E8 ? ? ? ? 66 89 86"
 local KNIGHT_HORSE_CALL = 0x0E
+-- Right after the call euroRecruit ties the knight to the stable it answers (esi = UnitsState +
+-- unit * 0x490, the units array starts 0x614 in): mov [esi+stable],ax / imul eax,eax,0x32C /
+-- mov edx,[eax+buildings+uid] / mov [esi+stable uid],edx. countKnights reads those two fields.
+local KNIGHT_TIE = {
+  stable = { 0x13, { 0x66, 0x89, 0x86 } },
+  buildingUid = { 0x1A, { 0x69, 0xC0, 0x2C, 0x03, 0x00, 0x00, 0x8B, 0x90 } },
+  stableUid = { 0x26, { 0x89, 0x96 } },
+}
+local UNIT_STABLE = 0x3D6                     -- word: the knight's stable
+local UNIT_STABLE_UID = 0x3E0                 -- dword: that stable's uid
 local AOB_HORSE_LINKAGE = "53 8B 1D ? ? ? ? 55 56 BE 01 00 00 00 3B DE 57 8B E9"
 local LINKAGE_SLOTS = { 0x8B, { 0x8D, 0x91 } }   -- lea edx, [ecx + buildings + insideUnitID]
 local BUILDING_INSIDE_UNITS = 0x2E0
@@ -366,6 +376,12 @@ local function patchStables(v)
   if slots - BUILDING_INSIDE_UNITS ~= v.BUILDINGS then
     error(MODULE_NAME .. ": the building layout is not the one this module knows")
   end
+  local purpose = "where a knight is tied to his stable"
+  if readOperand(site, KNIGHT_TIE.stable, purpose) ~= 0x614 + UNIT_STABLE
+    or readOperand(site, KNIGHT_TIE.buildingUid, purpose) ~= v.BUILDINGS + 0xD8
+    or readOperand(site, KNIGHT_TIE.stableUid, purpose) ~= 0x614 + UNIT_STABLE_UID then
+    error(MODULE_NAME .. ": the knight is not tied to his stable the way this module knows")
+  end
   local wrapper = assemble(templates.stables, { LINKAGE = linkage, BUILDINGS = v.BUILDINGS })
   redirectCall(site, KNIGHT_HORSE_CALL, wrapper, "where a knight takes a horse")
 end
@@ -394,6 +410,8 @@ local function patchHorseBreeding(v, config, panel)
     COUNTERS = data + 16 + 2000 * 4,
     KNIGHT = KNIGHT,
     ALIVE = UNIT_ALIVE,
+    STABLE = UNIT_STABLE,
+    STABLE_UID = UNIT_STABLE_UID,
     UNITS = v.UNITS,
     UNITS_STATE = v.UNITS - 0x614,
     BUILDINGS = v.BUILDINGS,
