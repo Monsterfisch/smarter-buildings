@@ -756,10 +756,35 @@ def test_knight_death(ext):
     check('earlier knight: only his stall freed', state(),
           ([(0, 0), (31, 3100), (0, 0), (0, 0)], 1, 3) + s2)
     check('earlier knight: ours still one', knights(S), 1)
-    # a knight saved by 1.0.12 has no tie: nothing happens
+    # a knight hired with 1.0.11 or earlier has no tie: nothing happens
     w.make_unit(23, w.KNIGHT, 1, 61, 61, 5003)
     H.run(kill, until=kill + 0x50, regs={'ecx': w.US}, stack=[23])
     check('untied knight: nothing freed', state(), ([(0, 0), (31, 3100), (0, 0), (0, 0)], 1, 3) + s2)
+
+
+def test_tie_check(ext):
+    print(" the knight's tie is checked at load")
+    import lupa
+    off = {'doors': {'dynamic': False, 'storage': False, 'unstuck': False}, 'firemen': {'spread': False},
+           'repair': {'button': False, 'gold': False, 'fire_blocks': False, 'ai': False},
+           'farms': {'dairy_scrub': False, 'ground_overlay': False, 'keep_cows': False},
+           'ai': {'decorations': False}, 'hunters': {'tannery': False}}
+    for label, offset, value in (('stable field', 0x16, 0x614 + 0x3D8),
+                                 ('stable uid field', 0x28, 0x614 + 0x3E4),
+                                 ('building uid', 0x22, None)):
+        H = Host(extreme=ext, config=off)
+        r = H.E.find('83 7C 24 18 FF 75 25 55 57 B9 ? ? ? ? E8 ? ? ? ? 66 89 86')[0]
+        H.m.write(r + 0xE, H.E.bytes_(r + 0xE, 5))       # the game's own call again
+        site = H.E.find('66 01 9E ? ? ? ? 0F B7 86 ? ? ? ? 66 3D 26 02 7E ?')[0]
+        H.m.write(site, H.E.bytes_(site, 20))             # and its own breeding code
+        H.m.write(r + offset, struct.pack('<I', value if value is not None else H.E.u32(r + offset) + 4))
+        try:
+            H.mod[b'enable'](H.mod, H.to_lua(off))
+            got = 'loaded'
+        except lupa.LuaError as e:
+            got = 'refused' if b'tied to his stable' in (e.args[0] if isinstance(e.args[0], bytes)
+                                                         else str(e).encode()) else str(e)
+        check('a different %s is refused' % label, got, 'refused')
 
 
 if __name__ == '__main__':
@@ -778,4 +803,5 @@ if __name__ == '__main__':
     test_breeding(ext)
     test_knight_count(ext)
     test_knight_death(ext)
+    test_tie_check(ext)
   print('%d checks, %d failed' % (COUNT[0], len(FAILS)))
