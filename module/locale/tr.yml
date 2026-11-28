@@ -1,0 +1,59 @@
+dynamic: Kapı tıkalıysa başka bir kapı kullan
+dynamic_tooltip: İşçiler alışıldık kapıları tıkalı olduğunda erişilebilir başka bir kapıyı kullanır.
+storage: Ambar ve cephanelik kapılarını da taşı
+storage_tooltip: Tıkalı olduğunda ambar ve cephanelik girişlerinin yer değiştirmesine izin verir.
+unstuck: Kapıda takılı kalmış işçileri yeniden yönlendir
+unstuck_tooltip: Tıkalı bir girişte zaten takılı kalmış işçiler başka bir rota dener.
+button: Hasarlı binalarda Onar düğmesini göster
+button_tooltip: Hasarlı bir binayı seçip panelindeki Onar’a tıklayın ya da maliyeti görmek için oyun yardımı açıkken Onar’ın üzerine gelin.
+gold: Onarımlar altın da gerektirir
+gold_tooltip: Bina onarımları normal malzemelerin yanında altın da ister.
+fire_blocks: Yanarken onarımı engelle
+fire_blocks_tooltip: Onarmadan önce binadaki yangının sönmesi gerekir.
+ai: Yapay zekâ
+ai_tooltip: Yapay zekâ lordları karşılayabildiklerinde hasarlı binaları düzenli olarak onarır.
+ai_damage: Yapay zekânın onarıma başlama hasarı (yüzde)
+ai_interval: Yapay zekâ onarım aralığı (saniye)
+ai_minimum_gold: Yapay zekâ yalnızca bu altından fazlası varken onarır
+firemen: İtfaiyecileri yangınlara dağıt
+firemen_tooltip: İtfaiyeciler ayrı yangınları söndürmeye çalışır.
+maces: Yeni demirciler varsayılan olarak gürz üretir
+maces_tooltip: Üretimi değiştirmek için demircinin normal panelini kullanın.
+breed: Şövalyelerin aldığı atları yenile
+breed_tooltip: Ahırlar, şövalyelerin aldığı atların yerine yenilerini yetiştirir.
+stable_panel: Atları ve sıradaki yeni atı göster
+stable_panel_tooltip: Atlarını ve sıradaki yeni atı görmek için bir ahır seçin.
+breed_seconds: Bir at yetiştirme süresi (saniye)
+slowdown: Daha fazla at hayattayken yetiştirmeyi yavaşlat
+slowdown_tooltip: Ahırların daha fazla atı hayatta kaldıkça yeni at yetiştirmesi daha uzun sürer.
+normal_horses: Yavaşlamadan önceki yaşayan at sayısı
+slowdown_factor: Her ek at için yavaşlama çarpanı
+slowest_seconds: En yavaş yetiştirme süresi (saniye)
+dairy_scrub: Seyrek çalılıkta mandıraya izin ver
+dairy_scrub_tooltip: Mandıralar seyrek çalılık araziye yerleştirilebilir.
+ground_overlay: Çiftlik için uygun olmayan zemini göster
+ground_overlay_tooltip: Bir çiftlik yerleştirirken önizleme uygun olmayan zemini işaretler.
+keep_cows: Çiftçisi ölünce inekleri koru
+keep_cows_tooltip: İnekler çiftçilerini kaybettiklerinde hayatta kalır.
+hunters_tannery: Avcılar tabakhanelerden karkas alabilsin
+hunters_tannery_tooltip: Avcılar geyik avlamanın yanı sıra tabakhanelerde depolanan karkasları da toplayabilir.
+ai_decorations: Üst üste binen yapay zekâ süslemelerini önle
+ai_decorations_tooltip: Yapay zekâ lordları süslemeleri boş karelere yerleştirir.
+balance_changes: Denge değişiklikleri
+bugfixes: Hata düzeltmeleri
+fixes: Düzeltmeler
+improvements: İyileştirmeler
+qol: Kullanım kolaylığı
+tags.behavior: Davranış
+tags.ai: Yapay zekâ
+tags.economy: Ekonomi
+tags.bugfixes: Hata düzeltmeleri
+tags.interface: Arayüz
+ai_repair: Yapay zekâ lordları binaları onarsın
+doors_group: Tıkalı kapılar
+cat_ai_building_repair: Bina yerleşimi ve onarımı
+cat_building_farming: İnşaat ve tarım
+cat_building_repair_qol: İnşaat ve onarım
+cat_buildings_placement: Binalar ve yerleşim
+cat_economy_controls: Ekonomi kontrolleri
+cat_economy_upkeep: Ekonomi ve bakım

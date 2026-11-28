@@ -1,0 +1,20 @@
+name: smarter-buildings-vanilla
+display-name: Smarter Buildings Vanilla
+author: Monsterfish
+version: 1.0.0
+type: plugin
+game:
+- SHC==1.41
+- SHCE==1.41
+family:
+- name: smarter-buildings
+  root: true
+  members:
+  - smarter-buildings-recommended
+  default: smarter-buildings-recommended
+meta:
+  version: 1.0.0
+dependencies:
+  framework: ^3.0.7
+  frontend: '>=1.0.17 <2.0.0'
+  smarter-buildings: ^1.0.13

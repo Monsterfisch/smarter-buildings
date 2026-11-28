@@ -1,0 +1,59 @@
+dynamic: Usar otra puerta si está bloqueada
+dynamic_tooltip: Los trabajadores usan otra puerta accesible cuando su entrada habitual está bloqueada.
+storage: Mover también las puertas de graneros y armerías
+storage_tooltip: Permite reubicar las entradas de graneros y armerías cuando están bloqueadas.
+unstuck: Redirigir trabajadores ya atascados en una puerta
+unstuck_tooltip: Los trabajadores que ya quedaron atrapados en una entrada bloqueada prueban otra ruta.
+button: Mostrar Reparar en edificios dañados
+button_tooltip: Selecciona un edificio dañado y haz clic en Reparar en su panel, o pasa el cursor por Reparar con la ayuda activada para ver el coste.
+gold: Las reparaciones también cuestan oro
+gold_tooltip: Reparar edificios cuesta oro además de los materiales habituales.
+fire_blocks: Impedir reparaciones mientras arde
+fire_blocks_tooltip: El fuego del edificio debe apagarse antes de repararlo.
+ai: IA
+ai_tooltip: Los señores de la IA reparan periódicamente sus edificios dañados cuando pueden pagarlo.
+ai_damage: La IA repara a partir de este daño (porcentaje)
+ai_interval: Intervalo de reparación de la IA (segundos)
+ai_minimum_gold: La IA solo repara con más oro que
+firemen: Repartir bomberos entre distintos incendios
+firemen_tooltip: Los bomberos intentan cubrir incendios separados.
+maces: Las herrerías nuevas fabrican mazas por defecto
+maces_tooltip: Usa el panel habitual de la herrería para cambiar la producción.
+breed: Reponer caballos tomados por caballeros
+breed_tooltip: Los establos crían reemplazos para los caballos tomados por caballeros.
+stable_panel: Mostrar caballos y próximo reemplazo
+stable_panel_tooltip: Selecciona un establo para ver sus caballos y el próximo reemplazo.
+breed_seconds: Tiempo para criar un caballo (segundos)
+slowdown: Ralentizar la cría cuantos más caballos sigan vivos
+slowdown_tooltip: Los establos tardan más en reponer caballos mientras más de sus caballos sigan vivos.
+normal_horses: Caballos vivos antes de ralentizar la cría
+slowdown_factor: Factor de ralentización por cada caballo adicional
+slowest_seconds: Tiempo de cría más lento (segundos)
+dairy_scrub: Permitir granjas lecheras en matorral ligero
+dairy_scrub_tooltip: Las granjas lecheras pueden colocarse sobre matorral fino.
+ground_overlay: Mostrar terreno inadecuado para granjas
+ground_overlay_tooltip: La vista previa marca el terreno inadecuado al colocar una granja.
+keep_cows: Conservar las vacas si muere su granjero
+keep_cows_tooltip: Las vacas sobreviven a la muerte de su granjero.
+hunters_tannery: Permitir que los cazadores recojan piezas de curtidurías
+hunters_tannery_tooltip: Los cazadores pueden recoger piezas almacenadas en curtidurías además de cazar ciervos.
+ai_decorations: Evitar decoraciones apiladas de la IA
+ai_decorations_tooltip: Los señores de la IA colocan decoraciones en casillas libres.
+balance_changes: Cambios de equilibrio
+bugfixes: Correcciones de errores
+fixes: Correcciones
+improvements: Mejoras
+qol: Comodidad de juego
+tags.behavior: Comportamiento
+tags.ai: IA
+tags.economy: Economía
+tags.bugfixes: Correcciones
+tags.interface: Interfaz
+ai_repair: Permitir que los señores de la IA reparen edificios
+doors_group: Puertas bloqueadas
+cat_ai_building_repair: Colocación y reparación de edificios
+cat_building_farming: Construcción y agricultura
+cat_building_repair_qol: Construcción y reparación
+cat_buildings_placement: Edificios y colocación
+cat_economy_controls: Controles económicos
+cat_economy_upkeep: Economía y mantenimiento

@@ -1,0 +1,62 @@
+meta:
+  version: 1.0.0
+config-sparse:
+  modules:
+    smarter-buildings:
+      config:
+        doors:
+          dynamic:
+            contents:
+              suggested-value: true
+          storage:
+            contents:
+              suggested-value: true
+          unstuck:
+            contents:
+              suggested-value: true
+        repair:
+          fire_blocks:
+            contents:
+              suggested-value: true
+          button:
+            contents:
+              suggested-value: true
+          gold:
+            contents:
+              suggested-value: true
+          ai:
+            contents:
+              suggested-value: true
+        firemen:
+          spread:
+            contents:
+              suggested-value: true
+        farms:
+          keep_cows:
+            contents:
+              suggested-value: true
+          ground_overlay:
+            contents:
+              suggested-value: true
+          dairy_scrub:
+            contents:
+              suggested-value: true
+        stables:
+          panel:
+            contents:
+              suggested-value: true
+          breed:
+            contents:
+              suggested-value: true
+          slowdown:
+            contents:
+              suggested-value: true
+        hunters:
+          tannery:
+            contents:
+              suggested-value: true
+        ai:
+          decorations:
+            contents:
+              suggested-value: true
+  plugins: {}

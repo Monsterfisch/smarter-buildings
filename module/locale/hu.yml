@@ -1,0 +1,59 @@
+dynamic: Másik ajtó használata elzáródáskor
+dynamic_tooltip: A munkások másik elérhető ajtót használnak, ha a megszokott bejáratuk el van zárva.
+storage: Magtár- és fegyvertár-bejáratok áthelyezése is
+storage_tooltip: Engedélyezi a magtár és a fegyvertár elzárt bejáratainak áthelyezését.
+unstuck: Ajtónál már elakadt munkások átirányítása
+unstuck_tooltip: Az elzárt bejáratnál már megakadt munkások másik útvonallal próbálkoznak.
+button: Javítás gomb megjelenítése sérült épületeken
+button_tooltip: Jelölj ki egy sérült épületet és kattints a Javítás gombra a paneljén, vagy vidd fölé a kurzort bekapcsolt súgóval a költség megtekintéséhez.
+gold: A javítás aranyba is kerül
+gold_tooltip: Az épületek javítása a szokásos nyersanyagok mellett aranyat is igényel.
+fire_blocks: Javítás tiltása tűz közben
+fire_blocks_tooltip: A tűznek el kell aludnia az épületen, mielőtt megjavítható lenne.
+ai: MI
+ai_tooltip: Az MI-lordok időnként megjavítják a sérült épületeiket, ha megengedhetik maguknak.
+ai_damage: MI javítási küszöb sérülés alapján (százalék)
+ai_interval: MI javítási időköz (másodperc)
+ai_minimum_gold: MI csak ennyi arany felett javít
+firemen: Tűzoltók szétosztása a tüzek között
+firemen_tooltip: A tűzoltók igyekeznek különálló tüzeket oltani.
+maces: Az új kovácsműhelyek alapértelmezésben buzogányt gyártanak
+maces_tooltip: A kovácsműhely megszokott paneljén válthatsz gyártást.
+breed: Lovagok által elvitt lovak pótlása
+breed_tooltip: Az istállók pótló lovakat tenyésztenek a lovagok által elvitt lovak helyére.
+stable_panel: Lovak és következő pótlás megjelenítése
+stable_panel_tooltip: Jelölj ki egy istállót a lovai és a következő pótlás megtekintéséhez.
+breed_seconds: Egy ló tenyésztési ideje (másodperc)
+slowdown: Lassabb tenyésztés, ha több ló marad életben
+slowdown_tooltip: Az istállók lassabban pótolják a lovakat, amíg több lovuk életben van.
+normal_horses: Élő lovak száma a lassulás előtt
+slowdown_factor: Lassulási szorzó minden további lónál
+slowest_seconds: Leglassabb tenyésztési idő (másodperc)
+dairy_scrub: Tejfarmok engedélyezése ritkás bozóton
+dairy_scrub_tooltip: A tejfarmok ritkás bozótos talajra is lehelyezhetők.
+ground_overlay: Alkalmatlan farmtalaj jelzése
+ground_overlay_tooltip: Az építési előnézet jelöli az alkalmatlan talajt farm elhelyezésekor.
+keep_cows: Tehenek megtartása a gazda halála után
+keep_cows_tooltip: A tehenek túlélik a gazdájuk elvesztését.
+hunters_tannery: A vadászok elvihessék a tetemeket a tímárműhelyekből
+hunters_tannery_tooltip: A vadászok a szarvasvadászat mellett a tímárműhelyekben tárolt tetemeket is begyűjthetik.
+ai_decorations: Egymásra rakott MI-díszítések megakadályozása
+ai_decorations_tooltip: Az MI-lordok szabad mezőkre helyezik a díszítéseket.
+balance_changes: Egyensúlymódosítások
+bugfixes: Hibajavítások
+fixes: Javítások
+improvements: Fejlesztések
+qol: Kényelmi funkciók
+tags.behavior: Viselkedés
+tags.ai: MI
+tags.economy: Gazdaság
+tags.bugfixes: Hibajavítások
+tags.interface: Felület
+ai_repair: Az MI-lordok javíthassanak épületeket
+doors_group: Elzárt ajtók
+cat_ai_building_repair: Épületek elhelyezése és javítása
+cat_building_farming: Építés és gazdálkodás
+cat_building_repair_qol: Építés és javítás
+cat_buildings_placement: Épületek és elhelyezés
+cat_economy_controls: Gazdasági vezérlés
+cat_economy_upkeep: Gazdaság és fenntartás

@@ -1,0 +1,59 @@
+dynamic: Bei blockierter Tür einen anderen Eingang nutzen
+dynamic_tooltip: Arbeiter nutzen eine andere zugängliche Tür, wenn ihr üblicher Eingang blockiert ist.
+storage: Auch Kornspeicher- und Waffenkammer-Türen verlegen
+storage_tooltip: Erlaubt es, blockierte Eingänge von Kornspeicher und Waffenkammer zu verlegen.
+unstuck: Bereits an einer Tür festhängende Arbeiter umleiten
+unstuck_tooltip: Arbeiter, die bereits an einem blockierten Eingang festhängen, versuchen einen anderen Weg.
+button: „Reparieren“ bei beschädigten Gebäuden anzeigen
+button_tooltip: Wähle ein beschädigtes Gebäude und klicke im Menü auf „Reparieren“, oder fahre mit aktivierter Spielhilfe darüber, um die Kosten zu sehen.
+gold: Reparaturen kosten auch Gold
+gold_tooltip: Gebäudereparaturen benötigen neben den üblichen Rohstoffen auch Gold.
+fire_blocks: Reparaturen während eines Brandes verhindern
+fire_blocks_tooltip: Das Feuer an einem Gebäude muss erst erlöschen, bevor es repariert werden kann.
+ai: KI
+ai_tooltip: KI-Lords reparieren beschädigte Gebäude regelmäßig, wenn sie es sich leisten können.
+ai_damage: KI repariert ab diesem Schaden (Prozent)
+ai_interval: KI-Reparaturintervall (Sekunden)
+ai_minimum_gold: KI repariert nur ab mehr Gold als
+firemen: Löschtrupps auf mehrere Brände verteilen
+firemen_tooltip: Löschtrupps versuchen, sich auf verschiedene Brände zu verteilen.
+maces: Neue Schmieden fertigen standardmäßig Streitkolben
+maces_tooltip: Wechsle die Produktion wie gewohnt im Menü der Schmiede.
+breed: Ersatz für die Pferde der Ritter züchten
+breed_tooltip: Ställe züchten Ersatz für Pferde, die Ritter mitgenommen haben.
+stable_panel: Pferde und Zeit bis zum nächsten Pferd anzeigen
+stable_panel_tooltip: Wähle einen Stall, um seine Pferde und die Zeit bis zum nächsten Pferd zu sehen.
+breed_seconds: Zuchtzeit pro Pferd (Sekunden)
+slowdown: Zucht bei mehr lebenden Pferden verlangsamen
+slowdown_tooltip: Ställe brauchen länger für Ersatzpferde, solange mehr ihrer Pferde noch leben.
+normal_horses: Lebende Pferde vor Verlangsamung der Zucht
+slowdown_factor: Verlangsamungsfaktor je weiterem Pferd
+slowest_seconds: Langsamste Zuchtzeit (Sekunden)
+dairy_scrub: Käsereien auf spärlichem Gestrüpp erlauben
+dairy_scrub_tooltip: Käsereien können auf dünnem Gestrüpp platziert werden.
+ground_overlay: Ungeeigneten Farmboden anzeigen
+ground_overlay_tooltip: Die Bauvorschau markiert ungeeigneten Boden beim Platzieren einer Farm.
+keep_cows: Kühe beim Tod ihres Bauern behalten
+keep_cows_tooltip: Kühe überleben den Verlust ihres Bauern.
+hunters_tannery: Jäger Tierkörper aus Gerbereien holen lassen
+hunters_tannery_tooltip: Jäger können neben der Hirschjagd auch gelagerte Tierkörper aus Gerbereien abholen.
+ai_decorations: Gestapelte KI-Dekorationen verhindern
+ai_decorations_tooltip: KI-Lords platzieren Dekorationen nur auf freien Feldern.
+balance_changes: Balance-Änderungen
+bugfixes: Fehlerkorrekturen
+fixes: Korrekturen
+improvements: Verbesserungen
+qol: Komfort
+tags.behavior: Verhalten
+tags.ai: KI
+tags.economy: Wirtschaft
+tags.bugfixes: Fehlerkorrekturen
+tags.interface: Oberfläche
+ai_repair: KI-Lords Gebäude reparieren lassen
+doors_group: Blockierte Türen
+cat_ai_building_repair: Bauplatzierung und Reparatur
+cat_building_farming: Bauen und Landwirtschaft
+cat_building_repair_qol: Bauen und Reparieren
+cat_buildings_placement: Gebäude und Platzierung
+cat_economy_controls: Wirtschaftssteuerung
+cat_economy_upkeep: Wirtschaft und Instandhaltung

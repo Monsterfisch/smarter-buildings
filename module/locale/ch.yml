@@ -1,0 +1,59 @@
+dynamic: 入口受阻时改走另一扇门
+dynamic_tooltip: 常用入口被堵住时，工人会改用另一处可通行的门。
+storage: 同时允许调整粮仓和军械库入口
+storage_tooltip: 粮仓和军械库的入口受阻时，也允许改换入口位置。
+unstuck: 为已卡在门口的工人重新寻路
+unstuck_tooltip: 已经卡在受阻入口处的工人会尝试改走其他路线。
+button: 在受损建筑上显示“修复”按钮
+button_tooltip: 选中受损建筑后点击面板中的“修复”；开启游戏提示时悬停在“修复”上可查看花费。
+gold: 修复建筑同时消耗金币
+gold_tooltip: 修复建筑除了常规材料外，还需要消耗金币。
+fire_blocks: 起火时禁止修复建筑
+fire_blocks_tooltip: 建筑必须等火扑灭后才能进行修复。
+ai: AI
+ai_tooltip: 资金充足时，AI 领主会定期修复受损建筑。
+ai_damage: AI 触发修复的最低受损度（百分比）
+ai_interval: AI 修复间隔（秒）
+ai_minimum_gold: AI 执行修复所需的最低金币
+firemen: 让消防员分散扑救多处火情
+firemen_tooltip: 消防员会尽量分头扑救不同的起火点。
+maces: 新建铁匠铺默认打造链锤
+maces_tooltip: 仍可在铁匠铺的常规面板中切换生产品类。
+breed: 补充被骑士骑走的战马
+breed_tooltip: 马厩会繁育新马以补充被骑士领走的战马。
+stable_panel: 显示现有马匹与下一匹补栏进度
+stable_panel_tooltip: 选中马厩即可查看当前马匹数量与下一匹战马的进度。
+breed_seconds: 繁育一匹战马所需时间（秒）
+slowdown: 存活战马越多，繁育越慢
+slowdown_tooltip: 马厩出产的战马存活得越多，补充新马耗时越长。
+normal_horses: 繁育减速前的存活战马数
+slowdown_factor: 每多一匹马的减速倍率
+slowest_seconds: 最慢繁育时间（秒）
+dairy_scrub: 允许在稀疏灌木地上建造奶牛场
+dairy_scrub_tooltip: 奶牛场可以建在稀疏灌木地形上。
+ground_overlay: 显示不适合建农场的地块
+ground_overlay_tooltip: 摆放农场时，预览会标出无法耕作的地形。
+keep_cows: 农夫阵亡后保留奶牛
+keep_cows_tooltip: 奶牛在所属农夫死亡后仍会存活。
+hunters_tannery: 允许猎人从制革厂收取兽皮原料
+hunters_tannery_tooltip: 猎人除了猎鹿外，还可从制革厂搬运存放的猎物。
+ai_decorations: 防止 AI 叠放装饰物
+ai_decorations_tooltip: AI 领主只会在空闲地块上放置装饰物。
+balance_changes: 平衡调整
+bugfixes: 错误修复
+fixes: 修正
+improvements: 改进
+qol: 便利性改进
+tags.behavior: 行为
+tags.ai: AI
+tags.economy: 经济
+tags.bugfixes: 错误修复
+tags.interface: 界面
+ai_repair: 允许 AI 领主修复建筑
+doors_group: 受阻的建筑入口
+cat_ai_building_repair: 建筑放置与修复
+cat_building_farming: 建造与农业
+cat_building_repair_qol: 建造与修复
+cat_buildings_placement: 建筑与放置
+cat_economy_controls: 经济操控
+cat_economy_upkeep: 经济与维护

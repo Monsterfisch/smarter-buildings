@@ -1,10 +1,20 @@
 # Smarter Buildings
 
+## UCP package
+
+Give blocked workers another door to try and add repair controls for more buildings. Separate settings cover fire brigades, farms, hunting, AI repairs and how stables replace horses.
+
+- Module directory: `module/`
+- Targets: Stronghold Crusader 1.41 and Stronghold Crusader Extreme 1.41
+- Requires UCP framework 3.0.7 and frontend 1.0.2 or a compatible later version
+- Requires Map Extensions 1.x for map and save load callbacks
+
+
 A UCP3 module for Stronghold Crusader and Stronghold Crusader Extreme with fixes and features for
 buildings and their workers: doors that move when blocked, stuck workers trying another door, a
 Repair button on every building (and AI lords that repair), firemen spreading over several fires,
 blacksmiths starting on maces, stables that keep breeding horses (slower the more are alive),
-dairy farms on thin scrub, bad farm ground shown red while placing, and hunters fetching carcasses from tanneries once the deer are gone.
+dairy farms on thin scrub, bad farm ground shown red while placing, and hunters that collect stored carcasses from tanneries.
 
 What the module does, in plain English, is in `module/locale/description-en.md`. Every part is a
 setting of its own.
@@ -15,6 +25,25 @@ Download `smarter-buildings-<version>.zip` from the releases and unzip it into
 `<game>\ucp\modules`, so you get `ucp\modules\smarter-buildings-<version>`. Then enable it in the
 UCP3 GUI. AI character files can set `BuildingRepairInterval` and `BuildingRepairMinimumGold`
 (needs the aicloader module).
+
+## Preset tuning
+
+Set these keys under `smarter-buildings` in a preset.
+
+| Key | Default | Effect |
+| --- | ---: | --- |
+| `repair.x`, `repair.y` | 340, 466 | Repair button position for custom panel layouts |
+| `firemen.tiles` | 20 | Distance penalty for assigning a firefighter to a fire already covered |
+| `stables.breed_seconds` | 0 | Base replacement time in seconds. 0 uses game timing. |
+| `stables.normal_horses` | 4 | Number of horses before breeding slows |
+| `stables.slowdown_factor` | 3 | Breeding slowdown factor |
+| `stables.slowest_seconds` | 600 | Maximum breeding wait in seconds |
+| `hunters.chance` | 50 | Chance of preferring a stored carcass |
+| `hunters.carry` | 2 | Carcass capacity per hunter |
+| `hunters.stored` | 4 | Carcass capacity per tannery |
+| `repair.ai_damage` | 20 | Damage threshold in percent for AI repairs |
+| `repair.ai_interval` | 60 | Seconds between AI repair checks |
+| `repair.ai_minimum_gold` | 2000 | Minimum gold for AI repairs |
 
 ## What is in here
 
@@ -45,3 +74,10 @@ PowerShell for fasm.dll; it reads the executables from the game folder named in 
 
 Every address is found by pattern scan or read from the instruction that uses it, so the module
 runs on `Stronghold Crusader.exe` and `Stronghold_Crusader_Extreme.exe` alike.
+
+## Vanilla and Recommended
+
+Every option of the module is off by default, so the module alone plays like the original
+game. Two plugins in this repository form the Smarter Buildings family in the launcher:
+`smarter-buildings-recommended` (offered first) switches on the recommended settings, `smarter-buildings-vanilla`
+keeps everything off. Plugins that build on the module set the options they need themselves.

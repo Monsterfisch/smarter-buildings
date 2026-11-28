@@ -1,0 +1,59 @@
+dynamic: Utiliser une autre porte si l’entrée est bloquée
+dynamic_tooltip: Les ouvriers passent par une autre porte accessible quand leur porte habituelle est bloquée.
+storage: Déplacer aussi les portes du grenier et de l’armurerie
+storage_tooltip: Autorise le déplacement des entrées du grenier et de l’armurerie lorsqu’elles sont bloquées.
+unstuck: Rediriger les ouvriers déjà bloqués à une porte
+unstuck_tooltip: Les ouvriers déjà coincés devant une entrée bloquée tentent un autre itinéraire.
+button: Afficher Réparer sur les bâtiments endommagés
+button_tooltip: Sélectionnez un bâtiment endommagé et cliquez sur Réparer dans son panneau, ou survolez Réparer avec l’aide activée pour voir le coût.
+gold: Les réparations coûtent aussi de l’or
+gold_tooltip: Réparer un bâtiment demande de l’or en plus des matériaux habituels.
+fire_blocks: Empêcher les réparations pendant un incendie
+fire_blocks_tooltip: Attendez que le feu soit éteint avant de réparer le bâtiment.
+ai: IA
+ai_tooltip: Les seigneurs IA réparent périodiquement leurs bâtiments endommagés quand ils en ont les moyens.
+ai_damage: L'IA répare à partir de ce seuil de dégâts (pour cent)
+ai_interval: Intervalle de réparation de l'IA (secondes)
+ai_minimum_gold: L'IA répare seulement au-dessus de cet or
+firemen: Répartir les pompiers entre les incendies
+firemen_tooltip: Les pompiers essaient de couvrir différents foyers séparément.
+maces: Les nouvelles forges fabriquent des masses par défaut
+maces_tooltip: Utilisez le panneau habituel du forgeron pour changer la production.
+breed: Remplacer les chevaux pris par les chevaliers
+breed_tooltip: Les écuries élèvent des remplaçants pour les chevaux pris par les chevaliers.
+stable_panel: Afficher les chevaux et le prochain remplaçant
+stable_panel_tooltip: Sélectionnez une écurie pour voir ses chevaux et le temps restant avant le suivant.
+breed_seconds: Temps d'élevage d'un cheval (secondes)
+slowdown: Ralentir l’élevage quand plus de chevaux sont en vie
+slowdown_tooltip: Les écuries mettent plus de temps à remplacer les chevaux tant que davantage des leurs survivent.
+normal_horses: Chevaux vivants avant ralentissement de l'élevage
+slowdown_factor: Facteur de ralentissement par cheval supplémentaire
+slowest_seconds: Temps d'élevage le plus lent (secondes)
+dairy_scrub: Autoriser les laiteries sur broussailles clairsemées
+dairy_scrub_tooltip: Les fermes laitières peuvent être placées sur des broussailles clairsemées.
+ground_overlay: Afficher les sols inadaptés aux fermes
+ground_overlay_tooltip: L’aperçu de placement indique les cases inadaptées lorsque vous placez une ferme.
+keep_cows: Garder les vaches à la mort de leur fermier
+keep_cows_tooltip: Les vaches survivent à la perte de leur fermier.
+hunters_tannery: Laisser les chasseurs récupérer les carcasses des tanneries
+hunters_tannery_tooltip: Les chasseurs peuvent prendre les carcasses stockées dans les tanneries en plus de chasser le cerf.
+ai_decorations: Empêcher l’empilement des décorations de l’IA
+ai_decorations_tooltip: Les seigneurs IA placent les décorations sur des cases libres.
+balance_changes: Modifications de l'équilibrage
+bugfixes: Corrections de bugs
+fixes: Correctifs
+improvements: Améliorations
+qol: Qualité de vie
+tags.behavior: Comportement
+tags.ai: IA
+tags.economy: Économie
+tags.bugfixes: Corrections
+tags.interface: Interface
+ai_repair: Laisser les seigneurs IA réparer leurs bâtiments
+doors_group: Portes bloquées
+cat_ai_building_repair: Placement et réparation des bâtiments
+cat_building_farming: Construction et agriculture
+cat_building_repair_qol: Construction et réparation
+cat_buildings_placement: Bâtiments et placement
+cat_economy_controls: Commandes économiques
+cat_economy_upkeep: Économie et entretien

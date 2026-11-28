@@ -22,7 +22,9 @@
      repair too, once per interval (AIC field BuildingRepairInterval) while they have more
      gold than BuildingRepairMinimumGold.
   7. A knight takes his horse away with him: the stall is free at once and the stable breeds
-     a new horse, instead of keeping the stall for as long as the knight lives.
+     a new horse, instead of keeping the stall for as long as the knight lives. The knight
+     stays tied to his stable the game's own way, so the stable still counts him after a
+     reload.
 
   Every address is found by pattern scan or read out of the instruction that uses it, so the
   module runs on Stronghold Crusader.exe and Stronghold_Crusader_Extreme.exe alike.
@@ -33,16 +35,16 @@ local templates = require("templates")
 local MODULE_NAME = "smarter-buildings"
 
 local DEFAULTS = {
-  doors = { dynamic = true, storage = true, unstuck = true },
-  firemen = { spread = true, tiles = 20 },
-  blacksmith = { maces = true },
-  repair = { button = true, gold = true, fire_blocks = true, x = 340, y = 466,
-    ai = true, ai_interval = 60, ai_minimum_gold = 2000, ai_damage = 20 },
-  farms = { dairy_scrub = true, ground_overlay = true, keep_cows = true },
-  hunters = { tannery = true, carry = 2, stored = 4, chance = 50 },
-  stables = { breed = true, panel = true, breed_seconds = 0, slowdown = true, normal_horses = 4,
+  doors = { dynamic = false, storage = false, unstuck = false },
+  firemen = { spread = false, tiles = 20 },
+  blacksmith = { maces = false },
+  repair = { button = false, gold = false, fire_blocks = false, x = 340, y = 466,
+    ai = false, ai_interval = 60, ai_minimum_gold = 2000, ai_damage = 20 },
+  farms = { dairy_scrub = false, ground_overlay = false, keep_cows = false },
+  hunters = { tannery = false, carry = 2, stored = 4, chance = 50 },
+  stables = { breed = false, panel = false, breed_seconds = 0, slowdown = false, normal_horses = 4,
     slowdown_factor = 3, slowest_seconds = 600 },
-  ai = { decorations = true },
+  ai = { decorations = false },
 }
 
 ---------------------------------------------------------------------------------------
@@ -58,6 +60,16 @@ local BLACKSMITH_SWORDS = { 0x1A, 0x1F }
 -- euroRecruit, where a new knight is tied to a stable: call linkageBetweenHorseUnitAndStable.
 local AOB_KNIGHT_HORSE = "83 7C 24 18 FF 75 25 55 57 B9 ? ? ? ? E8 ? ? ? ? 66 89 86"
 local KNIGHT_HORSE_CALL = 0x0E
+-- Right after the call euroRecruit ties the knight to the stable it answers (esi = UnitsState +
+-- unit * 0x490, the units array starts 0x614 in): mov [esi+stable],ax / imul eax,eax,0x32C /
+-- mov edx,[eax+buildings+uid] / mov [esi+stable uid],edx. countKnights reads those two fields.
+local KNIGHT_TIE = {
+  stable = { 0x13, { 0x66, 0x89, 0x86 } },
+  buildingUid = { 0x1A, { 0x69, 0xC0, 0x2C, 0x03, 0x00, 0x00, 0x8B, 0x90 } },
+  stableUid = { 0x26, { 0x89, 0x96 } },
+}
+local UNIT_STABLE = 0x3D6                     -- word: the knight's stable
+local UNIT_STABLE_UID = 0x3E0                 -- dword: that stable's uid
 local AOB_HORSE_LINKAGE = "53 8B 1D ? ? ? ? 55 56 BE 01 00 00 00 3B DE 57 8B E9"
 local LINKAGE_SLOTS = { 0x8B, { 0x8D, 0x91 } }   -- lea edx, [ecx + buildings + insideUnitID]
 local BUILDING_INSIDE_UNITS = 0x2E0
@@ -67,7 +79,8 @@ local BUILDING_INSIDE_UNITS = 0x2E0
 local AOB_HORSE_BREEDING = "66 01 9E ? ? ? ? 0F B7 86 ? ? ? ? 66 3D 26 02 7E ?"
 local HORSE_BREEDING_SIZE = 20
 local HORSE_BREEDING_TIME = 16                -- the immediate of cmp ax, 0x226
-local ORIGIN_SLOTS = 10000               -- unit slots remembered (12 bytes each)
+local KNIGHT = 0x1C                           -- unit type (+0x8E) of a knight
+local UNIT_ALIVE = 2                          -- unit +0x8C of a living unit (the game's own test)
 -- RenderBuildingMenu_Stables: "n horses available" / "n in use".
 local AOB_STABLE_PANEL = "A1 ? ? ? ? 8B 0D ? ? ? ? 56 8B 35 ? ? ? ? 6A 00 6A 00 6A 10 6A 00 6A 00 05 D3 01 "
   .. "00 00 50 83 C1 19 51 6A 00 6A 35"
@@ -198,15 +211,16 @@ local COST_TEXT_LAYER_SIZE = 6
 local GOLD_ICON = 0x7C                  -- the gold coin among the cost pictures (gm 0x2E)
 
 -- Other places addresses are read from.
-local AOB_TICK_COUNTER = "8B 87 50 0A 00 00 8B 8F 98 09 00 00 8B 15 ? ? ? ?"
-local TICK_COUNTER_OPERAND = 14
+-- The game tick counter: mov ecx, [edi+0x998] / mov edx, [ticks] in updateUnits. The mask load
+-- before it is patched by other modules.
+local AOB_TICKS = "8B 8F 98 09 00 00 8B 15 ? ? ? ?"
 local AOB_MENU_ITEM = "8B 56 10 8B 46 4C 8B 4E 0C 52 8B 50 08 03 56 08 8B 40 04 03 46 04 51 52 50 "
   .. "B9 ? ? ? ? E8"
 local MENU_ITEM_MOUSE = { 0x19, { 0xB9 } }
 local MENU_ITEM_IS_INSIDE = 0x1E
 local MOUSE_LEFT_CLICK = 0x34
 local AOB_KEY_GUARD = "F7 C1 00 00 00 40 0F 85 ? ? ? ? B9 ? ? ? ? E8 ? ? ? ? 85 C0 0F 84 ? ? ? ? 83 3D "
-  .. "? ? ? ? FF"
+  .. "? ? ? ? FF 75 ? A1 ? ? ? ? 8B 0C 85 ? ? ? ? 3B CB 74 ? 8B C1"
 local KEY_GUARD_SCREEN = { 0x0C, { 0xB9 } }
 local SCREEN_MENU_TAB = 0x10
 local SCREEN_ID = 0x0C
@@ -259,11 +273,15 @@ local AI_RETRY_TICKS = 80             -- an AI lord with nothing to repair looks
 ---------------------------------------------------------------------------------------
 
 local function scan(pattern, purpose)
-  local ok, address = pcall(core.AOBScan, pattern)
-  if not ok or address == nil then
-    error(MODULE_NAME .. ": could not find " .. purpose)
-  end
+  local found, address = pcall(core.AOBScan, pattern)
+  if not found then error(purpose .. " not found", 0) end
   return address
+end
+
+local function install(feature, fn, ...)
+  local ok, message = pcall(fn, ...)
+  if not ok then log(ERROR, feature .. " is off. " .. tostring(message)) end
+  return ok
 end
 
 local function expectBytes(address, bytes, purpose)
@@ -311,16 +329,25 @@ end
 
 local function setting(config, group, name)
   local section = config[group]
+  local default = DEFAULTS[group][name]
   if type(section) == "table" and section[name] ~= nil then
-    return section[name]
+    local value = section[name]
+    if type(default) ~= "boolean" or type(value) == "boolean" then return value end
+    log(ERROR, "Smarter Buildings: " .. name .. " must be on or off. Using the default.")
   end
-  return DEFAULTS[group][name]
+  return default
 end
 
 local function number(config, group, name, low, high)
-  local value = tonumber(setting(config, group, name)) or DEFAULTS[group][name]
-  value = math.tointeger(math.floor(value)) or DEFAULTS[group][name]
-  return math.max(low, math.min(high, value))
+  local value = setting(config, group, name)
+  if type(value) ~= "number" then
+    log(ERROR, name .. " must be a number. Using the default.")
+  elseif value >= low and value <= high and value % 1 == 0 then
+    return value
+  else
+    log(WARNING, name .. " is outside the allowed values. Using the default.")
+  end
+  return DEFAULTS[group][name]
 end
 
 local function byteTable(size, entries)
@@ -349,29 +376,40 @@ local function patchBlacksmith()
   local site = scan(AOB_BLACKSMITH, "the new blacksmith's weapon")
   for _, offset in ipairs(BLACKSMITH_SWORDS) do
     expectBytes(site + offset, { 0x16 }, "the new blacksmith's weapon")
+  end
+  for _, offset in ipairs(BLACKSMITH_SWORDS) do
     core.writeCode(site + offset, { 0x15 })
   end
 end
 
-local function patchStables(v)
+local function prepareStableLinkage()
   local site = scan(AOB_KNIGHT_HORSE, "where a knight takes a horse")
   local linkage = scan(AOB_HORSE_LINKAGE, "the stable's horses")
   if readCallTarget(site, KNIGHT_HORSE_CALL, "where a knight takes a horse") ~= linkage then
     error(MODULE_NAME .. ": the knight's horse is not taken the way this module knows")
   end
-  local slots = readOperand(linkage, LINKAGE_SLOTS, "the stable's horses")
-  if slots - BUILDING_INSIDE_UNITS ~= v.BUILDINGS then
-    error(MODULE_NAME .. ": the building layout is not the one this module knows")
+  local buildings = readOperand(linkage, LINKAGE_SLOTS, "the stable's horses") - BUILDING_INSIDE_UNITS
+  local units = readOperand(linkage, { 0xD1, { 0x8B, 0x82 } }, "the stable's unit UID") - 0x98
+  local purpose = "where a knight is tied to his stable"
+  if readOperand(site, KNIGHT_TIE.stable, purpose) ~= 0x614 + UNIT_STABLE
+    or readOperand(site, KNIGHT_TIE.buildingUid, purpose) ~= buildings + 0xD8
+    or readOperand(site, KNIGHT_TIE.stableUid, purpose) ~= 0x614 + UNIT_STABLE_UID then
+    error(MODULE_NAME .. ": the knight is not tied to his stable the way this module knows")
   end
-  local wrapper = assemble(templates.stables, { LINKAGE = linkage, BUILDINGS = v.BUILDINGS,
-    UNITS = v.UNITS, ORIGINS = v.ORIGINS, ORIGIN_SLOTS = ORIGIN_SLOTS })
-  redirectCall(site, KNIGHT_HORSE_CALL, wrapper, "where a knight takes a horse")
+  local wrapper = assemble(templates.stables, { LINKAGE = linkage, BUILDINGS = buildings })
+  return site, wrapper, buildings, units
 end
 
 local function patchHorseBreeding(v, config, panel)
+  local knight, wrapper, buildings, units = prepareStableLinkage()
   local site = scan(AOB_HORSE_BREEDING, "the stable's horse breeding")
+  local counter = readOperand(site, { 0, { 0x66, 0x01, 0x9E } }, "the stable's breeding counter")
+  if counter ~= buildings + 0x29A
+    or readOperand(site, { 7, { 0x0F, 0xB7, 0x86 } }, "the stable's breeding counter") ~= counter then
+    error("The stable's building layout could not be verified.", 0)
+  end
+  expectBytes(site + HORSE_BREEDING_SIZE - 2, { 0x7E }, "the stable's horse breeding")
   local jump = site + HORSE_BREEDING_SIZE - 2
-  expectBytes(jump, { 0x7E }, "the stable's horse breeding")
   -- 0 = the game's own breeding time: the immediate this hook replaces (550 ticks unless the exe
   -- was changed).
   local seconds = number(config, "stables", "breed_seconds", 0, 3600)
@@ -389,32 +427,38 @@ local function patchHorseBreeding(v, config, panel)
     SLOWEST = data + 12,
     KNIGHTS = data + 16,
     COUNTERS = data + 16 + 2000 * 4,
-    ORIGINS = v.ORIGINS,
-    ORIGIN_SLOTS = ORIGIN_SLOTS,
-    UNITS = v.UNITS,
-    UNITS_STATE = v.UNITS - 0x614,
-    BUILDINGS = v.BUILDINGS,
+    KNIGHT = KNIGHT,
+    ALIVE = UNIT_ALIVE,
+    STABLE = UNIT_STABLE,
+    STABLE_UID = UNIT_STABLE_UID,
+    UNITS = units,
+    UNITS_STATE = units - 0x614,
+    BUILDINGS = buildings,
     TICKS = v.TICKS,
     BREED_NOW = site + HORSE_BREEDING_SIZE,
     BREED_LATER = site + HORSE_BREEDING_SIZE + (core.readByte(jump + 1) & 0xFF),
   }
   core.writeInteger(h.BASE, base)
-  core.writeInteger(h.NORMAL, slowdown and number(config, "stables", "normal_horses", 1, 100) or 1000000)
+  core.writeInteger(h.NORMAL, slowdown and number(config, "stables", "normal_horses", 1, 100) or 0)
   core.writeInteger(h.FACTOR, number(config, "stables", "slowdown_factor", 1, 10))
   core.writeInteger(h.SLOWEST, math.max(base, number(config, "stables", "slowest_seconds", 1, 7200)
     * TICKS_PER_SECOND))
   h.COUNT_KNIGHTS = assemble(templates.countKnights, h)
   h.BREED_LIMIT = assemble(templates.breedLimit, h)
-  jumpTo(site, assemble(templates.breeding, h), HORSE_BREEDING_SIZE)
+  local breeding = assemble(templates.breeding, h)
+  redirectCall(knight, KNIGHT_HORSE_CALL, wrapper, "where a knight takes a horse")
+  jumpTo(site, breeding, HORSE_BREEDING_SIZE)
+  v.worldScratch[#v.worldScratch + 1] = { data + 16, 2000 * 8 }
   if panel then
-    local ok, message = pcall(function()
+    install("Custom stable breeding figures", function()
       local stable = scan(AOB_STABLE_PANEL, "the stable panel")
       local bar = scan(AOB_HEALTH_BAR, "the tower health bar")
       expectBytes(stable + STABLE_IN_USE, { 0x0F, 0xBE, 0x96 }, "the stable panel")
       expectBytes(stable + STABLE_IN_USE_TEST, { 0x80, 0xBE }, "the stable panel")
       expectBytes(stable + STABLE_IN_USE_TEST + 6, { 0x01 }, "the stable panel")
+      local selected = readOperand(stable, { 0x0C, { 0x8B, 0x35 } }, "the selected stable")
       local u = {
-        SELECTED = v.SELECTED,
+        SELECTED = selected,
         COUNT_KNIGHTS = h.COUNT_KNIGHTS,
         STALLS_KEPT = core.readInteger(stable + STABLE_IN_USE + 3),
         IN_USE = core.allocate(4, true),
@@ -422,8 +466,8 @@ local function patchHorseBreeding(v, config, panel)
       }
       local inUse = assemble(templates.stableInUse, u)
       local p = {
-        SELECTED = v.SELECTED,
-        BUILDINGS = v.BUILDINGS,
+        SELECTED = selected,
+        BUILDINGS = buildings,
         BREED_LIMIT = h.BREED_LIMIT,
         COUNTERS = h.COUNTERS,
         MENU_Y = core.readInteger(stable + 1),
@@ -446,9 +490,6 @@ local function patchHorseBreeding(v, config, panel)
       core.writeCode(stable + STABLE_IN_USE_TEST, { 0x83, 0x3D, core.itob(u.IN_USE), 0x01 })
       jumpTo(stable, wrapper, STABLE_PANEL_ENTRY)
     end)
-    if not ok then
-      log(WARNING, MODULE_NAME .. ": the stable panel shows the game's own numbers: " .. tostring(message))
-    end
   end
 end
 
@@ -610,19 +651,18 @@ local function patchHunters(v, config)
   local hunter = scan(AOB_HUNTER_DEER, "where a hunter looks for deer")
   expectBytes(tanner, { 0x69, 0xFF, 0x90, 0x04, 0x00, 0x00 }, "where a tanner finishes a cow")
   expectBytes(hunter + HUNTER_TAIL, { 0x5F, 0x5E, 0x5D, 0x5B, 0xC3 }, "the hunter's update")
-  if core.readInteger(hunter + 2) ~= v.UNITS - 0x614 then
-    error(MODULE_NAME .. ": the hunter's update is not the one this module knows")
-  end
+  local unitsState = readOperand(hunter, { 1, { 0xB9 } }, "the hunter's units")
+  local buildingsState = readOperand(tanner - TANNER_HOOK, { 0x36, { 0xB9 } }, "the tannery's buildings")
   local h = {
     CARCASSES = core.allocate(2000 * 8, true),
     EXTRA = core.allocate(HUNTER_SLOTS * 8, true),
     UNIT_SLOTS = HUNTER_SLOTS,
     STORED_MAX = number(config, "hunters", "stored", 1, 100),
     CARRY = number(config, "hunters", "carry", 1, 10),
-    UNITS = v.UNITS,
-    UNITS_STATE = v.UNITS - 0x614,
-    BUILDINGS = v.BUILDINGS,
-    BUILDINGS_STATE = v.BUILDINGS_STATE,
+    UNITS = unitsState + 0x614,
+    UNITS_STATE = unitsState,
+    BUILDINGS = buildingsState + 0x14,
+    BUILDINGS_STATE = buildingsState,
     DEER = DEER,
     TICKS = v.TICKS,
     CHANCE = number(config, "hunters", "chance", 0, 100),
@@ -632,22 +672,20 @@ local function patchHunters(v, config)
     HUNTER_TAIL = hunter + HUNTER_TAIL,
     HUNTER_RESUME = hunter + HUNTER_HOOK_SIZE,
   }
+  v.worldScratch[#v.worldScratch + 1] = { h.CARCASSES, 2000 * 8 }
+  v.worldScratch[#v.worldScratch + 1] = { h.EXTRA, HUNTER_SLOTS * 8 }
   local carcass = assemble(templates.tannerCarcass, h)
   local hunt = assemble(templates.hunterTannery, h)
   jumpTo(tanner, carcass, TANNER_HOOK_SIZE)
   jumpTo(hunter, hunt, HUNTER_HOOK_SIZE)
 end
 
-local function patchFiremen(v, tiles)
-  local search = scan(AOB_FIRE_SEARCH, "the firemen's fire search")
+local function patchFiremen(search, tiles)
   local units = readOperand(search, FIRE_UNIT_TILE, "the firemen's fire search") - 0xD4
-  if units ~= v.UNITS then
-    error(MODULE_NAME .. ": the unit layout is not the one this module knows")
-  end
   expectBytes(search + FIRE_HOOK, { 0x8B, 0x44, 0x24, 0x10 }, "the firemen's fire search")
   local code = assemble(templates.firemen, {
-    UNITS = v.UNITS,
-    UNITS_STATE = v.UNITS - 0x614,
+    UNITS = units,
+    UNITS_STATE = units - 0x614,
     FIREMAN = FIREMAN,
     PENALTY = tiles,
     DISTANCE = readOperand(search, FIRE_DISTANCE, "the fire distance"),
@@ -660,6 +698,7 @@ local function patchUnstuck(v)
   local destination = scan(AOB_SET_DESTINATION, "the unit route search")
   expectBytes(destination, { 0x83, 0xEC, 0x08, 0x8B, 0x44, 0x24, 0x0C }, "the unit route search")
   local data = core.allocate(16 + 2000 * 4, true)
+  v.worldScratch[#v.worldScratch + 1] = { data, 16 + 2000 * 4 }
   local w = {
     BUSY = data,
     UNITS_THIS = data + 4,
@@ -675,7 +714,7 @@ local function patchUnstuck(v)
     ROWS = v.ROWS,
     AREAS = v.AREAS,
     HEIGHTS = v.HEIGHTS,
-    DETERMINE = scan(AOB_DETERMINE_DOOR, "the game's door search"),
+    DETERMINE = v.DETERMINE,
     SET_POSITION = scan(AOB_SET_POSITION, "where a unit is put down"),
     DESTINATION_RESUME = destination + SET_DESTINATION_SIZE,
   }
@@ -722,8 +761,16 @@ end
 ---part (drawn for every building) the first every-frame item, the work status line and the
 ---bottom text line.
 local function findBuildingMenu(repairAction)
-  local repairItem = scan(patternOf(3, 340, 466, REPAIR_W, REPAIR_H, repairAction),
-    "the building panel's Repair button")
+  -- The tower block identifies the shared item table; the gate block has the same button.
+  local towerTab = 0x24
+  local pattern = patternOf(TYPE_BLOCK, 0, 0, 0, 0, 0, towerTab)
+    .. string.rep(" ?", ITEM_SIZE - 7 * 4) .. " "
+    .. patternOf(3, 340, 466, REPAIR_W, REPAIR_H, repairAction)
+  local towerBlock = core.scanForAOB(pattern)
+  if not towerBlock or core.scanForAOB(pattern, towerBlock + 1) then
+    error("The tower panel's Repair item could not be identified uniquely.", 0)
+  end
+  local repairItem = towerBlock + ITEM_SIZE
   local start, limit = repairItem, 400
   while core.readInteger(start - ITEM_SIZE + ITEM_TYPE) ~= TYPE_LAST and limit > 0 do
     start = start - ITEM_SIZE
@@ -732,8 +779,9 @@ local function findBuildingMenu(repairAction)
   if limit == 0 or core.readInteger(start + ITEM_TYPE) ~= TYPE_EVERY_FRAME then
     error(MODULE_NAME .. ": the building panel is not the one this module knows")
   end
-  local found, item = {}, start
-  while core.readInteger(item + ITEM_TYPE) ~= TYPE_BLOCK do
+  local found = {}
+  for item = start, repairItem, ITEM_SIZE do
+    if core.readInteger(item + ITEM_TYPE) == TYPE_BLOCK then break end
     if core.readInteger(item + ITEM_TYPE) == 3 then
       local x, y = core.readInteger(item + ITEM_X), core.readInteger(item + ITEM_Y)
       if x == STATUS_LINE[1] and y == STATUS_LINE[2] then
@@ -742,7 +790,6 @@ local function findBuildingMenu(repairAction)
         found.text = item
       end
     end
-    item = item + ITEM_SIZE
   end
   if found.status == nil or found.text == nil then
     error(MODULE_NAME .. ": the building panel's status lines are not where this module expects them")
@@ -790,6 +837,9 @@ end
 
 local function installRepairButton(v, x, y, gold)
   local start, status, text, repairItem = findBuildingMenu(v.repairAction)
+  local constructor = scan("68 " .. patternOf(start) .. " B9 ? ? ? ? E8 ? ? ? ? C3",
+    "the building panel constructor")
+  local menu = core.readInteger(constructor + 6)
   local data = core.allocate(64 + TAB_COUNT * 8, true)
   local w = {
     VISIBLE = data,
@@ -894,25 +944,19 @@ local function installRepairButton(v, x, y, gold)
     jumpTo(layerSite, layer, COST_TEXT_LAYER_SIZE)
   end)
   if not ok then
+    log(ERROR, "The repair cost label is off. The Repair button could not be updated.")
     log(WARNING, MODULE_NAME .. ": no repair cost text on the Repair button: " .. tostring(message))
   end
 
   wrapItems(start, originals, wrappers)
-  local found, constructorSite = pcall(core.AOBScan, "68 " .. patternOf(start) .. " B9")
-  if found and constructorSite ~= nil then
-    local menu = core.readInteger(constructorSite + 6)
-    local function wrapLive()
-      local items = core.readInteger(menu)
-      if items ~= 0 and items ~= start then
-        wrapItems(items, originals, wrappers)
-      end
+  local function wrapLive()
+    local items = core.readInteger(menu)
+    if items ~= 0 and items ~= start then
+      wrapItems(items, originals, wrappers)
     end
-    wrapLive()
-    hooks.registerHookCallback("afterInit", wrapLive)
-  else
-    log(WARNING, MODULE_NAME .. ": could not find the building panel itself; the Repair button "
-      .. "relies on its item table")
   end
+  wrapLive()
+  hooks.registerHookCallback("afterInit", wrapLive)
 end
 
 ---AIC fields through aicloader (optional): BuildingRepairInterval in seconds and
@@ -924,7 +968,7 @@ local function registerAICFields(intervals, minimumGold, defaultInterval, defaul
       .. defaultInterval .. " s")
     return
   end
-  local function field(name, address, default, toGame, fromGame)
+  local function field(name, address, default, minimum, maximum, toGame, fromGame)
     local ok, message = pcall(function()
       loader:setAdditionalAICValue(name,
         function(aiType, value)
@@ -935,9 +979,14 @@ local function registerAICFields(intervals, minimumGold, defaultInterval, defaul
             return fromGame(core.readInteger(address + aiType * 4))
           end
           if type(value) ~= "number" then
-            log(WARNING, string.format("%s: AIC %s needs a number, got %s", MODULE_NAME, name,
-              tostring(value)))
-            return
+            log(ERROR, name .. " must be a number. Using the configured default.")
+            value = default
+          elseif value < minimum then
+            log(WARNING, name .. " is below " .. minimum .. ". Using " .. minimum .. ".")
+            value = minimum
+          elseif value > maximum or value % 1 ~= 0 then
+            log(WARNING, name .. " is outside the allowed values. Using the configured default.")
+            value = default
           end
           core.writeInteger(address + aiType * 4, toGame(value))
         end,
@@ -950,15 +999,17 @@ local function registerAICFields(intervals, minimumGold, defaultInterval, defaul
     if not ok then
       log(WARNING, MODULE_NAME .. ": could not register AIC field " .. name .. ": " .. tostring(message))
     end
+    return ok
   end
-  field(AIC_INTERVAL, intervals, defaultInterval,
-    function(seconds)
-      return math.max(1, math.tointeger(math.floor(seconds)) or defaultInterval) * TICKS_PER_SECOND
-    end,
+  local intervalRegistered = field(AIC_INTERVAL, intervals, defaultInterval, 1, 0x7FFFFFFF // TICKS_PER_SECOND,
+    function(seconds) return seconds * TICKS_PER_SECOND end,
     function(ticks) return ticks // TICKS_PER_SECOND end)
-  field(AIC_MINIMUM_GOLD, minimumGold, defaultGold,
-    function(gold) return math.max(0, math.tointeger(math.floor(gold)) or defaultGold) end,
+  local goldRegistered = field(AIC_MINIMUM_GOLD, minimumGold, defaultGold, 0, 0x7FFFFFFF,
+    function(gold) return gold end,
     function(gold) return gold end)
+  if not (intervalRegistered and goldRegistered) then
+    log(ERROR, "Some per-lord AI repair settings could not be applied. Default settings are used for those values.")
+  end
 end
 
 ---------------------------------------------------------------------------------------
@@ -966,7 +1017,7 @@ end
 ---------------------------------------------------------------------------------------
 
 local function enable(self, config)
-  config = config or {}
+  config = type(config) == "table" and config or {}
   local dynamicDoors = setting(config, "doors", "dynamic")
   local storageDoors = setting(config, "doors", "storage")
   local unstuck = setting(config, "doors", "unstuck")
@@ -977,183 +1028,261 @@ local function enable(self, config)
   local fireBlocks = setting(config, "repair", "fire_blocks")
   local aiRepair = setting(config, "repair", "ai")
   local stables = setting(config, "stables", "breed")
+  local hunters = setting(config, "hunters", "tannery")
+  local dairy = setting(config, "farms", "dairy_scrub")
+  local farmTiles = setting(config, "farms", "ground_overlay")
+  local cows = setting(config, "farms", "keep_cows")
+  local decorations = setting(config, "ai", "decorations")
+  if not (dynamicDoors or storageDoors or unstuck or firemen or maces or repairButton or repairGold
+      or fireBlocks or aiRepair or stables or hunters or dairy or farmTiles or cows or decorations) then return end
 
-  local accessible = scan(AOB_IS_ACCESSIBLE, "the game's door check")
-  local repairAction = scan(AOB_REPAIR_ACTION, "the Repair button")
-  local repairRender = scan(AOB_REPAIR_RENDER, "the Repair button's drawing")
-  local repairExec = scan(AOB_REPAIR_EXEC, "the repair command")
-  local repairCost = scan(AOB_REPAIR_COST, "the repair cost")
-  local fireSearch = scan(AOB_FIRE_SEARCH, "the firemen's fire search")
-  local buildingsState = readOperand(repairAction, REPAIR_ACTION.buildingsState, "the buildings")
-
-  local v = {
-    accessible = accessible,
-    repairAction = repairAction,
-    repairRender = repairRender,
-    IS_ACCESSIBLE = accessible,
-    BUILDINGS_STATE = buildingsState,
-    BUILDINGS = buildingsState + 0x14,
-    UNITS = readOperand(fireSearch, FIRE_UNIT_TILE, "the units") - 0xD4,
-    TICKS = core.readInteger(scan(AOB_TICK_COUNTER, "the tick counter") + TICK_COUNTER_OPERAND),
-    AREAS = readOperand(accessible, ACCESSIBLE_AREAS, "the area map"),
-    ROWS = readOperand(accessible, ACCESSIBLE_ROWS, "the map rows"),
-    HEIGHTS = readOperand(accessible, ACCESSIBLE_HEIGHTS, "the height map"),
-    PATHFINDING = readOperand(accessible, ACCESSIBLE_PATHFINDING, "the path finder"),
-    SELECTED = readOperand(repairAction, REPAIR_ACTION.selected, "the selected building"),
-    GAME_MODE = readOperand(repairAction, REPAIR_ACTION.gameMode, "the game mode"),
-    LOCAL_PLAYER = readOperand(repairAction, REPAIR_ACTION.localPlayer, "the local player"),
-    WOOD_COST = readOperand(repairAction, REPAIR_ACTION.woodCost, "the repair cost"),
-    STONE_COST = readOperand(repairAction, REPAIR_ACTION.stoneCost, "the repair cost"),
-    ENEMY_CLOSE = readCallTarget(repairAction, REPAIR_ACTION_ENEMY_CALL, "the enemy test"),
-    REPAIR_COST = repairCost,
-    COSTS = readOperand(repairCost, REPAIR_COST_TABLE, "the building costs"),
-    EXEC = repairExec,
-    WOOD_RES = readOperand(repairExec, REPAIR_EXEC_WOOD, "the player's resources"),
-    STONE_RES = readOperand(repairExec, REPAIR_EXEC_STONE, "the player's resources"),
-    RESOURCE_LOSS = readCallTarget(repairExec, REPAIR_EXEC_LOSS, "the resource payment"),
-  }
-  v.GOLD_RES = v.WOOD_RES + RESOURCE_GOLD_FROM_WOOD
-  if v.STONE_RES ~= v.WOOD_RES + 8 then
-    error(MODULE_NAME .. ": the player's resources are not laid out the way this module knows")
+  local bindings = {}
+  local function bind(pattern, purpose)
+    local binding = bindings[pattern]
+    if not binding then
+      local found, address = pcall(core.AOBScan, pattern)
+      binding = {address = found and address or nil}
+      bindings[pattern] = binding
+    end
+    if not binding.address then error(purpose .. " not found", 0) end
+    return binding.address
   end
-  if readCallTarget(repairRender, REPAIR_RENDER_ENEMY_CALL, "the enemy test") ~= v.ENEMY_CLOSE then
-    error(MODULE_NAME .. ": the Repair button is not the one this module knows")
+  local function ticks()
+    return core.readInteger(bind(AOB_TICKS, "the game tick counter") + 8)
+  end
+  local function accessible()
+    return bind(AOB_IS_ACCESSIBLE, "the game's door check")
+  end
+  local function fireSearch()
+    return bind(AOB_FIRE_SEARCH, "the firemen's fire search")
   end
 
-  if maces then
-    patchBlacksmith()
+  local v = {worldScratch = {}}
+  local function doorBuildings()
+    v.DETERMINE = bind(AOB_DETERMINE_DOOR, "the game's door search")
+    local buildingType = readOperand(v.DETERMINE, { 0x34, { 0x66, 0x83, 0xBD } }, "the door's building type")
+    return buildingType - 0xD2
   end
-  v.ORIGINS = core.allocate(ORIGIN_SLOTS * 12, true)
+  local function repairAction()
+    v.repairAction = bind(AOB_REPAIR_ACTION, "the Repair button")
+    v.BUILDINGS_STATE = readOperand(v.repairAction, REPAIR_ACTION.buildingsState, "the buildings")
+    v.BUILDINGS = v.BUILDINGS_STATE + 0x14
+  end
+  local function repairRender()
+    v.repairRender = bind(AOB_REPAIR_RENDER, "the Repair button's drawing")
+    return v.repairRender
+  end
+  local function repairCosts()
+    v.REPAIR_COST = bind(AOB_REPAIR_COST, "the repair cost")
+    v.COSTS = readOperand(v.REPAIR_COST, REPAIR_COST_TABLE, "the building costs")
+  end
+  local function materialCosts()
+    v.WOOD_COST = readOperand(v.repairAction, REPAIR_ACTION.woodCost, "the repair cost")
+    v.STONE_COST = readOperand(v.repairAction, REPAIR_ACTION.stoneCost, "the repair cost")
+  end
+  local function repairResources()
+    v.EXEC = bind(AOB_REPAIR_EXEC, "the repair command")
+    v.WOOD_RES = readOperand(v.EXEC, REPAIR_EXEC_WOOD, "the player's resources")
+    v.STONE_RES = readOperand(v.EXEC, REPAIR_EXEC_STONE, "the player's resources")
+    v.GOLD_RES = v.WOOD_RES + RESOURCE_GOLD_FROM_WOOD
+    if v.STONE_RES ~= v.WOOD_RES + 8 then
+      error("The player's resource layout could not be verified.", 0)
+    end
+  end
+
+  if maces then install("Blacksmith maces", patchBlacksmith) end
   if stables then
-    patchStables(v)
+    install("Stable breeding", function()
+      v.TICKS = ticks()
+      patchHorseBreeding(v, config, setting(config, "stables", "panel"))
+    end)
   end
-  patchHorseBreeding(v, config, setting(config, "stables", "panel"))
-  if setting(config, "farms", "dairy_scrub") then
-    patchDairyGround()
-  end
-  if setting(config, "farms", "ground_overlay") then
-    patchFarmTiles()
-  end
-  if setting(config, "farms", "keep_cows") then
-    patchKeepCows()
-  end
-  if setting(config, "ai", "decorations") then
-    local ok, message = pcall(patchAiDecorations)
-    if not ok then log(WARNING, tostring(message) .. "; AI decorations are left as they are") end
-  end
-  if setting(config, "hunters", "tannery") then
-    patchHunters(v, config)
+  if dairy then install("Dairy farms on scrub", patchDairyGround) end
+  if farmTiles then install("Farm placement preview", patchFarmTiles) end
+  if cows then install("Keeping cows at unstaffed dairies", patchKeepCows) end
+  if decorations then install("AI decoration changes", patchAiDecorations) end
+  if hunters then
+    install("Hunters restocking tanneries", function()
+      v.TICKS = ticks()
+      patchHunters(v, config)
+    end)
   end
   if firemen then
-    patchFiremen(v, number(config, "firemen", "tiles", 1, 200))
+    install("Spreading out firemen", function()
+      patchFiremen(fireSearch(), number(config, "firemen", "tiles", 1, 200))
+    end)
   end
   if unstuck or storageDoors then
-    patchUnstuck(v)
+    install("Workers getting unstuck at doors", function()
+      v.TICKS = ticks()
+      v.BUILDINGS = doorBuildings()
+      v.BUILDINGS_STATE = v.BUILDINGS - 0x14
+      v.UNITS = readOperand(fireSearch(), FIRE_UNIT_TILE, "the units") - 0xD4
+      local door = accessible()
+      v.ROWS = readOperand(door, ACCESSIBLE_ROWS, "the map rows")
+      v.AREAS = readOperand(door, ACCESSIBLE_AREAS, "the area map")
+      v.HEIGHTS = readOperand(door, ACCESSIBLE_HEIGHTS, "the height map")
+      patchUnstuck(v)
+    end)
   end
   if repairGold then
-    patchRepairExec(v)
+    repairGold = install("Repair with gold", function()
+      repairAction()
+      repairCosts()
+      repairResources()
+      v.RESOURCE_LOSS = readCallTarget(v.EXEC, REPAIR_EXEC_LOSS, "the resource payment")
+      patchRepairExec(v)
+    end)
   end
   if fireBlocks then
-    patchFireBlocks(v)
+    install("Repair blocked by fire", function()
+      repairAction()
+      repairRender()
+      v.SELECTED = readOperand(v.repairAction, REPAIR_ACTION.selected, "the selected building")
+      v.ENEMY_CLOSE = readCallTarget(v.repairAction, REPAIR_ACTION_ENEMY_CALL, "the enemy test")
+      if readCallTarget(v.repairRender, REPAIR_RENDER_ENEMY_CALL, "the enemy test") ~= v.ENEMY_CLOSE then
+        error("The Repair button's enemy test could not be verified.", 0)
+      end
+      patchFireBlocks(v)
+    end)
   end
   if repairButton then
-    local menu = scan(AOB_MENU_ITEM, "the menu item handler")
-    local screen = readOperand(scan(AOB_KEY_GUARD, "the screen object"), KEY_GUARD_SCREEN,
-      "the screen object")
-    v.MENU_TAB = screen + SCREEN_MENU_TAB
-    v.SCREEN_ID = screen + SCREEN_ID
-    v.MOUSE = readOperand(menu, MENU_ITEM_MOUSE, "the mouse")
-    v.IS_INSIDE = readCallTarget(menu, MENU_ITEM_IS_INSIDE, "the mouse test")
-    v.HOVER = readOperand(repairRender, REPAIR_RENDER.hover, "the button hover flag")
-    v.DISABLED = readOperand(repairRender, REPAIR_RENDER.disabled, "the button state")
-    v.BUTTON_X = readOperand(repairRender, REPAIR_RENDER.buttonX, "the button position")
-    v.BUTTON_Y = readOperand(repairRender, REPAIR_RENDER.buttonY, "the button position")
-    v.BUTTON_W = readOperand(repairRender, REPAIR_RENDER.buttonW, "the button size")
-    v.BUTTON_H = v.BUTTON_W + 4
-    if v.BUTTON_Y ~= v.BUTTON_X + 4 or v.BUTTON_W ~= v.BUTTON_X + 8 then
-      error(MODULE_NAME .. ": the button globals are not laid out the way this module knows")
-    end
-    installRepairButton(v, number(config, "repair", "x", 0, 800), number(config, "repair", "y", 0, 600),
-      repairGold)
+    install("The Repair button", function()
+      repairAction()
+      local render = repairRender()
+      repairCosts()
+      materialCosts()
+      repairResources()
+      v.SELECTED = readOperand(v.repairAction, REPAIR_ACTION.selected, "the selected building")
+      v.LOCAL_PLAYER = readOperand(v.repairAction, REPAIR_ACTION.localPlayer, "the local player")
+      local menu = scan(AOB_MENU_ITEM, "the menu item handler")
+      local screen = readOperand(scan(AOB_KEY_GUARD, "the screen object"), KEY_GUARD_SCREEN,
+        "the screen object")
+      v.MENU_TAB = screen + SCREEN_MENU_TAB
+      v.SCREEN_ID = screen + SCREEN_ID
+      v.MOUSE = readOperand(menu, MENU_ITEM_MOUSE, "the mouse")
+      v.IS_INSIDE = readCallTarget(menu, MENU_ITEM_IS_INSIDE, "the mouse test")
+      v.HOVER = readOperand(render, REPAIR_RENDER.hover, "the button hover flag")
+      v.DISABLED = readOperand(render, REPAIR_RENDER.disabled, "the button state")
+      v.BUTTON_X = readOperand(render, REPAIR_RENDER.buttonX, "the button position")
+      v.BUTTON_Y = readOperand(render, REPAIR_RENDER.buttonY, "the button position")
+      v.BUTTON_W = readOperand(render, REPAIR_RENDER.buttonW, "the button size")
+      v.BUTTON_H = v.BUTTON_W + 4
+      if v.BUTTON_Y ~= v.BUTTON_X + 4 or v.BUTTON_W ~= v.BUTTON_X + 8 then
+        error(MODULE_NAME .. ": the button globals are not laid out the way this module knows")
+      end
+      installRepairButton(v, number(config, "repair", "x", 0, 800), number(config, "repair", "y", 0, 600),
+        repairGold)
+    end)
   end
 
-  local doorTypes = {}
-  if dynamicDoors then
-    for _, t in ipairs(DOOR_TYPES) do doorTypes[#doorTypes + 1] = t end
-  end
-  if storageDoors then
-    for _, t in ipairs(STORAGE_TYPES) do doorTypes[#doorTypes + 1] = t end
-  end
-  if #doorTypes > 0 or aiRepair then
-    local site = scan(AOB_BUILDING_UPDATE, "the building update loop")
-    local current = core.readInteger(site + BUILDING_UPDATE_HOOK + 2)
-    expectBytes(site + BUILDING_UPDATE_HOOK, { 0x8B, 0x0D }, "the building update loop")
+  if dynamicDoors or storageDoors or aiRepair then
+    local site, aicFields
     local data = core.allocate(4 + 4 * 9 + AI_SLOTS * 8, true)
-    local b = {
-      CURRENT = current,
-      BUILDINGS = v.BUILDINGS,
-      BUILDINGS_STATE = v.BUILDINGS_STATE,
-      TYPE_COUNT = TYPE_COUNT,
-      TICKS = v.TICKS,
-      DOOR_TYPES = byteTable(TYPE_COUNT, doorTypes),
-      IS_ACCESSIBLE = v.IS_ACCESSIBLE,
-      AI_REPAIR_ON = data,
-      RESUME = site + BUILDING_UPDATE_HOOK + BUILDING_UPDATE_SIZE,
-    }
-    if aiRepair then
-      local interval = number(config, "repair", "ai_interval", 1, 3600)
-      local minimumGold = number(config, "repair", "ai_minimum_gold", 0, 1000000)
-      local buy = scan(AOB_BUY_GOODS, "the market")
-      local scratch = core.allocate(16, true)
-      local r = {
-        LAST_REPAIR = data + 4,
-        INTERVALS = data + 4 + 4 * 9,
-        MIN_GOLD = data + 4 + 4 * 9 + AI_SLOTS * 4,
-        LAST_SCAN = scratch,
-        NEED = scratch + 4,
-        MISS_WOOD = scratch + 8,
-        MISS_STONE = scratch + 12,
-        DAMAGE = core.allocate(4, true),
-        BUILDINGS = v.BUILDINGS,
-        BUILDINGS_STATE = v.BUILDINGS_STATE,
-        AI_TYPES = readOperand(scan(AOB_AI_TYPES, "the AI characters"), AI_TYPES_OPERAND,
-          "the AI characters"),
-        TICKS = v.TICKS,
-        GOLD_RES = v.GOLD_RES,
-        WOOD_RES = v.WOOD_RES,
-        STONE_RES = v.STONE_RES,
-        GAME_MODE = v.GAME_MODE,
-        PATHFINDING = v.PATHFINDING,
-        ENEMY_CLOSE = v.ENEMY_CLOSE,
-        REPAIR_COST = v.REPAIR_COST,
-        WOOD_COST = v.WOOD_COST,
-        STONE_COST = v.STONE_COST,
-        EXEC = v.EXEC,
-        GOLD_ON = core.allocate(4, true),
-        TYPE_COUNT = TYPE_COUNT,
-        COSTS = v.COSTS,
-        GAME_STATE = readOperand(buy, BUY_GOODS_GAME_STATE, "the market"),
-        BUY_PRICE = readCallTarget(buy, BUY_GOODS_PRICE, "the market prices"),
-        BUY_GOODS = buy,
-        RETRY_TICKS = AI_RETRY_TICKS,
-      }
-      core.writeByte(r.GOLD_ON, repairGold and 1 or 0)
-      core.writeInteger(r.DAMAGE, number(config, "repair", "ai_damage", 1, 99))
-      for slot = 1, AI_SLOTS - 1 do
-        core.writeInteger(r.INTERVALS + slot * 4, interval * TICKS_PER_SECOND)
-        core.writeInteger(r.MIN_GOLD + slot * 4, minimumGold)
+    local doorTypes = {}
+    local b = {AI_REPAIR_ON = data, AI_SCAN = 0, LAST_SCAN = data + 4, IS_ACCESSIBLE = 0}
+    local doors = (dynamicDoors or storageDoors) and install("Dynamic and storage doors", function()
+      site = bind(AOB_BUILDING_UPDATE, "the building update loop")
+      b.TICKS = ticks()
+      local buildings = doorBuildings()
+      b.IS_ACCESSIBLE = accessible()
+      b.BUILDINGS = buildings
+      b.BUILDINGS_STATE = buildings - 0x14
+      if dynamicDoors then
+        for _, t in ipairs(DOOR_TYPES) do doorTypes[#doorTypes + 1] = t end
       end
-      registerAICFields(r.INTERVALS, r.MIN_GOLD, interval, minimumGold)
-      r.AI_PLAYER = assemble(templates.aiPlayer, r)
-      b.AI_SCAN = assemble(templates.aiScan, r)
-      b.LAST_SCAN = r.LAST_SCAN
-      core.writeByte(data, 1)
-    else
-      b.AI_SCAN = 0
-      b.LAST_SCAN = data + 4
+      if storageDoors then
+        for _, t in ipairs(STORAGE_TYPES) do doorTypes[#doorTypes + 1] = t end
+      end
+    end)
+    if aiRepair then
+      aiRepair = install("AI repair", function()
+        site = bind(AOB_BUILDING_UPDATE, "the building update loop")
+        v.TICKS = ticks()
+        repairAction()
+        repairCosts()
+        materialCosts()
+        repairResources()
+        v.GAME_MODE = readOperand(v.repairAction, REPAIR_ACTION.gameMode, "the game mode")
+        v.PATHFINDING = readOperand(accessible(), ACCESSIBLE_PATHFINDING, "the path finder")
+        v.ENEMY_CLOSE = v.ENEMY_CLOSE or readCallTarget(v.repairAction, REPAIR_ACTION_ENEMY_CALL, "the enemy test")
+        local interval = number(config, "repair", "ai_interval", 1, 3600)
+        local minimumGold = number(config, "repair", "ai_minimum_gold", 0, 1000000)
+        local buy = scan(AOB_BUY_GOODS, "the market")
+        local scratch = core.allocate(16, true)
+        v.worldScratch[#v.worldScratch + 1] = { data + 4, 4 * 9 }
+        v.worldScratch[#v.worldScratch + 1] = { scratch, 16 }
+        local r = {
+          LAST_REPAIR = data + 4,
+          INTERVALS = data + 4 + 4 * 9,
+          MIN_GOLD = data + 4 + 4 * 9 + AI_SLOTS * 4,
+          LAST_SCAN = scratch,
+          NEED = scratch + 4,
+          MISS_WOOD = scratch + 8,
+          MISS_STONE = scratch + 12,
+          DAMAGE = core.allocate(4, true),
+          BUILDINGS = v.BUILDINGS,
+          BUILDINGS_STATE = v.BUILDINGS_STATE,
+          AI_TYPES = readOperand(scan(AOB_AI_TYPES, "the AI characters"), AI_TYPES_OPERAND,
+            "the AI characters"),
+          TICKS = v.TICKS,
+          GOLD_RES = v.GOLD_RES,
+          WOOD_RES = v.WOOD_RES,
+          STONE_RES = v.STONE_RES,
+          GAME_MODE = v.GAME_MODE,
+          PATHFINDING = v.PATHFINDING,
+          ENEMY_CLOSE = v.ENEMY_CLOSE,
+          REPAIR_COST = v.REPAIR_COST,
+          WOOD_COST = v.WOOD_COST,
+          STONE_COST = v.STONE_COST,
+          EXEC = v.EXEC,
+          GOLD_ON = core.allocate(4, true),
+          TYPE_COUNT = TYPE_COUNT,
+          COSTS = v.COSTS,
+          GAME_STATE = readOperand(buy, BUY_GOODS_GAME_STATE, "the market"),
+          BUY_PRICE = readCallTarget(buy, BUY_GOODS_PRICE, "the market prices"),
+          BUY_GOODS = buy,
+          RETRY_TICKS = AI_RETRY_TICKS,
+        }
+        core.writeByte(r.GOLD_ON, repairGold and 1 or 0)
+        core.writeInteger(r.DAMAGE, number(config, "repair", "ai_damage", 1, 99))
+        for slot = 1, AI_SLOTS - 1 do
+          core.writeInteger(r.INTERVALS + slot * 4, interval * TICKS_PER_SECOND)
+          core.writeInteger(r.MIN_GOLD + slot * 4, minimumGold)
+        end
+        r.AI_PLAYER = assemble(templates.aiPlayer, r)
+        b.AI_SCAN = assemble(templates.aiScan, r)
+        b.LAST_SCAN = r.LAST_SCAN
+        aicFields = {r.INTERVALS, r.MIN_GOLD, interval, minimumGold}
+        core.writeByte(data, 1)
+      end)
     end
-    local code = assemble(templates.buildings, b)
-    jumpTo(site + BUILDING_UPDATE_HOOK, code, BUILDING_UPDATE_SIZE)
+    if doors or aiRepair then
+      install(doors and aiRepair and "Dynamic doors and AI repair" or doors and "Dynamic doors" or "AI repair", function()
+        b.BUILDINGS = b.BUILDINGS or v.BUILDINGS
+        b.BUILDINGS_STATE = b.BUILDINGS_STATE or v.BUILDINGS_STATE
+        b.TICKS = b.TICKS or v.TICKS
+        b.CURRENT = core.readInteger(site + BUILDING_UPDATE_HOOK + 2)
+        b.TYPE_COUNT = TYPE_COUNT
+        b.DOOR_TYPES = byteTable(TYPE_COUNT, doorTypes)
+        b.RESUME = site + BUILDING_UPDATE_HOOK + BUILDING_UPDATE_SIZE
+        local code = assemble(templates.buildings, b)
+        if aicFields then registerAICFields(table.unpack(aicFields)) end
+        jumpTo(site + BUILDING_UPDATE_HOOK, code, BUILDING_UPDATE_SIZE)
+      end)
+    end
+  end
+  if #v.worldScratch > 0 then
+    local function resetWorldState()
+      for _, region in ipairs(v.worldScratch) do
+        core.setMemory(region[1], 0, region[2])
+      end
+    end
+    modules["map-extensions"]:registerSection(MODULE_NAME, {
+      initialize = resetWorldState,
+      deserialize = resetWorldState,
+      serialize = function() end,
+    })
   end
 end
 
